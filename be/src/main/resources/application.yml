@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://192.168.0.199/goodc
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: goodc
+    password: Goodc1234
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+security:
+  jwt:
+    secret: secret-value
