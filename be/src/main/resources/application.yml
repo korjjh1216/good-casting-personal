@@ -13,7 +13,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      enabled: true
+      location: C:\Users\bitcamp\Pictures\pictures
 
 security:
   jwt:
     secret: secret-value
+
+shop:
+  goodcast:
+    upload:
+      path: C:\Users\bitcamp\Pictures\pictures

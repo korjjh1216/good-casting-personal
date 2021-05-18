@@ -1,11 +1,15 @@
 package shop.goodcasting.api.user.actor.domain;
 
-import lombok.Getter;
+import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Getter
 @Entity
 @Table(name = "actors")

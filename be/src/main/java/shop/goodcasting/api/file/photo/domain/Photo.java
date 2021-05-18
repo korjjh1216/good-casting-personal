@@ -1,23 +1,29 @@
 package shop.goodcasting.api.file.photo.domain;
 
-import lombok.Getter;
+import lombok.*;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.common.domain.BaseEntity;
 
 import javax.persistence.*;
 
+@ToString
 @Getter
 @Table(name = "photos")
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Photo extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "photo_id")
     private Long photoId;
 
-    @Column(name = "file_size") private String fileSize;
+    private String uuid;
+
+    private boolean first;
+
     @Column(name = "file_name") private String fileName;
-    @Column(name = "saved_file_name") private String savedFileName;
 
     @ManyToOne
     @JoinColumn(name = "profile_id")

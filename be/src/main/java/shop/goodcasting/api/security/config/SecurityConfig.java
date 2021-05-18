@@ -37,9 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/users/signin").permitAll()
-                .antMatchers("/users/signup").permitAll()
-                .antMatchers("/users/findAll").permitAll()
+                .antMatchers("**").permitAll()
+                .antMatchers("/user/signin").permitAll()
+                .antMatchers("/user/signup").permitAll()
+                .antMatchers("/user/findAll").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/login");
         http.apply(new WebConfig(provider));

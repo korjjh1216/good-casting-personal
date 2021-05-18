@@ -1,4 +1,4 @@
-package shop.goodcasting.api;
+package shop.goodcasting.api.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -11,4 +11,3 @@ public class Config {
         return new ModelMapper();
     }
 }
-
