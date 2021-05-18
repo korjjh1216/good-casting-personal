@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
-import shop.goodcasting.api.file.video.domain.VideoDTO;
+import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @Component
 public class ProfileDTO {
     // pk
-    private long profileId;
+    private Long profileId;
 
     // data
     private boolean privacy;
@@ -30,7 +29,6 @@ public class ProfileDTO {
 
     // join object
     private Actor actor;
-    private ArrayList<PhotoDTO> photos;
-    private VideoDTO video;
+    private ArrayList<FileDTO> files;
     private ArrayList<HireDTO> hires;
 }

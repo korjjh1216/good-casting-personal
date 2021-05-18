@@ -7,8 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
-import shop.goodcasting.api.file.video.domain.VideoDTO;
+import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.producer.domain.Producer;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class HireDTO {
 
     //join object
     private Producer producer;
-    private ArrayList<PhotoDTO> photos;
-    private VideoDTO video;
+    private ArrayList<FileDTO> files;
     private ArrayList<ProfileDTO> profiles;
 }

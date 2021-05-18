@@ -1,4 +1,4 @@
-package shop.goodcasting.api.file.photo.domain;
+package shop.goodcasting.api.file.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,8 @@ import shop.goodcasting.api.article.profile.domain.Profile;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhotoDTO {
-    private Long photoId;
+public class FileDTO {
+    private Long fileId;
     private String fileName;
     private String uuid;
     private boolean first;

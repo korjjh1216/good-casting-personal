@@ -2,19 +2,10 @@ package shop.goodcasting.api.article.hire.service;
 
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.file.photo.domain.Photo;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
-import shop.goodcasting.api.file.video.domain.Video;
-import shop.goodcasting.api.file.video.domain.VideoDTO;
-import shop.goodcasting.api.user.actor.domain.Actor;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
+import shop.goodcasting.api.file.domain.FileVO;
+import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface HireService {
     Long register(HireDTO hireDTO);
@@ -45,25 +36,15 @@ public interface HireService {
         return producer;
     }
 
-    default Photo dto2EntityPhoto(PhotoDTO photoDTO) {
-        Photo photo = Photo.builder()
-                .photoId(photoDTO.getPhotoId())
-                .fileName(photoDTO.getFileName())
-                .uuid(photoDTO.getUuid())
-                .first(photoDTO.isFirst())
-                .hire(photoDTO.getHire())
+    default FileVO dto2EntityFile(FileDTO fileDTO) {
+        FileVO file = FileVO.builder()
+                .fileId(fileDTO.getFileId())
+                .fileName(fileDTO.getFileName())
+                .uuid(fileDTO.getUuid())
+                .first(fileDTO.isFirst())
+                .hire(fileDTO.getHire())
                 .build();
-        return photo;
+        return file;
     }
 
-    default Video dto2EntityVideo(VideoDTO videoDTO){
-        Video video = Video.builder()
-                .videoId(videoDTO.getVideoId())
-                .fileName(videoDTO.getFileName())
-                .uuid(videoDTO.getUuid())
-                .first(videoDTO.isFirst())
-                .hire(videoDTO.getHire())
-                .build();
-        return video;
-    }
 }

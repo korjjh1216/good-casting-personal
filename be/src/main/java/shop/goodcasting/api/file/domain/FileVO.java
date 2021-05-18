@@ -1,4 +1,4 @@
-package shop.goodcasting.api.file.photo.domain;
+package shop.goodcasting.api.file.domain;
 
 import lombok.*;
 import shop.goodcasting.api.article.hire.domain.Hire;
@@ -14,16 +14,14 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Photo extends BaseEntity {
+public class FileVO extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "photo_id")
-    private Long photoId;
+    @Column(name = "file_id")
+    private Long fileId;
 
-    private String uuid;
-
-    private boolean first;
-
+    @Column private String uuid;
+    @Column private boolean first;
     @Column(name = "file_name") private String fileName;
 
     @ManyToOne

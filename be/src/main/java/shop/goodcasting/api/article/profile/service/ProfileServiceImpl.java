@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
-import shop.goodcasting.api.file.photo.domain.Photo;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
-import shop.goodcasting.api.file.photo.repository.PhotoRepository;
-import shop.goodcasting.api.file.video.repository.VideoRepository;
-import shop.goodcasting.api.user.actor.domain.Actor;
+import shop.goodcasting.api.file.domain.FileVO;
+import shop.goodcasting.api.file.domain.FileDTO;
+import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.login.repository.UserRepository;
 
@@ -20,10 +18,9 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepo;
-    private final PhotoRepository photoRepo;
+    private final FileRepository fileRepo;
     private final ActorRepository actorRepo;
     private final UserRepository userRepo;
-    private final VideoRepository videoRepo;
 
     @Transactional
     @Override
@@ -36,15 +33,15 @@ public class ProfileServiceImpl implements ProfileService {
 
         Profile finalProfile = profileRepo.save(profile);
 
-        ArrayList<PhotoDTO> photos = profileDTO.getPhotos();
+        ArrayList<FileDTO> files = profileDTO.getFiles();
 
-        if(photos != null && photos.size() > 0) {
+        if(files != null && files.size() > 0) {
 
-            photos.forEach(photoDTO -> {
-                photoDTO.setProfile(finalProfile);
-                Photo photo = dto2EntityPhoto(photoDTO);
+            files.forEach(fileDTO -> {
+                fileDTO.setProfile(finalProfile);
+                FileVO photo = dto2EntityFile(fileDTO);
 
-                photoRepo.save(photo);
+                fileRepo.save(photo);
             });
         }
 

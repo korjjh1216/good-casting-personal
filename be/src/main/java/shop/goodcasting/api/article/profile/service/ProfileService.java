@@ -2,8 +2,8 @@ package shop.goodcasting.api.article.profile.service;
 
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.file.photo.domain.Photo;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
+import shop.goodcasting.api.file.domain.FileVO;
+import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
@@ -35,15 +35,15 @@ public interface ProfileService {
         return actor;
     }
 
-    default Photo dto2EntityPhoto(PhotoDTO photoDTO) {
-        Photo photo = Photo.builder()
-                .photoId(photoDTO.getPhotoId())
-                .fileName(photoDTO.getFileName())
-                .uuid(photoDTO.getUuid())
-                .first(photoDTO.isFirst())
-                .profile(photoDTO.getProfile())
+    default FileVO dto2EntityFile(FileDTO fileDTO) {
+        FileVO file = FileVO.builder()
+                .fileId(fileDTO.getFileId())
+                .fileName(fileDTO.getFileName())
+                .uuid(fileDTO.getUuid())
+                .first(fileDTO.isFirst())
+                .profile(fileDTO.getProfile())
                 .build();
 
-        return photo;
+        return file;
     }
 }

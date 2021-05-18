@@ -3,7 +3,6 @@ package shop.goodcasting.api.article.profile.domain;
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.common.domain.HireProfile;
-import shop.goodcasting.api.file.video.domain.Video;
 import shop.goodcasting.api.user.actor.domain.Actor;
 
 import javax.persistence.*;

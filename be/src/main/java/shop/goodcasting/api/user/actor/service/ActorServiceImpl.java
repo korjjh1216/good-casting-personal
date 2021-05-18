@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.common.service.AbstractService;
 import shop.goodcasting.api.user.actor.domain.Actor;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
 
 import java.util.List;

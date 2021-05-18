@@ -5,27 +5,22 @@ import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
-import shop.goodcasting.api.file.photo.domain.Photo;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
-import shop.goodcasting.api.file.photo.repository.PhotoRepository;
-import shop.goodcasting.api.file.video.domain.VideoDTO;
-import shop.goodcasting.api.file.video.repository.VideoRepository;
+import shop.goodcasting.api.file.domain.FileVO;
+import shop.goodcasting.api.file.domain.FileDTO;
+import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.login.repository.UserRepository;
 import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class HireServiceImpl implements HireService {
     private final HireRepository hireRepo;
-    private final PhotoRepository photoRepo;
+    private final FileRepository fileRepo;
     private final ProducerRepository producerRepo;
     private final UserRepository userRepo;
-    private final VideoRepository videoRepo;
 
     @Transactional
     @Override
@@ -39,19 +34,17 @@ public class HireServiceImpl implements HireService {
 
         Hire finalHire= hireRepo.save(hire);
 
-        ArrayList<PhotoDTO> photos = hireDTO.getPhotos();
+        ArrayList<FileDTO> files = hireDTO.getFiles();
 
-        if(photos != null && photos.size() > 0) {
+        if(files != null && files.size() > 0) {
 
-            photos.forEach(photoDTO -> {
-                photoDTO.setHire(finalHire);
-                Photo photo = dto2EntityPhoto(photoDTO);
+            files.forEach(fileDTO -> {
+                fileDTO.setHire(finalHire);
+                FileVO file = dto2EntityFile(fileDTO);
 
-                photoRepo.save(photo);
+                fileRepo.save(file);
             });
         }
-
-
         return null;
     }
 }
