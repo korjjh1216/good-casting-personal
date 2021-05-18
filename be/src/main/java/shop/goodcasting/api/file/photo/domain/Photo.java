@@ -1,6 +1,7 @@
 package shop.goodcasting.api.file.photo.domain;
 
 import lombok.*;
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.common.domain.BaseEntity;
 
@@ -28,4 +29,8 @@ public class Photo extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "hire_id")
+    private Hire hire;
 }
