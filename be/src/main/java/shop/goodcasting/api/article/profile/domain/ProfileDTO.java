@@ -10,7 +10,6 @@ import shop.goodcasting.api.file.photo.domain.PhotoDTO;
 import shop.goodcasting.api.file.video.domain.VideoDTO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
 
 @Builder

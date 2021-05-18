@@ -14,43 +14,22 @@ import java.util.Optional;
 @Log
 @Service
 @RequiredArgsConstructor
-public class ProducerServiceImpl extends AbstractService<Producer> implements ProducerService {
+public class ProducerServiceImpl  implements ProducerService {
     private final ProducerRepository repo;
     private final ModelMapper modelMapper;
 
     @Override
-    public Long save(Producer producer) {
+    public List<Producer> findAll() {
         return null;
     }
 
     @Override
-    public Optional<Producer> findById(Long id) {
-        return repo.findById(id);
-    }
-
-    @Override
-    public List<Producer> findAll() {
-        return repo.findAll();
-    }
-
-    @Override
-    public Long count() {
-        return repo.count();
-    }
-
-    @Override
-    public Optional<Producer> getOne(Long id) {
-        return Optional.ofNullable(repo.getOne(id));
+    public Optional<Producer> findById(Long actorId) {
+        return Optional.empty();
     }
 
     @Override
     public Long delete(Producer producer) {
-        repo.delete(producer);
-        return repo.findById(producer.getProducerId()).orElse(null) == null ? 1L : 0L;
-    }
-
-    @Override
-    public Boolean existById(Long id) {
-        return repo.existsById(id);
+        return null;
     }
 }

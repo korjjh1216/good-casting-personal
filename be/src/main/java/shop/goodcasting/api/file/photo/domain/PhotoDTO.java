@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 
 @Data
@@ -18,4 +19,5 @@ public class PhotoDTO {
     private String uuid;
     private boolean first;
     private Profile profile;
+    private Hire hire;
 }

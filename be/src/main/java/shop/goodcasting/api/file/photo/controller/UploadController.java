@@ -24,13 +24,13 @@ import java.util.UUID;
 @Log4j2
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/file")
+@RequestMapping("/p_upload")
 public class UploadController {
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
 
-    @PostMapping("/upload")
-    public ResponseEntity<List<PhotoDTO>> uploadFile(MultipartFile[] uploadFiles) {
+    @PostMapping("/register")
+    public ResponseEntity<List<PhotoDTO>> register(MultipartFile[] uploadFiles) {
         log.info("uploadFile()--------------------------------------------------------");
         log.info("uploadFile: " + uploadFiles.toString());
         List<PhotoDTO> resultDTOList = new ArrayList<>();

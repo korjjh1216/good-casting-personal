@@ -1,13 +1,20 @@
 package shop.goodcasting.api.file.video.domain;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.stereotype.Component;
+import shop.goodcasting.api.article.hire.domain.Hire;
+import shop.goodcasting.api.article.profile.domain.Profile;
 
 @Data
 @Component
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class VideoDTO {
     private Long videoId;
-    private String fileSize;
     private String fileName;
-    private String savedFileName;
+    private String uuid;
+    private boolean first;
+    private Profile profile;
+    private Hire hire;
 }

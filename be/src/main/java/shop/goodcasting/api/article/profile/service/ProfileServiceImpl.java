@@ -8,6 +8,7 @@ import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 import shop.goodcasting.api.file.photo.domain.Photo;
 import shop.goodcasting.api.file.photo.domain.PhotoDTO;
 import shop.goodcasting.api.file.photo.repository.PhotoRepository;
+import shop.goodcasting.api.file.video.repository.VideoRepository;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.login.repository.UserRepository;
@@ -22,6 +23,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final PhotoRepository photoRepo;
     private final ActorRepository actorRepo;
     private final UserRepository userRepo;
+    private final VideoRepository videoRepo;
 
     @Transactional
     @Override
