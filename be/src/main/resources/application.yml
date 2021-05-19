@@ -16,7 +16,7 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: C:\Users\bitcamp\Pictures\pictures
+      location: C:\Users\korjj\Documents\Coding\files
 
 security:
   jwt:
@@ -25,4 +25,4 @@ security:
 shop:
   goodcast:
     upload:
-      path: C:\Users\bitcamp\Pictures\pictures
+      path: C:\Users\korjj\Documents\Coding\files

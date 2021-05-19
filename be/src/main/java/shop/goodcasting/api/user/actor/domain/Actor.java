@@ -28,7 +28,7 @@ public class Actor extends BaseEntity {
     @Column private String agency;
     @Column private Boolean major;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserVO userVO;
 

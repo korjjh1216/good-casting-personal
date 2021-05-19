@@ -30,7 +30,7 @@ public class Profile extends BaseEntity {
     @Column private String confidence;
 
     // join column
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "actor_id")
     private Actor actor;
 

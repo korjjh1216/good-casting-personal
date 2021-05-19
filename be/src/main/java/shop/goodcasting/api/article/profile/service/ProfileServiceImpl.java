@@ -13,6 +13,7 @@ import shop.goodcasting.api.user.login.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +47,19 @@ public class ProfileServiceImpl implements ProfileService {
         }
 
         return null;
+    }
+
+    @Override
+    public ProfileDTO profileDetail(Long profileId) {
+        profileRepo.findById(profileId);
+
+        return null;
+    }
+
+    @Override
+    public List<ProfileDTO> profileList() {
+        List<Profile> profileList = profileRepo.findAll();
+
+        return null ;
     }
 }

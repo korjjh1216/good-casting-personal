@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @ToString
 @Getter
-@Table(name = "photos")
+@Table(name = "files")
 @Entity
 @Builder
 @AllArgsConstructor

@@ -7,6 +7,8 @@ import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
+import java.util.List;
+
 public interface ProfileService {
     Long register(ProfileDTO profileDTO);
 
@@ -46,4 +48,7 @@ public interface ProfileService {
 
         return file;
     }
+
+    ProfileDTO profileDetail(Long profileId);
+    List<ProfileDTO> profileList();
 }
