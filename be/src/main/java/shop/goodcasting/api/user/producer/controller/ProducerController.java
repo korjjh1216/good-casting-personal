@@ -9,6 +9,9 @@ import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 import shop.goodcasting.api.user.producer.service.ProducerServiceImpl;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Log
 @RestController
@@ -18,10 +21,24 @@ public class ProducerController {
     private final ProducerServiceImpl service;
     private final ProducerRepository repo;
 
+    @GetMapping("/list")
+    public ResponseEntity<List<Producer>> producerList(){
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<Optional<Producer>> detail(@RequestBody Producer producer){
+        return ResponseEntity.ok(service.findById(producer.getProducerId()));
+    }
+
     @PutMapping("/update")
     public ResponseEntity<Producer> update(@RequestBody Producer producer){
         return ResponseEntity.ok(repo.save(producer));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Long> delete(@RequestBody Producer producer){
+        return ResponseEntity.ok(service.delete(producer));
+    }
 
 }

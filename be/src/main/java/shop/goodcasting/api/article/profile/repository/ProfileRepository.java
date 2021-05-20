@@ -1,3 +1,4 @@
+
 package shop.goodcasting.api.article.profile.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query("select p, p.actor, f from Profile p left join FileVO f on f.profile = p where p.profileId = :profileId")
-    List<Object[]> getProfileWithFileByProfileId(@Param("profileId") Long profileId);
+    List<Object[]> getProfileAndFileAndActorByProfileId(@Param("profileId") Long profileId);
 
     @Query("select p, a from Profile p left join p.actor a where p.profileId = :profileId")
     Object getProfileWithActorByProfileId(@Param("profileId") Long profileId);

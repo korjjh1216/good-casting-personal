@@ -1,3 +1,4 @@
+
 package shop.goodcasting.api.file.domain;
 
 import lombok.*;
@@ -22,4 +23,6 @@ public class FileDTO {
     private boolean first;
     private Timestamp regDate;
     private Timestamp modDate;
+
+    private ProfileDTO profile;
 }

@@ -14,6 +14,7 @@ public class ProfileServiceTests {
 
     @Test
     public void testGetProfile() {
-//        ProfileDTO dto = service.
+
+//        ProfileDTO dto = service.entity2Dto();
     }
 }

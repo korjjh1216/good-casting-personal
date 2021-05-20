@@ -3,11 +3,13 @@ package shop.goodcasting.api.user.login.service;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
     String signup(UserDTO userDTO);
     UserDTO signin(UserDTO userDTO);
+    List<UserVO> findAll();
     UserDTO findById(Long id);
     Optional<UserVO> findByUsername(String username);
 
@@ -17,6 +19,7 @@ public interface UserService {
                 .username(userDTO.getUsername())
                 .password(userDTO.getPassword())
                 .position(userDTO.getPosition())
+                .account(userDTO.getAccount())
                 .roles(userDTO.getRoles())
                 .build();
     }
@@ -26,6 +29,7 @@ public interface UserService {
                 .username(userVO.getUsername())
                 .password(userVO.getPassword())
                 .position(userVO.getPosition())
+                .account(userVO.getAccount())
                 .roles(userVO.getRoles())
                 .build();
     }

@@ -27,14 +27,15 @@ public class ActorController {
         return ResponseEntity.ok(service.findAll());
     }
 
+
+    @GetMapping("/myPage")
+    public ResponseEntity<Optional<Actor>> myPage(@RequestBody Actor actor){
+        return ResponseEntity.ok(service.findById(actor.getActorId()));
+    }
+
     @PostMapping("/info")
     public ResponseEntity<ActorDTO> moreDetail(@RequestBody ActorDTO actorDTO){
         return ResponseEntity.ok(service.moreDetail(actorDTO));
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<Actor> update(@RequestBody Actor actor){
-        return ResponseEntity.ok(repo.save(actor));
     }
 
     @DeleteMapping("/delete")

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@ToString
 @Builder
 @Getter
 @Table(name = "users")
@@ -22,6 +21,7 @@ public class UserVO extends BaseEntity {
     @Size(min = 8, message = "Minimum password length: 8")
     @Column(nullable = false) private String password;
     @Column private Boolean position;
+    @Column private Boolean account;
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 

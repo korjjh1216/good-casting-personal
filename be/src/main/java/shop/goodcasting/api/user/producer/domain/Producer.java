@@ -6,7 +6,6 @@ import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
-@ToString
 @Builder
 @Getter
 @Entity
@@ -23,7 +22,7 @@ public class Producer {
     @Column private String phone;
     @Column private String position;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserVO userVO;
 

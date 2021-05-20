@@ -35,15 +35,6 @@ public class FileController {
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
 
-    @GetMapping("/{profileId}")
-    public ResponseEntity<List<FileDTO>> findFileListByProfileId(@PathVariable Long profileId) {
-        log.info("----------------------file fileList()----------------------------------");
-        List<FileDTO> fileList = service.findFileListByProfileId(profileId);
-        log.info("---------------fileList--------" + fileList);
-
-        return ResponseEntity.ok(fileList);
-    }
-
     @PostMapping("/register")
     public ResponseEntity<List<FileDTO>> register(MultipartFile[] uploadFiles) {
         log.info("----------------------file register()----------------------------------");

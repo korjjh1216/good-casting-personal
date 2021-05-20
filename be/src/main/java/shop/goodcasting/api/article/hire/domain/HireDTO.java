@@ -22,7 +22,8 @@ public class HireDTO {
     private Long hireId;
 
     /// data
-    private String hireTitle;
+    private String title;
+    private String project;
     private String cast;    //배역
     private String filming; //촬영기간
     private String guarantee; //출연료

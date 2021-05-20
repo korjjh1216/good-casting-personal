@@ -23,6 +23,7 @@ public class Hire extends BaseEntity {
 
     // column
     @Column private String title;
+    @Column private String project;
     @Column private String contents;
     @Column private String cast;    //배역
     @Column private String filming; //촬영기간

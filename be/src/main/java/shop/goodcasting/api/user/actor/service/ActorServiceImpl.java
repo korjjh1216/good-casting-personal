@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
+import shop.goodcasting.api.user.login.repository.UserRepository;
+import shop.goodcasting.api.user.login.service.UserServiceImpl;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ActorServiceImpl implements ActorService {
+    private final UserRepository userRepository;
     private final ActorRepository repo;
 
     @Override
@@ -23,28 +27,25 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public Optional<Actor> findById(Long actorId) {
-        return Optional.empty();
+        return repo.findById(actorId);
     }
 
+    @Transactional
     @Override
     public Long delete(ActorDTO actorDTO) {
-        log.info("delete : 진입");
-        Actor actor = dto2Entity(actorDTO);
-        actor.changeUserVO(null);
-        log.info("actor.userVo : " + actor.getUserVO());
-        repo.delete(actor);
+        Actor actor = dto2EntityAll(actorDTO);
 
-        log.info("actor.getActorId() : " + actor.getActorId());
+//        repo.update(actor.getUserVO().getUserId(), false);
+//        repo.delete(actor);
+
         return repo.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
     }
 
     @Override
     public ActorDTO moreDetail(ActorDTO actorDTO) {
+        Actor actor = dto2EntityAll(actorDTO);
         repo.findById(actorDTO.getActorId());
-        Actor actor = dto2Entity(actorDTO);
         repo.save(actor);
         return null;
     }
 }
-
-

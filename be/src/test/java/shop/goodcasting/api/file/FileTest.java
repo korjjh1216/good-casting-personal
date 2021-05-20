@@ -18,18 +18,12 @@ public class FileTest implements FileService {
 
     @Test
     public void test() {
-        fileRepo.findAll().stream().map(entity -> entity2DtoFile(entity)).collect(Collectors.toList());
+        fileRepo.findAll().stream().map(entity -> entity2Dto(entity)).collect(Collectors.toList());
     }
 
     @Override
     public void extractVideoThumbnail(File file) throws Exception {
 
     }
-
-    @Override
-    public List<FileDTO> findFileListByProfileId(Long profileId) {
-        return null;
-    }
-
 
 }

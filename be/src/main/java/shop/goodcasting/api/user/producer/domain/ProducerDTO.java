@@ -5,10 +5,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 
-@ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Component
 public class ProducerDTO {
@@ -17,6 +13,4 @@ public class ProducerDTO {
     private String agency;
     private String phone;
     private String position;
-    private Timestamp regDate;
-    private Timestamp modDate;
 }

@@ -29,8 +29,9 @@ public class ProfileDTO {
     private String confidence;
     private Timestamp regDate;
     private Timestamp modDate;
-    private Actor actor;
 
-    private ArrayList<FileDTO> files;
-//    private List<HireProfile> hires;
+    private ActorDTO actor;
+
+    private List<FileDTO> files;
+    private List<HireProfile> hires;
 }

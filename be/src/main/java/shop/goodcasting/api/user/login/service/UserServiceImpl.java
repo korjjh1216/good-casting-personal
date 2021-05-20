@@ -10,6 +10,7 @@ import shop.goodcasting.api.security.domain.SecurityProvider;
 import shop.goodcasting.api.security.exception.SecurityRuntimeException;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
+import shop.goodcasting.api.user.actor.service.ActorService;
 import shop.goodcasting.api.user.login.domain.Role;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final ActorService actorService;
     private final UserRepository userRepo;
     private final ActorRepository actorRepo;
     private final ProducerRepository producerRepo;
@@ -40,7 +42,6 @@ public class UserServiceImpl implements UserService {
             Boolean position = userDTO.getPosition();
             Actor actor = new Actor();
             Producer producer = new Producer();
-
             if(position){
                 actorList.add(Role.USER);
                 userDTO.setRoles(actorList);
@@ -88,6 +89,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserVO> findAll() {
+        return userRepo.findAll();
+    }
+
+
+    @Override
     public UserDTO findById(Long id) {
         UserDTO userDTO = entity2Dto(userRepo.findById(id).get());
         return userDTO;
@@ -97,4 +104,5 @@ public class UserServiceImpl implements UserService {
     public Optional<UserVO> findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+
 }

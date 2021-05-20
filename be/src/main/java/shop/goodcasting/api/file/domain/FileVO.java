@@ -16,13 +16,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class FileVO extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_id")
     private Long fileId;
 
     @Column private String uuid;
-    @Column private boolean first;
     @Column(name = "file_name") private String fileName;
+    @Column private boolean first;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")

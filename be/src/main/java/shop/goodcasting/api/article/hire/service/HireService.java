@@ -10,40 +10,33 @@ import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 public interface HireService {
     Long register(HireDTO hireDTO);
 
-    default Hire dto2Entity(HireDTO hireDTO) {
-        Hire entity = Hire.builder()
-                .hireId(hireDTO.getHireId())
-                .title(hireDTO.getHireTitle())
-                .contents(hireDTO.getContents())
-                .cast(hireDTO.getCast())
-                .filming(hireDTO.getFilming())
-                .guarantee(hireDTO.getGuarantee())
-                .personnel(hireDTO.getPersonnel())
-                .deadline(hireDTO.getDeadline())
-                .producer(hireDTO.getProducer())
+    default Hire dto2Entity(HireDTO dto) {
+        return Hire.builder()
+                .hireId(dto.getHireId())
+                .title(dto.getTitle())
+                .project(dto.getProject())
+                .contents(dto.getContents())
+                .cast(dto.getCast())
+                .filming(dto.getFilming())
+                .guarantee(dto.getGuarantee())
+                .personnel(dto.getPersonnel())
+                .deadline(dto.getDeadline())
+                .producer(dto.getProducer())
                 .build();
-        return entity;
     }
 
-    default Producer dto2EntityProducer(ProducerDTO producerDTO) {
-        Producer producer = Producer.builder()
-                .producerId(producerDTO.getProducerId())
-                .email(producerDTO.getEmail())
-                .agency(producerDTO.getAgency())
-                .phone(producerDTO.getPhone())
-                .position(producerDTO.getPosition())
+    default HireDTO entity2Dto(Hire entity) {
+        return HireDTO.builder()
+                .hireId(entity.getHireId())
+                .title(entity.getTitle())
+                .project(entity.getProject())
+                .contents(entity.getContents())
+                .cast(entity.getCast())
+                .filming(entity.getFilming())
+                .guarantee(entity.getGuarantee())
+                .personnel(entity.getPersonnel())
+                .deadline(entity.getDeadline())
+                .producer(entity.getProducer())
                 .build();
-        return producer;
     }
-
-    default FileVO dto2EntityFile(FileDTO fileDTO) {
-        FileVO file = FileVO.builder()
-                .fileId(fileDTO.getFileId())
-                .fileName(fileDTO.getFileName())
-                .uuid(fileDTO.getUuid())
-                .first(fileDTO.isFirst())
-                .build();
-        return file;
-    }
-
 }
