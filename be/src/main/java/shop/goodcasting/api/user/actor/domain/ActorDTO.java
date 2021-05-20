@@ -1,11 +1,12 @@
 package shop.goodcasting.api.user.actor.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
+import shop.goodcasting.api.user.login.domain.UserVO;
 
+import java.sql.Timestamp;
+
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +23,8 @@ public class ActorDTO {
     private String weight;
     private String agency;
     private Boolean major;
+    private Timestamp regDate;
+    private Timestamp modDate;
+
+    private UserVO userVO;
 }

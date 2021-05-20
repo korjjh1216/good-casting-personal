@@ -1,7 +1,6 @@
 package shop.goodcasting.api.security.config;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,10 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("**").permitAll()
-                .antMatchers("/user/signin").permitAll()
-                .antMatchers("/user/signup").permitAll()
-                .antMatchers("/user/findAll").permitAll()
+                .antMatchers("/users/signin").permitAll()
+                .antMatchers("/users/signup").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/login");
         http.apply(new WebConfig(provider));

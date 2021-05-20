@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ActorService {
-
     List<Actor> findAll();
-
     Optional<Actor> findById(Long actorId);
-
-    Long delete(Actor actor);
+    Long delete(ActorDTO actorDTO);
+    ActorDTO moreDetail(ActorDTO actorDTO);
 
     default Actor dto2Entity(ActorDTO actorDTO){
         Actor actor = Actor.builder()
@@ -25,6 +23,7 @@ public interface ActorService {
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())
+                .userVO(actorDTO.getUserVO())
                 .build();
 
         return actor;
@@ -40,6 +39,7 @@ public interface ActorService {
                 .major(actor.getMajor())
                 .gender(actor.getGender())
                 .agency(actor.getAgency())
+                .userVO(actor.getUserVO())
                 .build();
 
         return actorDTO;

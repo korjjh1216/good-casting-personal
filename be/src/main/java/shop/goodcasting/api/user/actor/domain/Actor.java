@@ -6,10 +6,10 @@ import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
+@ToString(exclude = {"userVO"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
 @Entity
 @Table(name = "actors")
@@ -28,7 +28,7 @@ public class Actor extends BaseEntity {
     @Column private String agency;
     @Column private Boolean major;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserVO userVO;
 

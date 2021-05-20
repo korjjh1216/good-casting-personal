@@ -4,6 +4,7 @@ import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @ToString
@@ -18,8 +19,17 @@ public class UserVO extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id") private Long userId;
     @Column(unique = true, nullable = false) private String username;
+    @Size(min = 8, message = "Minimum password length: 8")
     @Column(nullable = false) private String password;
-
+    @Column private Boolean position;
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void changeRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 }

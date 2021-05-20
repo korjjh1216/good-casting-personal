@@ -20,13 +20,23 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("doFilterInternal : 진입");
+
+        // header가 있는지 확인
         String token = provider.resolveToken(request);
+
+        response.addHeader("Authorization", "Bearer " + token);
+        System.out.println("token " + token);
 
         try {
             if(token != null && provider.validateToken(token)) {
                 Authentication auth = provider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                System.out.println("auth : " + auth);
+                System.out.println("auth.getDetails : " + auth.getDetails());
 
+                // 시큐리티에 접근하여 auth객체를 저장
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                System.out.println(auth);
             }
         } catch(SecurityRuntimeException e) {
             SecurityContextHolder.clearContext();
@@ -34,6 +44,11 @@ public class SecurityFilter extends OncePerRequestFilter {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println(filterChain);
         filterChain.doFilter(request, response);
+        System.out.println("request" + request);
+        System.out.println("response" + response);
+        System.out.println("doFilterInternal : 끝");
     }
 }

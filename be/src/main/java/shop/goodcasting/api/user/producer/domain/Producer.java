@@ -6,14 +6,15 @@ import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@Builder
 @Getter
 @Entity
-@Table(name = "producers")
-public class Producer extends BaseEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="producers")
+public class Producer {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "producer_id") private Long producerId;
 
@@ -22,7 +23,10 @@ public class Producer extends BaseEntity {
     @Column private String phone;
     @Column private String position;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserVO userVO;
+
+    public void changeUserVO(UserVO userVO) {
+    }
 }

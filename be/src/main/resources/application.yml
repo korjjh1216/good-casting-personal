@@ -17,7 +17,19 @@ spring:
     multipart:
       enabled: true
       location: C:\Users\bitcamp\Pictures\pictures
-
+      max-request-size: 100MB
+      max-file-size: 100MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: goodcastingofficial@gmail.com
+    password: goodc1234
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 security:
   jwt:
     secret: secret-value
@@ -26,3 +38,4 @@ shop:
   goodcast:
     upload:
       path: C:\Users\bitcamp\Pictures\pictures
+

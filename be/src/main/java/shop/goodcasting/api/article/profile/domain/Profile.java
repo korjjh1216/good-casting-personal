@@ -3,13 +3,14 @@ package shop.goodcasting.api.article.profile.domain;
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.common.domain.HireProfile;
+import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ToString
+@ToString(exclude = {"actor", "hires"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,10 +31,11 @@ public class Profile extends BaseEntity {
     @Column private String confidence;
 
     // join column
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "actor_id")
     private Actor actor;
 
+    @Builder.Default
     @OneToMany(mappedBy = "profile")
     private List<HireProfile> hires = new ArrayList<>();
 }

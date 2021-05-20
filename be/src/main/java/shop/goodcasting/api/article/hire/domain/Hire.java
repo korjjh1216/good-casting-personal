@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ToString
+@ToString(exclude = {"producer", "profiles"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,12 +29,15 @@ public class Hire extends BaseEntity {
     @Column private String guarantee; //출연료
     @Column private String personnel; //모집인원
     @Column private String deadline; //공고마감일
+    @Column private String confidence;
+    @Column private String resemble;
 
     // join column
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producer_id")
     private Producer producer;
 
+    @Builder.Default
     @OneToMany(mappedBy = "hire")
     private List<HireProfile> profiles = new ArrayList<>();
 }

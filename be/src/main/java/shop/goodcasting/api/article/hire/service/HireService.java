@@ -42,7 +42,6 @@ public interface HireService {
                 .fileName(fileDTO.getFileName())
                 .uuid(fileDTO.getUuid())
                 .first(fileDTO.isFirst())
-                .hire(fileDTO.getHire())
                 .build();
         return file;
     }

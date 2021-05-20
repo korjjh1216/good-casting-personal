@@ -3,13 +3,7 @@ package shop.goodcasting.api.file.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
-import org.jcodec.api.awt.FrameGrab;
-import org.jcodec.common.DemuxerTrack;
-import org.jcodec.common.NIOUtils;
-import org.jcodec.common.SeekableByteChannel;
-import org.jcodec.common.model.Picture;
-import org.jcodec.containers.mp4.demuxer.MP4Demuxer;
-import org.jcodec.scale.AWTUtil;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.service.FileServiceImpl;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -43,10 +35,18 @@ public class FileController {
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
 
+    @GetMapping("/{profileId}")
+    public ResponseEntity<List<FileDTO>> findFileListByProfileId(@PathVariable Long profileId) {
+        log.info("----------------------file fileList()----------------------------------");
+        List<FileDTO> fileList = service.findFileListByProfileId(profileId);
+        log.info("---------------fileList--------" + fileList);
+
+        return ResponseEntity.ok(fileList);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<List<FileDTO>> register(MultipartFile[] uploadFiles) {
-        log.info("uploadFile()--------------------------------------------------------");
-        log.info("uploadFile: " + uploadFiles.toString());
+        log.info("----------------------file register()----------------------------------");
         List<FileDTO> resultDTOList = new ArrayList<>();
 
         for (MultipartFile uploadFile : uploadFiles) {
@@ -66,12 +66,13 @@ public class FileController {
             String saveName = uploadPath + File.separator + uuid + "_" + fileName;
             Path savePath = Paths.get(saveName);
 
-            System.out.println("fileName:-------------------------------------------------- " + fileName);
+            log.info("register() - fileName: " + fileName);
 
             try {
                 uploadFile.transferTo(savePath);
 
                 if(mimeType.startsWith("image")){
+                    log.info("image thumbnail extract");
 
                     String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
 
@@ -79,18 +80,18 @@ public class FileController {
 
                     Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
 
-                    FileDTO photoDTO = FileDTO.builder()
-                            .fileName(fileName)
-                            .uuid(uuid)
-                            .build();
-
-                    resultDTOList.add(photoDTO);
 
                 }else if(mimeType.startsWith("video")) {
-                    // 비디오에서 이미지추출
-                    captureImage(new File(saveName));
-
+                    log.info("video thumbnail extract");
+                    service.extractVideoThumbnail(new File(saveName));
                 }
+
+                FileDTO fileDTO = FileDTO.builder()
+                        .fileName(fileName)
+                        .uuid(uuid)
+                        .build();
+
+                resultDTOList.add(fileDTO);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -102,38 +103,11 @@ public class FileController {
         return new ResponseEntity<>(resultDTOList, HttpStatus.OK);
     }
 
-    private void captureImage(File file)throws Exception {
-        SeekableByteChannel byteChannel = NIOUtils.readableFileChannel(file);
-        MP4Demuxer dm = new MP4Demuxer(byteChannel);
-        DemuxerTrack vt = dm.getVideoTrack();
 
-        String fileName = file.getAbsolutePath();
-        fileName = fileName.substring(0, fileName.lastIndexOf(".")) +".jpg";
-
-        File imageFile = new File(fileName);
-
-        double frameNumber = 0d;
-
-        frameNumber = vt.getMeta().getTotalDuration() / 5.0;
-
-        log.info(frameNumber);
-
-        Picture frame = FrameGrab.getNativeFrame(file, frameNumber);
-
-        log.info(frame);
-
-        BufferedImage img = AWTUtil.toBufferedImage(frame);
-
-        File imgFile = new File(fileName);
-
-        ImageIO.write(img, "jpg", imgFile);
-    }
 
     @GetMapping("/display")
     public ResponseEntity<byte[]> display(String fileName) {
         System.out.println("fileName: -----------------------------" + fileName);
-
-        ResponseEntity<byte[]> result = null;
 
         try {
             String srcFileName =  URLDecoder.decode(fileName,"UTF-8");
@@ -152,13 +126,10 @@ public class FileController {
             System.out.println("header: " + header);
 
             //파일 데이터 처리
-            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-
-            System.out.println("result: " + result);
-        } catch (Exception e) {
+            return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+        } catch(Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return result;
     }
 }

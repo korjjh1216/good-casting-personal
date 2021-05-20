@@ -1,13 +1,15 @@
 package shop.goodcasting.api.file.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.article.hire.domain.Hire;
+import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.profile.domain.Profile;
+import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 
+import java.sql.Timestamp;
+
+@ToString
 @Data
 @Component
 @Builder
@@ -18,6 +20,6 @@ public class FileDTO {
     private String fileName;
     private String uuid;
     private boolean first;
-    private Profile profile;
-    private Hire hire;
+    private Timestamp regDate;
+    private Timestamp modDate;
 }

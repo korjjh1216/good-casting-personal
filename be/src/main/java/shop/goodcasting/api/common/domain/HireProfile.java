@@ -1,5 +1,6 @@
 package shop.goodcasting.api.common.domain;
 
+import lombok.Data;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 

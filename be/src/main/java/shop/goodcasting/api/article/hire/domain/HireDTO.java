@@ -1,18 +1,17 @@
 package shop.goodcasting.api.article.hire.domain;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.producer.domain.Producer;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
-
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,9 +29,14 @@ public class HireDTO {
     private String personnel; //모집인원
     private String deadline; //공고마감일
     private String contents; //내용
+    private String confidence;
+    private String resemble;
+
+    private Timestamp regDate;
+    private Timestamp modDate;
 
     //join object
     private Producer producer;
     private ArrayList<FileDTO> files;
-    private ArrayList<ProfileDTO> profiles;
+    private List<ProfileDTO> profiles;
 }

@@ -26,25 +26,24 @@ public class HireServiceImpl implements HireService {
     @Override
     public Long register(HireDTO hireDTO) {
         Hire hire = dto2Entity(hireDTO);
-        System.out.println("service - register - hire: " +hire);
-        userRepo.save(hire.getProducer().getUserVO());
-
-
-        producerRepo.save(hire.getProducer());
-
-        Hire finalHire= hireRepo.save(hire);
-
-        ArrayList<FileDTO> files = hireDTO.getFiles();
-
-        if(files != null && files.size() > 0) {
-
-            files.forEach(fileDTO -> {
-                fileDTO.setHire(finalHire);
-                FileVO file = dto2EntityFile(fileDTO);
-
-                fileRepo.save(file);
-            });
-        }
+//        System.out.println("service - register - hire: " +hire);
+//        userRepo.save(hire.getProducer().getUserVO());
+//
+//        producerRepo.save(hire.getProducer());
+//
+//        Hire finalHire = hireRepo.save(hire);
+//
+//        ArrayList<FileDTO> files = hireDTO.getFiles();
+//
+//        if(files != null && files.size() > 0) {
+//
+//            files.forEach(fileDTO -> {
+//                fileDTO.setHire(finalHire);
+//                FileVO file = dto2EntityFile(fileDTO);
+//
+//                fileRepo.save(file);
+//            });
+//        }
         return null;
     }
 }

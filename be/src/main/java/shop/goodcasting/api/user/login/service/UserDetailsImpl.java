@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
     private final long userId;
     private final String username;
+    private final Boolean position;
     @JsonIgnore
     private final String password;
 
@@ -47,11 +48,11 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    public static UserDetailsImpl of(UserVO userVO) {
+    public static UserDetailsImpl build(UserVO userVO) {
         List<GrantedAuthority> authorities = userVO.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                 .collect(Collectors.toList());
 
-        return new UserDetailsImpl(userVO.getUserId(), userVO.getUsername(), userVO.getPassword(), authorities);
+        return new UserDetailsImpl(userVO.getUserId(), userVO.getUsername(), userVO.getPosition(), userVO.getPassword(), authorities);
     }
 }
