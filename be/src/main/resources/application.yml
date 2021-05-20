@@ -16,6 +16,7 @@ spring:
   servlet:
     multipart:
       enabled: true
+<<<<<<< HEAD
       location: C:\Users\bitcamp\Pictures\pictures
       max-request-size: 100MB
       max-file-size: 100MB
@@ -30,6 +31,10 @@ spring:
           auth: true
           starttls:
             enable: true
+=======
+      location: C:\Users\korjj\Documents\Coding\files
+
+>>>>>>> 8cb7bdc5a69091f7a7160ea72b2de35bb58f0284
 security:
   jwt:
     secret: secret-value
@@ -37,5 +42,9 @@ security:
 shop:
   goodcast:
     upload:
+<<<<<<< HEAD
       path: C:\Users\bitcamp\Pictures\pictures
 
+=======
+      path: C:\Users\korjj\Documents\Coding\files
+>>>>>>> 8cb7bdc5a69091f7a7160ea72b2de35bb58f0284

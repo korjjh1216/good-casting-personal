@@ -28,7 +28,11 @@ public class Actor extends BaseEntity {
     @Column private String agency;
     @Column private Boolean major;
 
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.EAGER)
+=======
+    @ManyToOne(fetch = FetchType.LAZY)
+>>>>>>> 8cb7bdc5a69091f7a7160ea72b2de35bb58f0284
     @JoinColumn(name = "user_id")
     private UserVO userVO;
 

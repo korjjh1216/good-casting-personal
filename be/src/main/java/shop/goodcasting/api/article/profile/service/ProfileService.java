@@ -41,8 +41,15 @@ public interface ProfileService {
     }
 
 
+<<<<<<< HEAD
 
     ProfileDTO profileDetail(Long profileId);
 
+=======
+        return file;
+    }
+
+    ProfileDTO profileDetail(Long profileId);
+>>>>>>> 8cb7bdc5a69091f7a7160ea72b2de35bb58f0284
     List<ProfileDTO> profileList();
 }

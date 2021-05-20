@@ -15,7 +15,10 @@ import shop.goodcasting.api.user.login.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Arrays;
+=======
+>>>>>>> 8cb7bdc5a69091f7a7160ea72b2de35bb58f0284
 import java.util.List;
 
 @Log4j2
@@ -112,5 +115,19 @@ public class ProfileServiceImpl implements ProfileService {
         List<Profile> profileList = profileRepo.findAll();
 
         return null;
+    }
+
+    @Override
+    public ProfileDTO profileDetail(Long profileId) {
+        profileRepo.findById(profileId);
+
+        return null;
+    }
+
+    @Override
+    public List<ProfileDTO> profileList() {
+        List<Profile> profileList = profileRepo.findAll();
+
+        return null ;
     }
 }
