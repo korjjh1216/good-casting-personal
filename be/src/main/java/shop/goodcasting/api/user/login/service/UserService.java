@@ -18,8 +18,8 @@ public interface UserService {
                 .userId(userDTO.getUserId())
                 .username(userDTO.getUsername())
                 .password(userDTO.getPassword())
-                .position(userDTO.getPosition())
-                .account(userDTO.getAccount())
+                .position(userDTO.isPosition())
+                .account(userDTO.isAccount())
                 .roles(userDTO.getRoles())
                 .build();
     }

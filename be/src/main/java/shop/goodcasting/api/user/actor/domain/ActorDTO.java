@@ -21,7 +21,7 @@ public class ActorDTO {
     private String height;
     private String weight;
     private String agency;
-    private Boolean major;
+    private boolean major;
     private Timestamp regDate;
     private Timestamp modDate;
 

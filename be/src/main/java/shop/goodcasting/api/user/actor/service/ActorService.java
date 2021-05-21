@@ -1,5 +1,7 @@
 package shop.goodcasting.api.user.actor.service;
 
+import lombok.Builder;
+import lombok.extern.java.Log;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.login.domain.UserDTO;
@@ -21,13 +23,12 @@ public interface ActorService {
                 .phone(actorDTO.getPhone())
                 .weight(actorDTO.getWeight())
                 .birthday(actorDTO.getBirthday())
-                .major(actorDTO.getMajor())
+                .major(actorDTO.isMajor())
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())
                 .build();
     }
-
     default Actor dto2EntityAll(ActorDTO actorDTO){
         return Actor.builder()
                 .actorId(actorDTO.getActorId())
@@ -35,7 +36,8 @@ public interface ActorService {
                 .phone(actorDTO.getPhone())
                 .weight(actorDTO.getWeight())
                 .birthday(actorDTO.getBirthday())
-                .major(actorDTO.getMajor())
+                .major(actorDTO.isMajor()
+                )
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())

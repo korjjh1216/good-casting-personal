@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             List<Role> actorList = new ArrayList<>();
             List<Role> producerList = new ArrayList<>();
-            Boolean position = userDTO.getPosition();
+            Boolean position = userDTO.isPosition();
             Actor actor = new Actor();
             Producer producer = new Producer();
             if(position){
