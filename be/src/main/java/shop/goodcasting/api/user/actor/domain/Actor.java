@@ -6,6 +6,7 @@ import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
+@ToString
 @Builder
 @Getter
 @Entity

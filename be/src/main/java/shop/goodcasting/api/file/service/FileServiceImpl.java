@@ -63,21 +63,4 @@ public class FileServiceImpl implements FileService {
 
         ImageIO.write(img, "jpg", imgFile);
     }
-
-//    @Transactional
-//    @Override
-//    public List<FileDTO> findFileListByProfileId(Long profileId) {
-//        List<FileVO> fileList = fileRepo.findFileListByProfileId(profileId);
-//
-//        fileList.forEach(file -> log.info("file: " + file));
-//
-//        return fileList.stream().map(entity -> {
-////            log.info("file service - findAll() - entity: " + entity);
-//            Profile profile = entity.getProfile();
-//            log.info("file service - findAll() - profile Class: " + profile.getProfileId());
-////            log.info("file service - findAll() - profile.regdate: " + profile.getRegDate());
-//
-//            return entity2DtoFile(entity);
-//        }).collect(Collectors.toList());
-//    }
 }

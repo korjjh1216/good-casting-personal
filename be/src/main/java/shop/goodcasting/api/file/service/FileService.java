@@ -13,44 +13,44 @@ public interface FileService {
 
 //    List<FileDTO> findFileListByProfileId(Long profileId);
 
-    default FileDTO entity2Dto(FileVO entity) {
+    default FileDTO entity2Dto(FileVO fileVO) {
         return FileDTO.builder()
-                .fileId(entity.getFileId())
-                .fileName(entity.getFileName())
-                .uuid(entity.getUuid())
-                .first(entity.isFirst())
+                .fileId(fileVO.getFileId())
+                .fileName(fileVO.getFileName())
+                .uuid(fileVO.getUuid())
+                .first(fileVO.isFirst())
                 .build();
     }
 
-    default FileDTO entity2DtoAll(FileVO entity) {
+    default FileDTO entity2DtoAll(FileVO fileVO) {
         return FileDTO.builder()
-                .fileId(entity.getFileId())
-                .fileName(entity.getFileName())
-                .uuid(entity.getUuid())
-                .first(entity.isFirst())
+                .fileId(fileVO.getFileId())
+                .fileName(fileVO.getFileName())
+                .uuid(fileVO.getUuid())
+                .first(fileVO.isFirst())
                 .profile(ProfileDTO.builder()
-                        .profileId(entity.getProfile().getProfileId())
+                        .profileId(fileVO.getProfile().getProfileId())
                         .build())
                 .build();
     }
 
-    default FileVO dto2Entity(FileDTO dto) {
+    default FileVO dto2Entity(FileDTO fileDTO) {
         return FileVO.builder()
-                .fileId(dto.getFileId())
-                .fileName(dto.getFileName())
-                .uuid(dto.getUuid())
-                .first(dto.isFirst())
+                .fileId(fileDTO.getFileId())
+                .fileName(fileDTO.getFileName())
+                .uuid(fileDTO.getUuid())
+                .first(fileDTO.isFirst())
                 .build();
     }
 
-    default FileVO dto2EntityAll(FileDTO dto) {
+    default FileVO dto2EntityAll(FileDTO fileDTO) {
         return FileVO.builder()
-                .fileId(dto.getFileId())
-                .fileName(dto.getFileName())
-                .uuid(dto.getUuid())
-                .first(dto.isFirst())
+                .fileId(fileDTO.getFileId())
+                .fileName(fileDTO.getFileName())
+                .uuid(fileDTO.getUuid())
+                .first(fileDTO.isFirst())
                 .profile(Profile.builder()
-                        .profileId(dto.getProfile().getProfileId())
+                        .profileId(fileDTO.getProfile().getProfileId())
                         .build())
                 .build();
     }

@@ -18,4 +18,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query("select p, a from Profile p left join p.actor a where p.profileId = :profileId")
     Object getProfileWithActorByProfileId(@Param("profileId") Long profileId);
+
+    @Query("select p, p.actor, f from Profile p left join FileVO f on f.profile = p where f.first = :first")
+    List<Object[]> getProfileAndFileAndActorByFirst(@Param("first") boolean first);
 }

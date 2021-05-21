@@ -21,7 +21,7 @@ import java.util.List;
 public class ProfileDTO {
     // pk
     private Long profileId;
-
+    private String title;
     private boolean privacy;
     private String contents;
     private String career;

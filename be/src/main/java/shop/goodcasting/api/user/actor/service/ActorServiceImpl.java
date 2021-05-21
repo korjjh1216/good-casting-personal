@@ -4,6 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import shop.goodcasting.api.article.profile.domain.Profile;
+import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.article.profile.repository.ProfileRepository;
+import shop.goodcasting.api.file.domain.FileVO;
+import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
@@ -20,37 +25,41 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ActorServiceImpl implements ActorService {
     private final UserRepository userRepository;
-    private final ActorRepository repo;
+    private final ActorRepository actorRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileRepository profileRepository;
+    private final FileRepository fileRepository;
 
     @Override
     public List<Actor> findAll() {
-        return repo.findAll();
+        return actorRepository.findAll();
     }
 
     @Override
     public Optional<Actor> findById(Long actorId) {
-        return repo.findById(actorId);
+        return actorRepository.findById(actorId);
     }
 
     @Transactional
     @Override
     public Long delete(ActorDTO actorDTO) {
+        //actorRepository.getProfileIdByActorId(actorDTO.getActorId());
+//        fileRepository.deleteById();
+//        profileRepository.deleteById();
+//        actorRepository.accountUpdate(actorDTO.getUser().getUserId(),false);
+//        actorRepository.deleteById(actorDTO.getActorId());
         Actor actor = dto2EntityAll(actorDTO);
-
-//        repo.update(actor.getUserVO().getUserId(), false);
-//        repo.delete(actor);
-
-        return repo.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
+        return actorRepository.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
     }
 
     @Override
     @Transactional
     public ActorDTO moreDetail(ActorDTO actorDTO) {
+
         String passwordUp =  passwordEncoder.encode(actorDTO.getUser().getPassword());
-        repo.passwordUpdate(actorDTO.getUser().getUserId(),passwordUp);
+        actorRepository.passwordUpdate(actorDTO.getUser().getUserId(),passwordUp);
         Actor actor = dto2EntityAll(actorDTO);
-        repo.save(actor);
+        actorRepository.save(actor);
         return null;
     }
 }
