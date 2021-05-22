@@ -71,7 +71,7 @@ public class ActorServiceImpl implements ActorService {
             profileRepository.delete(profile);
         }
         actorRepository.delete(actor);
-        actorRepository.accountUpdate(actor.getUser().getUserId(), false);
+        userRepository.accountUpdate(actor.getUser().getUserId(), false);
         actorRepository.delete(actor);
 
         return actorRepository.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
@@ -81,7 +81,7 @@ public class ActorServiceImpl implements ActorService {
     @Transactional
     public ActorDTO moreDetail(ActorDTO actorDTO) {
         String passwordUp =  passwordEncoder.encode(actorDTO.getUser().getPassword());
-        actorRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
+        userRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
 
         Actor actor = dto2EntityAll(actorDTO);
         actorRepository.save(actor);

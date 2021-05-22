@@ -21,8 +21,8 @@ public class FileVO extends BaseEntity {
     private Long fileId;
 
     @Column private String uuid;
-    @Column private boolean first;
     @Column(name = "file_name") private String fileName;
+    @Column private boolean first;
     @Column(name = "photo_type") private boolean photoType;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,4 +33,15 @@ public class FileVO extends BaseEntity {
     @JoinColumn(name = "hire_id")
     private Hire hire;
 
+    public void changeUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void changeFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void changeFirst(boolean first) {
+        this.first = first;
+    }
 }

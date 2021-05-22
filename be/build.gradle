@@ -31,6 +31,7 @@ dependencies {
 	compile 'org.jsoup:jsoup:1.13.1'
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
+	implementation group: 'org.json', name: 'json', version: '20210307'
 
 	// security
 	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
@@ -47,6 +48,7 @@ dependencies {
 
 	// mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 test {

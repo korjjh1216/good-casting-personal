@@ -6,12 +6,9 @@ import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 
 import java.io.File;
-import java.util.List;
 
 public interface FileService {
     void extractVideoThumbnail(File file) throws Exception;
-
-//    List<FileDTO> findFileListByProfileId(Long profileId);
 
     default FileDTO entity2Dto(FileVO fileVO) {
         return FileDTO.builder()
