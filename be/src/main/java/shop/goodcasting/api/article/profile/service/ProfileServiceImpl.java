@@ -118,7 +118,6 @@ public class ProfileServiceImpl implements ProfileService {
 
         for (ProfileDTO profileDTO : profileList) {
             System.out.println("----------------------------------------");
-            System.out.println(profileDTO.getTitle());
             System.out.println(profileDTO.getActor());
             System.out.println(profileDTO.getFiles());
         }

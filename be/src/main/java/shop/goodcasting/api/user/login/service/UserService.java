@@ -28,8 +28,8 @@ public interface UserService {
                 .userId(userVO.getUserId())
                 .username(userVO.getUsername())
                 .password(userVO.getPassword())
-                .position(userVO.getPosition())
-                .account(userVO.getAccount())
+                .position(userVO.isPosition())
+                .account(userVO.isAccount())
                 .roles(userVO.getRoles())
                 .build();
     }

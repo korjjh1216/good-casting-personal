@@ -53,6 +53,6 @@ public class UserDetailsImpl implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                 .collect(Collectors.toList());
 
-        return new UserDetailsImpl(userVO.getUserId(), userVO.getUsername(), userVO.getPosition(), userVO.getPassword(), authorities);
+        return new UserDetailsImpl(userVO.getUserId(), userVO.getUsername(), userVO.isPosition(), userVO.getPassword(), authorities);
     }
 }

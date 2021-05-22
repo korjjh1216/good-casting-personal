@@ -17,6 +17,7 @@ import shop.goodcasting.api.user.login.repository.UserRepository;
 import shop.goodcasting.api.user.login.service.UserServiceImpl;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ActorServiceImpl implements ActorService {
     private final UserRepository userRepository;
+    private final FileRepository fileRepository;
+    private final ProfileRepository profileRepository;
     private final ActorRepository actorRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ProfileRepository profileRepository;
-    private final FileRepository fileRepository;
 
     @Override
     public List<Actor> findAll() {
@@ -43,21 +44,45 @@ public class ActorServiceImpl implements ActorService {
     @Transactional
     @Override
     public Long delete(ActorDTO actorDTO) {
-        //actorRepository.getProfileIdByActorId(actorDTO.getActorId());
-//        fileRepository.deleteById();
-//        profileRepository.deleteById();
-//        actorRepository.accountUpdate(actorDTO.getUser().getUserId(),false);
-//        actorRepository.deleteById(actorDTO.getActorId());
         Actor actor = dto2EntityAll(actorDTO);
+
+        Long profileId = actorRepository.getProfileId(actor.getActorId());
+
+        log.info("profileId : " + profileId);
+
+        if(profileId != null){
+            Profile profile = profileRepository.findById(profileId).get();
+            List<FileVO> fileList = fileRepository.findFileListByProfileId(profileId);
+
+            log.info("fileList : " + fileList);
+
+            List<Long> fileId = new ArrayList<>();
+            fileList.forEach( i -> {
+                fileId.add(i.getFileId());
+            });
+            log.info("fileId : " + fileId);
+
+            fileId.forEach( id -> {
+                FileVO test = fileRepository.findById(id).get();
+                System.out.println(test);
+                fileRepository.delete(test);
+            });
+
+            profileRepository.delete(profile);
+        }
+        actorRepository.delete(actor);
+        actorRepository.accountUpdate(actor.getUser().getUserId(), false);
+        actorRepository.delete(actor);
+
         return actorRepository.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
     }
 
     @Override
     @Transactional
     public ActorDTO moreDetail(ActorDTO actorDTO) {
-
         String passwordUp =  passwordEncoder.encode(actorDTO.getUser().getPassword());
-        actorRepository.passwordUpdate(actorDTO.getUser().getUserId(),passwordUp);
+        actorRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
+
         Actor actor = dto2EntityAll(actorDTO);
         actorRepository.save(actor);
         return null;

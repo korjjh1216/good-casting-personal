@@ -19,6 +19,7 @@ public interface FileService {
                 .fileName(fileVO.getFileName())
                 .uuid(fileVO.getUuid())
                 .first(fileVO.isFirst())
+                .photoType(fileVO.isPhotoType())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public interface FileService {
                 .fileName(fileVO.getFileName())
                 .uuid(fileVO.getUuid())
                 .first(fileVO.isFirst())
+                .photoType(fileVO.isPhotoType())
                 .profile(ProfileDTO.builder()
                         .profileId(fileVO.getProfile().getProfileId())
                         .build())
@@ -40,6 +42,7 @@ public interface FileService {
                 .fileName(fileDTO.getFileName())
                 .uuid(fileDTO.getUuid())
                 .first(fileDTO.isFirst())
+                .photoType(fileDTO.isPhotoType())
                 .build();
     }
 
@@ -49,6 +52,7 @@ public interface FileService {
                 .fileName(fileDTO.getFileName())
                 .uuid(fileDTO.getUuid())
                 .first(fileDTO.isFirst())
+                .photoType(fileDTO.isPhotoType())
                 .profile(Profile.builder()
                         .profileId(fileDTO.getProfile().getProfileId())
                         .build())

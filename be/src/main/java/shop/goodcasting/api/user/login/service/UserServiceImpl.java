@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final ActorService actorService;
+
     private final UserRepository userRepo;
     private final ActorRepository actorRepo;
     private final ProducerRepository producerRepo;
@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
             Boolean position = userDTO.isPosition();
             Actor actor = new Actor();
             Producer producer = new Producer();
+
             if(position){
                 actorList.add(Role.USER);
                 userDTO.setRoles(actorList);
@@ -69,22 +70,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signin(UserDTO userDTO) {
-        try{
-            UserVO userVO = dto2Entity(userDTO);
 
-            log.info("userVo---------" + userVO.getUserId());
-            log.info("userVo---------" + userVO.getUsername());
+        if(userRepo.checkAccount(userDTO.getUsername())){
+            try{
+                UserVO userVO = dto2Entity(userDTO);
 
-            String token = (passwordEncoder.matches(userVO.getPassword(), userRepo.findByUsername(userVO.getUsername()).get().getPassword()))
-                    ?provider.createToken(userVO.getUsername(), userRepo.findByUsername(userVO.getUsername()).get().getRoles())
-                    : "Wrong password";
+                log.info("userVo---------" + userVO.getUserId());
+                log.info("userVo---------" + userVO.getUsername());
 
-            userDTO.setToken(token);
+                String token = (passwordEncoder.matches(userVO.getPassword(), userRepo.findByUsername(userVO.getUsername()).get().getPassword()))
+                        ?provider.createToken(userVO.getUsername(), userRepo.findByUsername(userVO.getUsername()).get().getRoles())
+                        : "Wrong password";
 
-            log.info("userDto-----------" + userDTO);
-            return userDTO;
-        }catch(Exception e){
-            throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
+                userDTO.setToken(token);
+
+                log.info("userDto-----------" + userDTO);
+                return userDTO;
+            }catch(Exception e){
+                throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        } else{
+            throw new SecurityRuntimeException("회원탈퇴한 회원입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
