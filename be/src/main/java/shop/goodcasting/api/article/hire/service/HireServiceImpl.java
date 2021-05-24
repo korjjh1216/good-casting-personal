@@ -198,7 +198,7 @@ public class HireServiceImpl implements HireService {
         if(files != null && files.size() > 0) {
             files.forEach(fileDTO -> {
                 fileDTO.setHire(hireDTO);
-                FileVO file = fileService.dto2EntityAll(fileDTO);
+                FileVO file = fileService.dto2EntityHire(fileDTO);
                 fileRepository.save(file);
 
                 if (file.isPhotoType() && fileDTO.isFirst()) {

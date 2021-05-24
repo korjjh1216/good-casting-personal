@@ -15,6 +15,7 @@ import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class ProducerServiceImpl implements ProducerService {
     }
 
     @Override
+    @Transactional
     public Long delete(ProducerDTO producerDTO) {
         Producer producer = dto2EntityAll(producerDTO);
 
@@ -75,8 +77,10 @@ public class ProducerServiceImpl implements ProducerService {
     }
 
     @Override
+    @Transactional
     public ProducerDTO moreDetail(ProducerDTO producerDTO) {
         String passwordUp =  passwordEncoder.encode(producerDTO.getUser().getPassword());
+        System.out.println("있니?" + producerDTO.getUser().getUserId());
         userRepository.passwordUpdate(producerDTO.getUser().getUserId(), passwordUp);
 
         Producer producer = dto2EntityAll(producerDTO);

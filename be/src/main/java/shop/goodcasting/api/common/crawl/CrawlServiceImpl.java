@@ -32,7 +32,6 @@ public class CrawlServiceImpl implements CrawlService {
     private final UserRepository userRepository;
     private final CrawlRepository crawlRepo;
     private final ActorRepository actorRepository;
-    private final FileRepository fileRepository;
     private final ActorService actorService;
 
     @Override
@@ -44,7 +43,7 @@ public class CrawlServiceImpl implements CrawlService {
         Document innerDoc = null;
 
         for (int i = 0; i < link.size(); i++) {
-            ;
+
             String a = link.get(i).attr("href");
             list.add(a);
         }

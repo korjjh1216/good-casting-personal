@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/hire")
+@RequestMapping("/hires")
 public class HireController {
     private final HireServiceImpl service;
 

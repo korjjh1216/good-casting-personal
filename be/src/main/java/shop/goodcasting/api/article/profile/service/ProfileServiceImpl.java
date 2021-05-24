@@ -200,7 +200,7 @@ public class ProfileServiceImpl implements ProfileService {
         if(files != null && files.size() > 0) {
             files.forEach(fileDTO -> {
                 fileDTO.setProfile(profileDTO);
-                FileVO file = fileService.dto2EntityAll(fileDTO);
+                FileVO file = fileService.dto2EntityProfile(fileDTO);
                 fileRepo.save(file);
 
                 if (file.isPhotoType() && fileDTO.isFirst()) {

@@ -21,6 +21,7 @@ public interface ProducerService {
                 .email(producerDTO.getEmail())
                 .phone(producerDTO.getPhone())
                 .position(producerDTO.getPosition())
+                .name(producerDTO.getName())
                 .build();
     }
 
@@ -32,6 +33,7 @@ public interface ProducerService {
                 .email(producerDTO.getEmail())
                 .phone(producerDTO.getPhone())
                 .position(producerDTO.getPosition())
+                .name(producerDTO.getName())
                 .userVO(UserVO.builder().userId(producerDTO.getUser().getUserId()).build())
                 .build();
     }
@@ -43,6 +45,7 @@ public interface ProducerService {
                 .email(producer.getEmail())
                 .phone(producer.getPhone())
                 .position(producer.getPosition())
+                .name(producer.getName())
                 .build();
     }
 
@@ -53,6 +56,7 @@ public interface ProducerService {
                 .email(producer.getEmail())
                 .phone(producer.getPhone())
                 .position(producer.getPosition())
+                .name(producer.getName())
                 .user(UserDTO.builder().userId(producer.getUserVO().getUserId()).build())
                 .build();
     }
