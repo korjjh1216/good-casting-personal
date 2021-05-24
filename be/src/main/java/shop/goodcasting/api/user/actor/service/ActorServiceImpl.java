@@ -70,7 +70,6 @@ public class ActorServiceImpl implements ActorService {
 
             profileRepository.delete(profile);
         }
-        actorRepository.delete(actor);
         userRepository.accountUpdate(actor.getUser().getUserId(), false);
         actorRepository.delete(actor);
 

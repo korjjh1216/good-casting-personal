@@ -20,10 +20,7 @@ import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.file.service.FileService;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
-import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.actor.service.ActorService;
-import shop.goodcasting.api.user.login.repository.UserRepository;
-import shop.goodcasting.api.user.login.service.UserService;
 
 import javax.transaction.Transactional;
 import java.io.*;
@@ -42,9 +39,6 @@ public class ProfileServiceImpl implements ProfileService {
     private final FileRepository fileRepo;
     private final FileService fileService;
     private final ActorService actorService;
-    private final UserRepository userRepo;
-    private final ActorRepository actorRepo;
-    private final UserService userService;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;

@@ -5,26 +5,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.file.service.FileService;
-import shop.goodcasting.api.user.actor.domain.Actor;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
-import shop.goodcasting.api.user.login.repository.UserRepository;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
-import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 import shop.goodcasting.api.user.producer.service.ProducerService;
 
 import javax.transaction.Transactional;
@@ -44,9 +37,7 @@ public class HireServiceImpl implements HireService {
     private final HireRepository hireRepository;
     private final FileRepository fileRepository;
     private final FileService fileService;
-    private final ProducerRepository producerRepository;
     private final ProducerService producerService;
-    private final UserRepository userRepository;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;

@@ -5,13 +5,17 @@ import lombok.extern.java.Log;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import shop.goodcasting.api.article.hire.domain.Hire;
+import shop.goodcasting.api.article.hire.repository.HireRepository;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
+import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.login.repository.UserRepository;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +28,7 @@ public class ProducerServiceImpl implements ProducerService {
     private final FileRepository fileRepository;
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
+    private final HireRepository hireRepository;
 
     @Override
     public List<Producer> findAll() {
@@ -38,34 +43,33 @@ public class ProducerServiceImpl implements ProducerService {
     @Override
     public Long delete(ProducerDTO producerDTO) {
         Producer producer = dto2EntityAll(producerDTO);
-//
-//        Long profileId = producerRepository.getHireId(producer.getProducerId());
-//
-//        log.info("profileId : " + profileId);
-//
-//        if(profileId != null){
-//            Profile profile = profileRepository.findById(profileId).get();
-//            List<FileVO> fileList = fileRepository.findFileListByProfileId(profileId);
-//
-//            log.info("fileList : " + fileList);
-//
-//            List<Long> fileId = new ArrayList<>();
-//            fileList.forEach( i -> {
-//                fileId.add(i.getFileId());
-//            });
-//            log.info("fileId : " + fileId);
-//
-//            fileId.forEach( id -> {
-//                FileVO test = fileRepository.findById(id).get();
-//                System.out.println(test);
-//                fileRepository.delete(test);
-//            });
-//
-//            profileRepository.delete(profile);
-//        }
-//        producerRepository.delete(producer);
-//        userRepository.accountUpdate(producer.getUserVO().getUserId(), false);
-//        producerRepository.delete(producer);
+
+        Long hireId = producerRepository.getHireId(producer.getProducerId());
+
+        log.info("hireId : " + hireId);
+
+        if(hireId != null){
+            Hire hire = hireRepository.findById(hireId).get();
+            List<FileVO> fileList = fileRepository.findFileListByHireId(hireId);
+
+            log.info("fileList : " + fileList);
+
+            List<Long> fileId = new ArrayList<>();
+            fileList.forEach( i -> {
+                fileId.add(i.getFileId());
+            });
+            log.info("fileId : " + fileId);
+
+            fileId.forEach( id -> {
+                FileVO test = fileRepository.findById(id).get();
+                System.out.println(test);
+                fileRepository.delete(test);
+            });
+
+            hireRepository.delete(hire);
+        }
+        userRepository.accountUpdate(producer.getUserVO().getUserId(), false);
+        producerRepository.delete(producer);
 
         return producerRepository.findById(producer.getProducerId()).orElse(null) == null ? 1L : 0L;
     }
