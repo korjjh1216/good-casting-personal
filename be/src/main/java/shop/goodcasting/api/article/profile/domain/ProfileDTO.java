@@ -25,7 +25,7 @@ public class ProfileDTO {
     private String contents;
     private String career;
     private String resemble;
-    private String confidence;
+    private Double confidence;
     private Timestamp regDate;
     private Timestamp modDate;
 

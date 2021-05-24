@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
@@ -42,6 +44,9 @@ public class ProfileServiceImpl implements ProfileService {
     private final ActorRepository actorRepo;
     private final UserService userService;
 
+    @Value("${shop.goodcast.upload.path}")
+    private String uploadPath;
+
     @Transactional
     @Override
     public Long register(ProfileDTO profileDTO) {
@@ -49,19 +54,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         List<FileDTO> files = profileDTO.getFiles();
 
-        if(files != null && files.size() > 0) {
-            files.forEach(fileDTO -> {
-                fileDTO.setProfile(finalProfileDto);
-                FileVO file = fileService.dto2EntityAll(fileDTO);
-                fileRepo.save(file);
-
-                if (file.isPhotoType()) {
-                    extractCelebrity(file.getFileName(), finalProfileDto.getProfileId());
-                }
-            });
-            return 1L;
-        }
-        return 0L;
+        return saveFile(finalProfileDto, files);
     }
 
     @Transactional
@@ -89,8 +82,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<ProfileDTO> readProfileList() {
-        return profileRepo.getProfileAndFileAndActorByFirst(true)
+    public List<ProfileDTO> readProfileList(int page) {
+        return profileRepo.getProfileAndFileAndActorByFirst(PageRequest.of(page, 10))
                 .stream()
                 .map(objects -> {
                     System.out.println("loop enter");
@@ -111,26 +104,23 @@ public class ProfileServiceImpl implements ProfileService {
                 }).collect(Collectors.toList());
     }
 
+    @Transactional
     public Long update(ProfileDTO profileDTO) {
+        Long profileId = profileDTO.getProfileId();
+
         profileRepo.save(dto2EntityAll(profileDTO));
 
-        profileRepo.getProfileAndFileByProfileId(profileDTO.getProfileId()).stream()
-                .map(objects -> (FileVO) objects[1])
-                .collect(Collectors.toList())
-                .forEach(fileVO -> {
-                    profileDTO.getFiles().forEach(fileDTO -> {
-                        if (fileVO.getFileId() == fileDTO.getFileId()) {
-                            fileVO.changeFileName(fileDTO.getFileName());
-                            fileVO.changeUuid(fileDTO.getUuid());
-                            fileRepo.save(fileVO);
-                        }});
-                });
-        return 1L;
+        fileRepo.deleteByProfileId(profileId);
+
+        List<FileDTO> files = profileDTO.getFiles();
+
+        return saveFile(profileDTO, files);
     }
 
     @Transactional
-    public void delete(Long profileId) {
+    public void deleteProfile(Long profileId) {
         fileRepo.deleteByProfileId(profileId);
+
         profileRepo.deleteById(profileId);
     }
 
@@ -142,7 +132,8 @@ public class ProfileServiceImpl implements ProfileService {
 
         try {
             String paramName = "image"; // 파라미터명은 image로 지정
-            String imgFile = photoName;
+            String imgFile = uploadPath + "\\" + photoName;
+            System.out.println("##################"+ imgFile +"################################3");
             File uploadFile = new File(imgFile);
             String apiURL = "https://naveropenapi.apigw.ntruss.com/vision/v1/celebrity"; // 유명인 얼굴 인식
             URL url = new URL(apiURL);
@@ -206,12 +197,12 @@ public class ProfileServiceImpl implements ProfileService {
                 String resemble = celebObject.getString("value");
                 System.out.println("---------------------resemble-----------------" + resemble);
 
-                String confidence = String.valueOf(celebObject.getFloat("confidence"));
+                Double confidence = celebObject.getDouble("confidence");
                 System.out.println("---------------------confidence-----------------" + confidence);
 
                 System.out.println("===================================================================");
 
-                profileRepo.resembleUpdate(profileId, resemble, confidence);
+                profileRepo.updateResembleAndConfidenceByProfileId(profileId, resemble, confidence);
 
             } else {
                 System.out.println("error !!!");
@@ -219,5 +210,21 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
+        if(files != null && files.size() > 0) {
+            files.forEach(fileDTO -> {
+                fileDTO.setProfile(profileDTO);
+                FileVO file = fileService.dto2EntityAll(fileDTO);
+                fileRepo.save(file);
+
+                if (file.isPhotoType() && fileDTO.isFirst()) {
+                    extractCelebrity(file.getUuid() + "_" + file.getFileName(), profileDTO.getProfileId());
+                }
+            });
+            return 1L;
+        }
+        return 0L;
     }
 }

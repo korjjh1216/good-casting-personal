@@ -49,6 +49,10 @@ dependencies {
 	// mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	//notification
+	//implementation group: 'org.eclipse', name: 'jface', version: '3.3.0-I20070606-0010'
+
+
 }
 
 test {

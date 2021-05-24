@@ -26,4 +26,5 @@ public class FileDTO {
     private Timestamp modDate;
 
     private ProfileDTO profile;
+    private HireDTO hire;
 }

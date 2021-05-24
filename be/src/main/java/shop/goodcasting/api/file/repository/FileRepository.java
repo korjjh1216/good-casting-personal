@@ -24,4 +24,8 @@ public interface FileRepository extends JpaRepository<FileVO, Long> {
     @Modifying
     @Query("delete from FileVO f where f.profile.profileId = :profileId")
     void deleteByProfileId(Long profileId);
+
+    @Modifying
+    @Query("delete from FileVO f where f.hire.hireId = :hireId")
+    void deleteByHireId(Long hireId);
 }

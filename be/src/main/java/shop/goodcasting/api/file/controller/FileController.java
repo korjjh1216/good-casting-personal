@@ -31,7 +31,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileController {
     private final FileServiceImpl service;
-
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
 
@@ -94,8 +93,6 @@ public class FileController {
         return new ResponseEntity<>(resultDTOList, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/display")
     public ResponseEntity<byte[]> display(String fileName) {
         System.out.println("fileName: -----------------------------" + fileName);
@@ -122,5 +119,12 @@ public class FileController {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Long> delete(@RequestBody FileDTO fileDTO) {
+        service.deleteFile(uploadPath + "\\" + fileDTO.getUuid() + "_" + fileDTO.getFileName());
+
+        return ResponseEntity.ok(null);
     }
 }

@@ -27,5 +27,6 @@ public class Producer {
     private UserVO userVO;
 
     public void changeUserVO(UserVO userVO) {
+        this.userVO = userVO;
     }
 }

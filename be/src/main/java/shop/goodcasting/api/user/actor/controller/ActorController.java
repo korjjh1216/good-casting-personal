@@ -18,9 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/actors")
 public class ActorController {
-
     private final ActorServiceImpl service;
-    private final ActorRepository repo;
 
     @GetMapping("/list")
     public ResponseEntity<List<Actor>> actorList(){

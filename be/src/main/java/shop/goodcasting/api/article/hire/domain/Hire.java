@@ -24,13 +24,13 @@ public class Hire extends BaseEntity {
     // column
     @Column private String title;
     @Column private String project;
-    @Column private String contents;
+    @Column(columnDefinition = "TEXT") private String contents;
     @Column private String cast;    //배역
     @Column private String filming; //촬영기간
     @Column private String guarantee; //출연료
     @Column private String personnel; //모집인원
     @Column private String deadline; //공고마감일
-    @Column private String confidence;
+    @Column private Double confidence;
     @Column private String resemble;
 
     // join column
@@ -38,7 +38,4 @@ public class Hire extends BaseEntity {
     @JoinColumn(name = "producer_id")
     private Producer producer;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "hire")
-    private List<HireProfile> profiles = new ArrayList<>();
 }

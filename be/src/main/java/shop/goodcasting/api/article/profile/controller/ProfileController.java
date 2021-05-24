@@ -31,9 +31,9 @@ public class ProfileController {
         return ResponseEntity.ok(service.readProfile(profileId));
     }
 
-    @GetMapping("/profile-list")
-    public ResponseEntity<List<ProfileDTO>> profileList() {
-        return new ResponseEntity<>(service.readProfileList(), HttpStatus.OK);
+    @GetMapping("/profile-list/{page}")
+    public ResponseEntity<List<ProfileDTO>> profileList(@PathVariable int page) {
+        return new ResponseEntity<>(service.readProfileList(page), HttpStatus.OK);
     }
 
     @PutMapping("/update")
@@ -46,7 +46,7 @@ public class ProfileController {
     @DeleteMapping("/{profileId}")
     public ResponseEntity<Long> delete(@PathVariable Long profileId) {
 
-        service.delete(profileId);
+        service.deleteProfile(profileId);
 
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }

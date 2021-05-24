@@ -22,3 +22,4 @@ public class HireProfile extends BaseEntity {
     @JoinColumn(name = "profile_id")
     private Hire hire;
 }
+

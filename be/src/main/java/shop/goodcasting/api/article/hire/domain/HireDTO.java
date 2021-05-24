@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.producer.domain.Producer;
+import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -30,14 +31,14 @@ public class HireDTO {
     private String personnel; //모집인원
     private String deadline; //공고마감일
     private String contents; //내용
-    private String confidence;
+    private Double confidence;
     private String resemble;
 
     private Timestamp regDate;
     private Timestamp modDate;
 
     //join object
-    private Producer producer;
-    private ArrayList<FileDTO> files;
+    private ProducerDTO producer;
+    private List<FileDTO> files;
     private List<ProfileDTO> profiles;
 }

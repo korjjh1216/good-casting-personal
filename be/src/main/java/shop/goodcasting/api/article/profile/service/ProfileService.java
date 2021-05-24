@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProfileService {
     Long register(ProfileDTO profileDTO);
     ProfileDTO readProfile(Long profileId);
-    List<ProfileDTO> readProfileList();
+    List<ProfileDTO> readProfileList(int page);
 
     default Profile dto2Entity(ProfileDTO profileDTO) {
         return Profile.builder()

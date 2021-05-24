@@ -16,7 +16,7 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting files
+      location: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting
       max-request-size: 100MB
       max-file-size: 100MB
   mail:
@@ -38,4 +38,4 @@ security:
 shop:
   goodcast:
     upload:
-      path: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting files
+      path: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting

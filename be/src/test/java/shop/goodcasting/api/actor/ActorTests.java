@@ -8,13 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import shop.ryuseulgi.goodCasting.user.actor.domain.Actor;
-import shop.ryuseulgi.goodCasting.user.actor.domain.ActorDTO;
-import shop.ryuseulgi.goodCasting.user.actor.repository.ActorRepository;
-import shop.ryuseulgi.goodCasting.user.actor.service.ActorService;
-import shop.ryuseulgi.goodCasting.user.login.domain.Role;
-import shop.ryuseulgi.goodCasting.user.login.domain.UserVO;
-import shop.ryuseulgi.goodCasting.user.login.repository.UserRepository;
+import shop.goodcasting.api.user.actor.domain.Actor;
+import shop.goodcasting.api.user.actor.domain.ActorDTO;
+import shop.goodcasting.api.user.actor.repository.ActorRepository;
+import shop.goodcasting.api.user.actor.service.ActorService;
+import shop.goodcasting.api.user.login.domain.Role;
+import shop.goodcasting.api.user.login.domain.UserVO;
+import shop.goodcasting.api.user.login.repository.UserRepository;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
