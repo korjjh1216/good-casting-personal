@@ -14,9 +14,10 @@ import java.sql.Timestamp;
 public class ProducerDTO {
     private Long producerId;
     private String email;
-    private String agency;
+    private String agency; //회사이름
     private String phone;
     private String position;
+    private String name;
 
     private UserDTO user;
 }

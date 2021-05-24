@@ -5,12 +5,15 @@ import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 
+import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
@@ -28,9 +31,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @Log4j2
 @Service
@@ -82,26 +84,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<ProfileDTO> readProfileList(int page) {
-        return profileRepo.getProfileAndFileAndActorByFirst(PageRequest.of(page, 10))
-                .stream()
-                .map(objects -> {
-                    System.out.println("loop enter");
-                    System.out.println(Arrays.toString(objects));
+    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO) {
+        Page<Object[]> result = profileRepo.getProfileAndFileAndActorByFirst(
+                requestDTO.getPageable(Sort.by("modDate").descending()));
 
-                    ProfileDTO profileDTO = entity2Dto((Profile) objects[0]);
-                    ActorDTO actorDTO = actorService.entity2Dto((Actor) objects[1]);
-                    FileDTO fileDTO = fileService.entity2Dto((FileVO) objects[2]);
+        Function<Object[], ProfileDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
+                (Actor) entity[1], (FileVO) entity[2]));
 
-                    List<FileDTO> files = new ArrayList<>();
-                    files.add(fileDTO);
-
-                    profileDTO.setActor(actorDTO);
-                    profileDTO.setFiles(files);
-
-                    System.out.println(profileDTO);
-                    return profileDTO;
-                }).collect(Collectors.toList());
+        return new PageResultDTO<>(result, fn);
     }
 
     @Transactional

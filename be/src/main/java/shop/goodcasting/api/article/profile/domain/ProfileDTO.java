@@ -29,8 +29,10 @@ public class ProfileDTO {
     private Timestamp regDate;
     private Timestamp modDate;
 
-    private ActorDTO actor;
+    private String actorName;
+    private String fileUuid;
+    private String fileName;
 
+    private ActorDTO actor;
     private List<FileDTO> files;
-    private List<HireProfile> hires;
 }

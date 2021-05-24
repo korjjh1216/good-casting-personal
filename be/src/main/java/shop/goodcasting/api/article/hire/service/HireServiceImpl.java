@@ -4,13 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.repository.FileRepository;
@@ -31,6 +35,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,26 +86,14 @@ public class HireServiceImpl implements HireService {
     }
 
     @Override
-    public List<HireDTO> readHireList(int page) {
-        return hireRepository.getHireAndFileAndProducerByFirst(PageRequest.of(page, 10))
-                .stream()
-                .map(objects -> {
-                    System.out.println("loop enter");
-                    System.out.println(Arrays.toString(objects));
+    public PageResultDTO<HireDTO, Object[]> getHireList(PageRequestDTO requestDTO) {
+        Page<Object[]> result = hireRepository.getHireAndFileAndProducerByFirst(
+                requestDTO.getPageable(Sort.by("modDate").descending()));
 
-                    HireDTO hireDTO = entity2Dto((Hire) objects[0]);
-                    ProducerDTO producerDTO = producerService.entity2Dto((Producer) objects[1]);
-                    FileDTO fileDTO = fileService.entity2Dto((FileVO) objects[2]);
+        Function<Object[], HireDTO> fn = (entity -> entity2DtoFiles((Hire) entity[0],
+                (Producer) entity[1], (FileVO) entity[2]));
 
-                    List<FileDTO> files = new ArrayList<>();
-                    files.add(fileDTO);
-
-                    hireDTO.setProducer(producerDTO);
-                    hireDTO.setFiles(files);
-
-                    System.out.println(hireDTO);
-                    return hireDTO;
-                }).collect(Collectors.toList());
+        return new PageResultDTO<>(result, fn);
     }
 
     @Transactional
@@ -201,7 +194,7 @@ public class HireServiceImpl implements HireService {
 
                 System.out.println("===================================================================");
 
-                hireRepository.updateResembleAndConfidenceByProfileId(hireId, resemble, confidence);
+                hireRepository.updateResembleAndConfidenceByHireId(hireId, resemble, confidence);
 
             } else {
                 System.out.println("error !!!");

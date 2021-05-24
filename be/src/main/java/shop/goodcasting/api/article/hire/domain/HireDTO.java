@@ -33,12 +33,14 @@ public class HireDTO {
     private String contents; //내용
     private Double confidence;
     private String resemble;
-
     private Timestamp regDate;
     private Timestamp modDate;
+
+    private String producerName;
+    private String fileUuid;
+    private String fileName;
 
     //join object
     private ProducerDTO producer;
     private List<FileDTO> files;
-    private List<ProfileDTO> profiles;
 }

@@ -17,6 +17,7 @@ public class Producer {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "producer_id") private Long producerId;
 
+    @Column private String name;
     @Column private String email;
     @Column private String agency;
     @Column private String phone;

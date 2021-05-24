@@ -8,6 +8,7 @@ import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.service.HireServiceImpl;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.common.domain.PageRequestDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,8 @@ public class HireController {
 
     @GetMapping("/profile-list/{page}")
     public ResponseEntity<List<HireDTO>> hireList(@PathVariable int page) {
-        return new ResponseEntity<>(service.readHireList(page), HttpStatus.OK);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page);
+        return new ResponseEntity<>(service.getHireList(pageRequestDTO).getDtoList(), HttpStatus.OK);
     }
 
     @PutMapping("/update")
