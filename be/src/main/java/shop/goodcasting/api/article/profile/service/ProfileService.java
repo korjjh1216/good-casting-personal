@@ -14,6 +14,7 @@ public interface ProfileService {
     Long register(ProfileDTO profileDTO);
     ProfileDTO readProfile(Long profileId);
     PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO);
+    List<ProfileDTO> getImageMatchList(String resemble);
 
     default Profile dto2Entity(ProfileDTO profileDTO) {
         return Profile.builder()

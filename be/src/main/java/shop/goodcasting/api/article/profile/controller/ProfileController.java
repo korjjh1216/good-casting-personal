@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/profile")
+@RequestMapping("/profiles")
 public class ProfileController {
     private final ProfileServiceImpl service;
 

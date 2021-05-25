@@ -25,9 +25,9 @@ public class ProducerController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/myPage")
-    public ResponseEntity<Optional<Producer>> myPage(@RequestBody Producer producer){
-        return ResponseEntity.ok(service.findById(producer.getProducerId()));
+    @GetMapping("/myPage/{id}")
+    public ResponseEntity<Optional<Producer>> myPage(@PathVariable Long id){
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping("/info")

@@ -1,126 +1,81 @@
-package shop.goodcasting.api.article.profile.service;
+package shop.goodcasting.api.serch;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import shop.goodcasting.api.article.hire.domain.HireDTO;
+import shop.goodcasting.api.article.hire.repository.HireRepository;
+import shop.goodcasting.api.article.hire.service.HireService;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
-
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
+import shop.goodcasting.api.article.profile.service.ProfileService;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.file.service.FileService;
-import shop.goodcasting.api.user.actor.domain.Actor;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
+import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.actor.service.ActorService;
+import shop.goodcasting.api.user.login.repository.UserRepository;
+import shop.goodcasting.api.user.producer.repository.ProducerRepository;
+import shop.goodcasting.api.user.producer.service.ProducerService;
 
-import javax.transaction.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
-@Log4j2
-@Service
-@RequiredArgsConstructor
-public class ProfileServiceImpl implements ProfileService {
-    private final ProfileRepository profileRepo;
-    private final FileRepository fileRepo;
-    private final FileService fileService;
-    private final ActorService actorService;
+@SpringBootTest
+public class ImageSerch {
+    @Autowired
+    ProfileRepository profileRepository;
+
+    @Autowired
+    ProducerRepository producerRepository;
+
+    @Autowired
+    private ProfileService profileService;
+
+    @Autowired
+    private ActorService actorService;
+
+    @Autowired
+    private HireService hireService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    FileRepository fileRepository;
+
+    @Autowired
+    ActorRepository actorRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private HireRepository hireRepository;
+
+    @Autowired
+    private ProducerService producerService;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
-
-    @Transactional
-    @Override
-    public Long register(ProfileDTO profileDTO) {
-        ProfileDTO finalProfileDto = entity2DtoAll(profileRepo.save(dto2EntityAll(profileDTO)));
-
-        List<FileDTO> files = profileDTO.getFiles();
-
-        return saveFile(finalProfileDto, files);
-    }
-
-    @Transactional
-    @Override
-    public ProfileDTO readProfile(Long profileId) {
-        List<Object[]> profileAndFileAndActor = profileRepo.getProfileAndFileAndActorByProfileId(profileId);
-
-        Profile profile = (Profile) profileAndFileAndActor.get(0)[0];
-        Actor actor = profile.getActor();
-
-        ProfileDTO profileDTO = entity2Dto(profile);
-
-        ActorDTO actorDTO = actorService.entity2Dto(actor);
-
-        List<FileDTO> fileList = new ArrayList<>();
-
-        profileAndFileAndActor.forEach(objects -> {
-            fileList.add(fileService.entity2Dto((FileVO)objects[2]));
-        });
-
-        profileDTO.setActor(actorDTO);
-        profileDTO.setFiles(fileList);
-
-        return profileDTO;
-    }
-
-    @Override
-    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO) {
-        Page<Object[]> result = profileRepo.getProfileAndFileAndActorByFirst(
-                requestDTO.getPageable(Sort.by("modDate").descending()));
-
-        Function<Object[], ProfileDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
-                (Actor) entity[1], (FileVO) entity[2]));
-
-        return new PageResultDTO<>(result, fn);
-    }
-
-    @Transactional
-    public Long update(ProfileDTO profileDTO) {
-        Long profileId = profileDTO.getProfileId();
-
-        profileRepo.save(dto2EntityAll(profileDTO));
-
-        fileRepo.deleteByProfileId(profileId);
-
-        List<FileDTO> files = profileDTO.getFiles();
-
-        return saveFile(profileDTO, files);
-    }
-
-    @Transactional
-    public void deleteProfile(Long profileId) {
-        fileRepo.deleteByProfileId(profileId);
-
-        profileRepo.deleteById(profileId);
-    }
-
-    @Transactional
-    @Override
-    public List<ProfileDTO> getImageMatchList(String resemble){
-        List list = profileRepo.getProfileByImageResemble(resemble);
-        System.out.println("List 를 가져오는거냐?" + list);
-        return null;
-    }
+//<------------------------------------------------------------------------------------------------------------------>
 
 
-    public void extractCelebrity(String photoName, Long profileId) {
+    public void extractCelebrity(String photoName) {
 
         StringBuffer reqStr = new StringBuffer();
         String clientId = "92mep69l88";//애플리케이션 클라이언트 아이디값";
@@ -198,7 +153,7 @@ public class ProfileServiceImpl implements ProfileService {
 
                 System.out.println("===================================================================");
 
-                profileRepo.updateResembleAndConfidenceByProfileId(profileId, resemble, confidence);
+                //profileService.getImageMatchList(resemble);
 
             } else {
                 System.out.println("error !!!");
@@ -208,19 +163,31 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
-    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
-        if(files != null && files.size() > 0) {
-            files.forEach(fileDTO -> {
-                fileDTO.setProfile(profileDTO);
-                FileVO file = fileService.dto2EntityProfile(fileDTO);
-                fileRepo.save(file);
 
-                if (file.isPhotoType() && fileDTO.isFirst()) {
-                    extractCelebrity(file.getUuid() + "_" + file.getFileName(), profileDTO.getProfileId());
-                }
-            });
-            return 1L;
+/*    public Long inputPhoto(File uploadFile) {
+        String mimeType = uploadFile.getContentType();
+
+        if (!mimeType.startsWith("image") && !mimeType.startsWith("video")) {
+            log.warn("this file is not image type");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return 0L;
-    }
+
+        String orgName = uploadFile.getOriginalFilename();
+        String fileName = orgName.substring(orgName.lastIndexOf("//") + 1);
+
+        String uuid = UUID.randomUUID().toString();
+
+        String saveName = uploadPath + File.separator + uuid + "_" + fileName;
+        Path savePath = Paths.get(saveName);
+
+        log.info("register() - fileName: " + fileName);
+
+        if (file != null) {
+            extractCelebrity("s_" + file.getUuid() + "_" + file.getFileName());
+        }
+        ;
+        return 1L;
+
+    }*/
+
 }

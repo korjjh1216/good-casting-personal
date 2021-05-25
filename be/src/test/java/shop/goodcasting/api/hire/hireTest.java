@@ -101,19 +101,17 @@ public void creatHire() throws Exception {
     int k =0;
 
 
-        for (int j = 1; j < 50; j++) {
-    Document document = connectUrl("https://www.filmmakers.co.kr/performerWanted/page/" + 1);
-    Elements link = document.select("table.table>tbody>tr>td>a");
-    for (int i = 1; i < link.size(); i++) {
-        String a = link.get(i).attr("href");
-        list.add(a);
+    for (int j = 1; j < 50; j++) {
+        Document document = connectUrl("https://www.filmmakers.co.kr/performerWanted/page/" + j);
+        Elements link = document.select("table.table>tbody>tr>td>a");
+        for (int i = 1; i < link.size(); i++) {
+            String a = link.get(i).attr("href");
+            list.add(a);
+        }
     }
-      }
 
 
-
-
-    /*for (int i = 1; i < list.size(); i++) {
+    for (int i = 1; i < list.size(); i++) {
         //hire crawling
         String value = list.get(i);
         innerDoc = connectUrl("https://www.filmmakers.co.kr" + value);
@@ -142,23 +140,21 @@ public void creatHire() throws Exception {
             userVO.addRoles(Role.USER);
             userRepository.save(userVO);
 
-
             //producer 생성
             producerDTO.setName("producer" + i);
-            producerDTO.setAgency("agency"+ i);
+            producerDTO.setAgency("agency" + i);
             producerDTO.setPosition("manager");
-            producerDTO.setPhone("010"+i);
-            producerDTO.setEmail("pro@"+i+".com");
+            producerDTO.setPhone("010" + i);
+            producerDTO.setEmail("pro@" + i + ".com");
             producerList.add(producerDTO);
 
             Producer producer = producerService.dto2Entity(producerDTO);
-
             producer.changeUserVO(userVO);
-            Producer finalProducer =producerRepository.save(producer);
-            ProducerDTO producerDTO1= producerService.entity2Dto(finalProducer);
+            Producer finalProducer = producerRepository.save(producer);
+            ProducerDTO producerDTO1 = producerService.entity2Dto(finalProducer);
 
             //Hire 생성
-            HireDTO hireDTO =new HireDTO();
+            HireDTO hireDTO = new HireDTO();
             hireDTO.setTitle(hire_title.text());
             hireDTO.setProject(project.text());
             hireDTO.setCast(cast.text());
@@ -169,29 +165,28 @@ public void creatHire() throws Exception {
             hireDTO.setContents(contents.text());
             hireDTO.setProducer(producerDTO1);
             hireList.add(hireDTO);
-            System.out.println("hire 다 가져오니?"+ hireDTO);
+            System.out.println("hire 다 가져오니?" + hireDTO);
 
             Hire hire = hireService.dto2EntityAll(hireDTO);
             Hire finalHire = hireRepository.save(hire);
             hireDTO.setHireId(finalHire.getHireId());
 
-
             // 크롤링 사진
-            Document namuEnt =connectUrl("http://www.namooactors.com/");
+            Document namuEnt = connectUrl("http://www.namooactors.com/");
             Elements eles = namuEnt.select(".actor_small").get(k).select("img");
-            if(eles == null || eles.size() == 0){return;}
+            if (eles == null || eles.size() == 0) { return;}
             String imgLink = eles.attr("src");
-            URL url = new URL("http://www.namooactors.com/"+ imgLink);
-            System.out.println("완벽한 url"+ url);
+            URL url = new URL("http://www.namooactors.com/" + imgLink);
+            System.out.println("완벽한 url" + url);
             InputStream in = url.openStream();
-            FileOutputStream fos = new FileOutputStream("\\\\DESKTOP-F9UL04V\\Users\\bitcamp\\Pictures\\Goodcasting\\" +producerDTO1.getName()+".jpg");
-            FileUtil.copyStream(in,fos);
+            FileOutputStream fos = new FileOutputStream("\\\\DESKTOP-F9UL04V\\Users\\bitcamp\\Pictures\\Goodcasting\\" + producerDTO1.getName() + ".jpg");
+            FileUtil.copyStream(in, fos);
             k++;
 
             // 썸네일 생성
             String uuid = UUID.randomUUID().toString();
             FileVO fileVO = FileVO.builder()
-                    .fileName(producerDTO1.getName()+".jpg")
+                    .fileName(producerDTO1.getName() + ".jpg")
                     .hire(finalHire)
                     .uuid(uuid)
                     .first(true)
@@ -199,7 +194,7 @@ public void creatHire() throws Exception {
                     .build();
             fileRepository.save(fileVO);
 
-            String saveName = uploadPath + File.separator + producerDTO1.getName()+".jpg";
+            String saveName = uploadPath + File.separator + producerDTO1.getName() + ".jpg";
             Path savePath = Paths.get(saveName);
             System.out.println("image thumbnail extract");
             String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + producerDTO1.getName() + ".jpg";
@@ -208,12 +203,11 @@ public void creatHire() throws Exception {
 
             List<FileDTO> files = new ArrayList<>();
             files.add(fileService.entity2Dto(fileVO));
-            saveFile(hireDTO,files);
-
+            saveFile(hireDTO, files);
 
 
         }
-    }*/
+    }
 
 }
 

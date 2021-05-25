@@ -18,17 +18,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/actors")
 public class ActorController {
+
     private final ActorServiceImpl service;
+    private final ActorRepository repo;
 
     @GetMapping("/list")
     public ResponseEntity<List<Actor>> actorList(){
         return ResponseEntity.ok(service.findAll());
     }
 
-
-    @GetMapping("/myPage")
-    public ResponseEntity<Optional<Actor>> myPage(@RequestBody Actor actor){
-        return ResponseEntity.ok(service.findById(actor.getActorId()));
+    @GetMapping("/myPage/{id}")
+    public ResponseEntity<Optional<Actor>> myPage(@PathVariable Long id){
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping("/info")

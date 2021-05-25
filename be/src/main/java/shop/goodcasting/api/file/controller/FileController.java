@@ -27,7 +27,7 @@ import java.util.UUID;
 @Log4j2
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/file")
+@RequestMapping("/files")
 @RequiredArgsConstructor
 public class FileController {
     private final FileServiceImpl service;

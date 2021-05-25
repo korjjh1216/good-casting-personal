@@ -1,126 +1,32 @@
-package shop.goodcasting.api.article.profile.service;
+package shop.goodcasting.api.common.serch.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.java.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.article.profile.repository.ProfileRepository;
-
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
+import org.springframework.web.multipart.MultipartFile;
+import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
-import shop.goodcasting.api.file.repository.FileRepository;
-import shop.goodcasting.api.file.service.FileService;
-import shop.goodcasting.api.user.actor.domain.Actor;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
-import shop.goodcasting.api.user.actor.service.ActorService;
 
-import javax.transaction.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-@Log4j2
+@Log
 @Service
 @RequiredArgsConstructor
-public class ProfileServiceImpl implements ProfileService {
-    private final ProfileRepository profileRepo;
-    private final FileRepository fileRepo;
-    private final FileService fileService;
-    private final ActorService actorService;
+public class SerchServiceImpl {
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
 
-    @Transactional
-    @Override
-    public Long register(ProfileDTO profileDTO) {
-        ProfileDTO finalProfileDto = entity2DtoAll(profileRepo.save(dto2EntityAll(profileDTO)));
+    public void extractCelebrity(String photoName) {
 
-        List<FileDTO> files = profileDTO.getFiles();
-
-        return saveFile(finalProfileDto, files);
-    }
-
-    @Transactional
-    @Override
-    public ProfileDTO readProfile(Long profileId) {
-        List<Object[]> profileAndFileAndActor = profileRepo.getProfileAndFileAndActorByProfileId(profileId);
-
-        Profile profile = (Profile) profileAndFileAndActor.get(0)[0];
-        Actor actor = profile.getActor();
-
-        ProfileDTO profileDTO = entity2Dto(profile);
-
-        ActorDTO actorDTO = actorService.entity2Dto(actor);
-
-        List<FileDTO> fileList = new ArrayList<>();
-
-        profileAndFileAndActor.forEach(objects -> {
-            fileList.add(fileService.entity2Dto((FileVO)objects[2]));
-        });
-
-        profileDTO.setActor(actorDTO);
-        profileDTO.setFiles(fileList);
-
-        return profileDTO;
-    }
-
-    @Override
-    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO) {
-        Page<Object[]> result = profileRepo.getProfileAndFileAndActorByFirst(
-                requestDTO.getPageable(Sort.by("modDate").descending()));
-
-        Function<Object[], ProfileDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
-                (Actor) entity[1], (FileVO) entity[2]));
-
-        return new PageResultDTO<>(result, fn);
-    }
-
-    @Transactional
-    public Long update(ProfileDTO profileDTO) {
-        Long profileId = profileDTO.getProfileId();
-
-        profileRepo.save(dto2EntityAll(profileDTO));
-
-        fileRepo.deleteByProfileId(profileId);
-
-        List<FileDTO> files = profileDTO.getFiles();
-
-        return saveFile(profileDTO, files);
-    }
-
-    @Transactional
-    public void deleteProfile(Long profileId) {
-        fileRepo.deleteByProfileId(profileId);
-
-        profileRepo.deleteById(profileId);
-    }
-
-    @Transactional
-    @Override
-    public List<ProfileDTO> getImageMatchList(String resemble){
-        List list = profileRepo.getProfileByImageResemble(resemble);
-        System.out.println("List 를 가져오는거냐?" + list);
-        return null;
-    }
-
-
-    public void extractCelebrity(String photoName, Long profileId) {
 
         StringBuffer reqStr = new StringBuffer();
         String clientId = "92mep69l88";//애플리케이션 클라이언트 아이디값";
@@ -198,7 +104,7 @@ public class ProfileServiceImpl implements ProfileService {
 
                 System.out.println("===================================================================");
 
-                profileRepo.updateResembleAndConfidenceByProfileId(profileId, resemble, confidence);
+                //profileService.getImageMatchList(resemble);
 
             } else {
                 System.out.println("error !!!");
@@ -208,19 +114,4 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
-    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
-        if(files != null && files.size() > 0) {
-            files.forEach(fileDTO -> {
-                fileDTO.setProfile(profileDTO);
-                FileVO file = fileService.dto2EntityProfile(fileDTO);
-                fileRepo.save(file);
-
-                if (file.isPhotoType() && fileDTO.isFirst()) {
-                    extractCelebrity(file.getUuid() + "_" + file.getFileName(), profileDTO.getProfileId());
-                }
-            });
-            return 1L;
-        }
-        return 0L;
-    }
 }
