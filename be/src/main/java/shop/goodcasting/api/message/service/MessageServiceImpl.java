@@ -12,6 +12,7 @@ import shop.goodcasting.api.message.repository.MessageRepository;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log
@@ -21,15 +22,26 @@ public class MessageServiceImpl implements MessageService{
 
     private final MessageRepository messageRepo;
 
-
-    @Override
     @Transactional
-    public List<MessageDTO> findAllByReceiverId(Long receiverId){
-        return messageRepo.findAllByReceiverId(receiverId).stream().map(message -> {
-            System.out.println("enter loop");
+    @Override
+    public List<MessageDTO> findAllByReceiverId(Long receiver) {
+        return messageRepo.findAllByReceiverId(receiver).stream().map(message -> {
             return entity2DtoAll(message);
         }).collect(Collectors.toList());
+    }
 
+    @Override
+    public Optional<MessageDTO> findById(Long messageId){
+        Message message = messageRepo.findById(messageId).get();
+        MessageDTO messageDTO = entity2DtoAll(message);
+
+        messageDTO.setReadMessage(true);
+
+        Message msg = dto2EntityAll(messageDTO);
+        messageRepo.save(msg);
+
+        MessageDTO msgDto = entity2DtoAll(msg);
+        return Optional.of(msgDto);
     }
 
     @Override
@@ -54,7 +66,7 @@ public class MessageServiceImpl implements MessageService{
         messages.forEach(message -> {
             messageDTOList.add(entity2DtoAll(message));
         });
+
         return messageDTOList;
     }
-
 }

@@ -37,7 +37,7 @@ public class ActorController {
         return ResponseEntity.ok(service.moreDetail(actorDTO));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{actorId}")
     public ResponseEntity<Long> delete(@RequestBody ActorDTO actorDTO){
         return ResponseEntity.ok(service.delete(actorDTO));
     }
