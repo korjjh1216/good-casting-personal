@@ -30,8 +30,6 @@ public class Hire extends BaseEntity {
     @Column private String guarantee; //출연료
     @Column private String personnel; //모집인원
     @Column private String deadline; //공고마감일
-    @Column private Double confidence;
-    @Column private String resemble;
 
     // join column
     @ManyToOne(fetch = FetchType.LAZY)

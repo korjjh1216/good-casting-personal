@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.common.csv.ConvertToCSV;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
@@ -130,8 +129,8 @@ public class CrawlServiceImpl implements CrawlService {
 
             ActorDTO actorDTO = new ActorDTO();
             String yeardel = birthday.text().replace("년", ""); //출생년도 "년" 삭제
-            String cmdel = height.text().replace("Cm", ""); //키 "cm" 삭제
-            String kgdel = weight.text().replace("Kg", ""); //키 "cm" 삭제
+            Integer cmdel = Integer.valueOf(height.text().replace("Cm", "")); //키 "cm" 삭제
+            Integer kgdel = Integer.valueOf(weight.text().replace("Kg", "")); //키 "cm" 삭제
             boolean human = (height.text().contains("Cm") && weight.text().contains("Kg"));
 
             if (human) {

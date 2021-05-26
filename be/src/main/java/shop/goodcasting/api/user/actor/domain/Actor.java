@@ -22,10 +22,12 @@ public class Actor extends BaseEntity {
     @Column private String gender;
     @Column private String birthday;
     @Column private String phone;
-    @Column private String height;
-    @Column private String weight;
+    @Column private Integer height;
+    @Column private Integer weight;
     @Column private String agency;
     @Column private Boolean major;
+    @Column private String email;
+    @Column private Integer age;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -47,13 +49,15 @@ public class Actor extends BaseEntity {
         this.phone = phone;
     }
 
-    public void changeHeight(String height) {
+    public void changeHeight(Integer height) {
         this.height = height;
     }
 
-    public void changeWeight(String weight) {
+    public void changeWeight(Integer weight) {
         this.weight = weight;
     }
+
+    public void changeAge(Integer age){this.age= age;}
 
     public void changeAgency(String agency) {
         this.agency = agency;
@@ -66,4 +70,6 @@ public class Actor extends BaseEntity {
     public void changeUserVO(UserVO userVO) {
         this.user = userVO;
     }
+
+
 }

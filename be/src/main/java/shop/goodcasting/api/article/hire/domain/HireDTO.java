@@ -31,8 +31,6 @@ public class HireDTO {
     private String personnel; //모집인원
     private String deadline; //공고마감일
     private String contents; //내용
-    private Double confidence;
-    private String resemble;
     private Timestamp regDate;
     private Timestamp modDate;
 

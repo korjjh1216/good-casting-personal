@@ -27,6 +27,8 @@ public interface ActorService {
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())
+                .email(actorDTO.getEmail())
+                .age(actorDTO.getAge())
                 .build();
     }
     default Actor dto2EntityAll(ActorDTO actorDTO){
@@ -40,6 +42,8 @@ public interface ActorService {
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())
+                .email(actorDTO.getEmail())
+                .age(actorDTO.getAge())
                 .user(UserVO.builder()
                         .userId(actorDTO.getUser().getUserId())
                         .build())
@@ -57,6 +61,8 @@ public interface ActorService {
                 .major(actor.getMajor())
                 .gender(actor.getGender())
                 .agency(actor.getAgency())
+                .email(actor.getEmail())
+                .age(actor.getAge())
                 .build();
     }
 
@@ -71,6 +77,8 @@ public interface ActorService {
                 .major(actor.getMajor())
                 .gender(actor.getGender())
                 .agency(actor.getAgency())
+                .email(actor.getEmail())
+                .age(actor.getAge())
                 .user(UserDTO.builder()
                         .userId(actor.getUser().getUserId())
                         .build())

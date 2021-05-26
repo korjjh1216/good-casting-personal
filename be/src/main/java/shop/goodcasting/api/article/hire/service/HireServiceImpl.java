@@ -185,7 +185,6 @@ public class HireServiceImpl implements HireService {
 
                 System.out.println("===================================================================");
 
-                hireRepository.updateResembleAndConfidenceByHireId(hireId, resemble, confidence);
 
             } else {
                 System.out.println("error !!!");

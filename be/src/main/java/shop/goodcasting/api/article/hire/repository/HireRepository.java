@@ -25,9 +25,9 @@ public interface HireRepository extends JpaRepository<Hire, Long> {
     @Query("select h, f from Hire h left join FileVO f on f.hire = h where h.hireId = :hireId")
     List<Object[]> getProfileAndFileByProfileId(@Param("hireId") Long hireId);
 
-    @Modifying
+/*    @Modifying
     @Query("update Hire h set h.resemble = :resemble, h.confidence = :confidence where h.hireId = :hireId")
-    void updateResembleAndConfidenceByHireId(Long hireId, String resemble, double confidence);
+    void updateResembleAndConfidenceByHireId(Long hireId, String resemble, double confidence);*/
 
 }
 

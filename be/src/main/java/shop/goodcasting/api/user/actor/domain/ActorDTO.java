@@ -18,10 +18,12 @@ public class ActorDTO {
     private String gender;
     private String birthday;
     private String phone;
-    private String height;
-    private String weight;
+    private Integer height;
+    private Integer weight;
     private String agency;
     private boolean major;
+    private String email;
+    private Integer age;
     private Timestamp regDate;
     private Timestamp modDate;
 
