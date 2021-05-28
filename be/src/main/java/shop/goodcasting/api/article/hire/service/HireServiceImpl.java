@@ -92,7 +92,6 @@ public class HireServiceImpl implements HireService {
         Long hireId = hireDTO.getHireId();
 
         hireRepository.save(dto2EntityAll(hireDTO));
-
         fileRepository.deleteByHireId(hireId);
 
         List<FileDTO> files = hireDTO.getFiles();
@@ -103,7 +102,6 @@ public class HireServiceImpl implements HireService {
     @Transactional
     public void deleteHire(Long hireId) {
         fileRepository.deleteByHireId(hireId);
-
         hireRepository.deleteById(hireId);
     }
 
@@ -165,26 +163,15 @@ public class HireServiceImpl implements HireService {
                     response.append(inputLine);
                 }
                 br.close();
-                System.out.println("response: " + response.toString());
 
                 JSONObject jsonObject = new JSONObject(response.toString());
                 JSONArray facesArr = jsonObject.getJSONArray("faces");
-                System.out.println("---------------------facesArr-----------------" + facesArr);
-
                 JSONObject elem = facesArr.getJSONObject(0);
-                System.out.println("---------------------elem-----------------" + elem);
-
                 JSONObject celebObject = elem.getJSONObject("celebrity");
-                System.out.println("---------------------celebObject-----------------" + celebObject);
-
                 String resemble = celebObject.getString("value");
-                System.out.println("---------------------resemble-----------------" + resemble);
-
                 Double confidence = celebObject.getDouble("confidence");
-                System.out.println("---------------------confidence-----------------" + confidence);
 
-                System.out.println("===================================================================");
-
+                // hireRepository.updateResembleAndConfidenceByHireId(hireId, resemble, confidence);
 
             } else {
                 System.out.println("error !!!");

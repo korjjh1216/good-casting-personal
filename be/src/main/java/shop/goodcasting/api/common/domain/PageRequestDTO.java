@@ -3,20 +3,30 @@ package shop.goodcasting.api.common.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+@ToString
 @Builder
 @AllArgsConstructor
 @Data
 public class PageRequestDTO {
-    private int page;
-    private int size;
+    private Integer page;
+    private Integer size;
+    private String type;
+    private String rkeyword;
+    private Integer hfrom;
+    private Integer hto;
+    private Integer afrom;
+    private Integer ato;
+    private String gkeyword;
+    private Integer wfrom;
+    private Integer wto;
 
-    public PageRequestDTO(int page) {
-        this.page = page;
+    public PageRequestDTO() {
+        this.page = 1;
         this.size = 10;
     }
 

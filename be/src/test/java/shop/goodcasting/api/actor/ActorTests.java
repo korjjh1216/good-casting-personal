@@ -62,8 +62,8 @@ public class ActorTests {
 
             ActorDTO actorDTO = new ActorDTO();
             String yeardel= birthday.text().replace("년",""); //출생년도 "년" 삭제
-            String cmdel= height.text().replace("Cm",""); //키 "cm" 삭제
-            String kgdel= weight.text().replace("Kg",""); //키 "cm" 삭제
+            Integer cmdel= Integer.valueOf(height.text().replace("Cm","")); //키 "cm" 삭제
+            Integer kgdel= Integer.valueOf(weight.text().replace("Kg","")); //키 "cm" 삭제
             boolean human = (height.text().contains("Cm") &&weight.text().contains("Kg"));
 
             if(human){

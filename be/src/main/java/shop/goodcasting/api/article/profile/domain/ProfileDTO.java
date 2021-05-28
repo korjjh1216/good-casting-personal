@@ -32,6 +32,7 @@ public class ProfileDTO {
     private String actorName;
     private String fileUuid;
     private String fileName;
+    private Integer actorAge;
 
     private ActorDTO actor;
     private List<FileDTO> files;

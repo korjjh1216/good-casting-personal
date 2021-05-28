@@ -1,16 +1,7 @@
 import React from 'react';
-import { Link } from "gatsby";
-import { Select } from '../../components/Core';
+import { Link } from 'gatsby';
 import imgH from '../../assets/image/l1/png/hero-image.png';
 import imgP from '../../assets/image/patterns/hero-pattern.png';
-
-const defaultCountries = [
-    { value: 'sp', label: 'Singapore' },
-    { value: 'bd', label: 'Bangladesh' },
-    { value: 'usa', label: 'United States of America' },
-    { value: 'uae', label: 'United Arab Emirates' },
-    { value: 'pk', label: 'Pakistan' },
-];
 
 const Hero = () => {
     return (
@@ -28,15 +19,16 @@ const Hero = () => {
                             data-aos-delay="500"
                         >
                             <h1 className="font-size-11 mb-12 pr-md-30 pr-lg-0">
-                                텍스트가 아닌 이미지로 <br/> 원하는 캐릭터의 배우를 <br/>
+                                텍스트가 아닌 이미지로 <br /> 원하는 캐릭터의
+                                배우를 <br />
                                 찾아드립니다
                             </h1>
                             <div className="button-block">
-                            <Link to="#">
-                                <button className="btn btn-primary line-height-reset h-500 btn-submit w-50 text-uppercase">
-                                    프로필 등록하기
-                                </button>
-                            </Link>
+                                <Link to="/actor-mypage">
+                                    <button className="btn btn-primary line-height-reset h-500 btn-submit w-50 text-uppercase">
+                                        프로필 등록하기
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                         <div

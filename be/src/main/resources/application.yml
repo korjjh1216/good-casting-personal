@@ -30,7 +30,14 @@ spring:
           auth: true
           starttls:
             enable: true
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 578006738536-2ir4dlnon7607eqk0epujuvtt6rliivr.apps.googleusercontent.com
+            client-secret: CPhmeLWJZf6Pucq7ntuDbc9n
+            scope: email
 security:
   jwt:
     secret: secret-value
@@ -39,3 +46,7 @@ shop:
   goodcast:
     upload:
       path: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting
+
+UserController:
+  signup: Create user and returns ins JWT token
+  signin: Authenticaties user and returns ins JWT token

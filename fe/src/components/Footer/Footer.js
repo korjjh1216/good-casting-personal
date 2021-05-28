@@ -9,66 +9,10 @@ const Footer = () => {
   return (
     <>
       <footer className="footer bg-ebony-clay dark-mode-texts">
-        <div className="container">
-          {/* <!-- Cta section --> */}
-          <div className="pt-11 pt-lg-20 pb-13 pb-lg-20 border-bottom border-width-1 border-default-color-2">
-            <div className="row justify-content-center ">
-              <div
-                className="col-xl-7 col-lg-12"
-                data-aos="fade-right"
-                data-aos-duration="1000"
-              >
-                {/* <!-- cta-content start --> */}
-                <div className="pb-xl-0 pb-9 text-xl-left text-center">
-                  <h2 className="text-white font-size-8 mb-4">
-                    Most comprehensive job portal
-                  </h2>
-                  <p className="text-hit-gray font-size-5 mb-0">
-                    We must explain to you how all this mistaken idea of
-                    denouncing
-                  </p>
-                </div>
-                {/* <!-- cta-content end --> */}
-              </div>
-              <div
-                className="col-xl-5 col-lg-12"
-                data-aos="fade-left"
-                data-aos-duration="1000"
-              >
-                {/* <!-- cta-btns start --> */}
-                <div className="btns d-flex justify-content-xl-end justify-content-center align-items-xl-center flex-wrap h-100  mx-n4">
-                  <a
-                    className="btn btn-outline-gallery btn-xl mx-4 mt-6 text-uppercase"
-                    href="/#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      gContext.toggleSignInModal();
-                    }}
-                  >
-                    Log in
-                  </a>
-                  <a
-                    className="btn btn-green btn-h-60 btn-xl mx-4 mt-6 text-uppercase"
-                    href="/#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      gContext.toggleSignUpModal();
-                    }}
-                  >
-                    Register
-                  </a>
-                </div>
-                {/* <!-- cta-btns end --> */}
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="container  pt-12 pt-lg-19 pb-10 pb-lg-19">
           <div className="row">
             <div className="col-lg-4 col-sm-6 mb-lg-0 mb-9">
-              {/* <!-- footer logo start --> */}
               <Logo white className="footer-logo mb-14" />
-              {/* <!-- footer logo End --> */}
               {/* <!-- media start --> */}
               <div className="media mb-11">
                 <img src={imgM} className="align-self-center mr-3" alt="" />

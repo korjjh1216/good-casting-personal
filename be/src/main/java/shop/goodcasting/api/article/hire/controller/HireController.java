@@ -22,7 +22,6 @@ public class HireController {
 
     @PostMapping("/register")
     public ResponseEntity<Long> register(@RequestBody HireDTO hireDTO) {
-        System.out.println("Hire DTO: " + hireDTO);
         service.register(hireDTO);
         return ResponseEntity.ok(1L);
     }
@@ -32,25 +31,20 @@ public class HireController {
         return ResponseEntity.ok(service.readHire(hireId));
     }
 
-    @GetMapping("/profile-list/{page}")
-    public ResponseEntity<List<HireDTO>> hireList(@PathVariable int page) {
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page);
-        return new ResponseEntity<>(service.getHireList(pageRequestDTO).getDtoList(), HttpStatus.OK);
+    @GetMapping("/profile-list")
+    public ResponseEntity<List<HireDTO>> hireList(PageRequestDTO pageRequest) {
+        return new ResponseEntity<>(service.getHireList(pageRequest).getDtoList(), HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Long> update(@RequestBody HireDTO hireDTO) {
         service.update(hireDTO);
-
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
 
     @DeleteMapping("/{hireId}")
     public ResponseEntity<Long> delete(@PathVariable Long hireId) {
-
         service.deleteHire(hireId);
-
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
-
 }

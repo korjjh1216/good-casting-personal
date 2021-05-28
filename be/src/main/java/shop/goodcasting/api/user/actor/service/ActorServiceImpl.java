@@ -37,8 +37,11 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
-    public Optional<Actor> findById(Long actorId) {
-        return actorRepository.findById(actorId);
+    public ActorDTO findById(Long actorId) {
+
+        Optional<Actor> actor = actorRepository.findById(actorId);
+
+        return actor.isPresent()? entity2DtoAll(actor.get()): null;
     }
 
     @Transactional
@@ -70,6 +73,7 @@ public class ActorServiceImpl implements ActorService {
 
             profileRepository.delete(profile);
         }
+        actorRepository.delete(actor);
         userRepository.accountUpdate(actor.getUser().getUserId(), false);
         actorRepository.delete(actor);
 

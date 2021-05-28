@@ -1,4 +1,3 @@
-
 package shop.goodcasting.api.article.profile.repository;
 
 import org.springframework.data.domain.Page;
@@ -6,15 +5,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.file.domain.FileVO;
 
 import java.util.List;
 
-public interface ProfileRepository extends JpaRepository<Profile, Long> {
+@Repository
+public interface ProfileRepository extends JpaRepository<Profile, Long>
+        , SearchProfileRepository {
 
     @Query("select p, p.actor, f from Profile p left join FileVO f on f.profile = p where p.profileId = :profileId")
     List<Object[]> getProfileAndFileAndActorByProfileId(@Param("profileId") Long profileId);
@@ -32,10 +32,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Query("select p, f from Profile p left join FileVO f on f.profile = p where p.profileId = :profileId")
     List<Object[]> getProfileAndFileByProfileId(@Param("profileId") Long profileId);
 
-    @Query("select p from Profile p where p.resemble= :resemble")
-    List<Profile> getProfileByImageResemble(@Param("resemble") String resemble);
-
     @Modifying
     @Query("update Profile p set p.resemble = :resemble, p.confidence = :confidence where p.profileId = :profileId")
-    void updateResembleAndConfidenceByProfileId(Long profileId, String resemble, double confidence);
+    void updateResembleAndConfidenceByProfileId(Long profileId, String resemble, Double confidence);
 }

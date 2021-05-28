@@ -4,17 +4,19 @@ import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.common.domain.PageResultDTO;
+import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ProfileService {
     Long register(ProfileDTO profileDTO);
     ProfileDTO readProfile(Long profileId);
+
     PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO);
-    List<ProfileDTO> getImageMatchList(String resemble);
 
     default Profile dto2Entity(ProfileDTO profileDTO) {
         return Profile.builder()
@@ -69,7 +71,8 @@ public interface ProfileService {
                         .build())
                 .build();
     }
-    default ProfileDTO entity2DtoFiles(Profile profile,Actor actor, FileVO file) {
+
+    default ProfileDTO entity2DtoFiles(Profile profile, FileVO file, Actor actor) {
         return ProfileDTO.builder()
                 .profileId(profile.getProfileId())
                 .career(profile.getCareer())
@@ -82,6 +85,7 @@ public interface ProfileService {
                 .fileName(file.getFileName())
                 .fileUuid(file.getUuid())
                 .actorName(actor.getName())
+                .actorAge(actor.getAge())
                 .build();
     }
 }

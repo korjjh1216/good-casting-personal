@@ -18,16 +18,11 @@ import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
 import shop.goodcasting.api.article.hire.service.HireService;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 import shop.goodcasting.api.article.profile.service.ProfileService;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.file.service.FileService;
-import shop.goodcasting.api.user.actor.domain.Actor;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.actor.service.ActorService;
 import shop.goodcasting.api.user.login.domain.Role;
@@ -51,8 +46,6 @@ import java.util.UUID;
 
 @SpringBootTest
 public class hireTest {
-    @Autowired
-    ProfileRepository profileRepository;
 
     @Autowired
     ProducerRepository producerRepository;
@@ -289,7 +282,7 @@ public void creatHire() throws Exception {
 
                 System.out.println("===================================================================");
 
-                hireRepository.updateResembleAndConfidenceByHireId(hireId, resemble, confidence);
+                //hireRepository.updateResembleAndConfidenceByHireId(hireId, resemble, confidence);
 
             } else {
                 System.out.println("error !!!");

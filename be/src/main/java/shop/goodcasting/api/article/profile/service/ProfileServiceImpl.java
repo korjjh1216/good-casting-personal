@@ -1,19 +1,21 @@
 package shop.goodcasting.api.article.profile.service;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 
+import shop.goodcasting.api.article.profile.repository.SearchProfileRepository;
+import shop.goodcasting.api.article.profile.repository.SearchProfileRepositoryImpl;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
@@ -32,7 +34,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -42,6 +43,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final FileRepository fileRepo;
     private final FileService fileService;
     private final ActorService actorService;
+    private final SearchProfileRepositoryImpl searchProfileRepo;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
@@ -81,12 +83,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO) {
-        Page<Object[]> result = profileRepo.getProfileAndFileAndActorByFirst(
-                requestDTO.getPageable(Sort.by("modDate").descending()));
+    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO pageRequest) {
+        Page<Object[]> result = searchProfileRepo.searchPage(pageRequest,
+                pageRequest.getPageable(Sort.by("confidence").descending()));
 
         Function<Object[], ProfileDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
-                (Actor) entity[1], (FileVO) entity[2]));
+                (FileVO) entity[1], (Actor) entity[2]));
 
         return new PageResultDTO<>(result, fn);
     }
@@ -96,7 +98,6 @@ public class ProfileServiceImpl implements ProfileService {
         Long profileId = profileDTO.getProfileId();
 
         profileRepo.save(dto2EntityAll(profileDTO));
-
         fileRepo.deleteByProfileId(profileId);
 
         List<FileDTO> files = profileDTO.getFiles();
@@ -107,18 +108,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void deleteProfile(Long profileId) {
         fileRepo.deleteByProfileId(profileId);
-
         profileRepo.deleteById(profileId);
     }
-
-    @Transactional
-    @Override
-    public List<ProfileDTO> getImageMatchList(String resemble){
-        List list = profileRepo.getProfileByImageResemble(resemble);
-        System.out.println("List 를 가져오는거냐?" + list);
-        return null;
-    }
-
 
     public void extractCelebrity(String photoName, Long profileId) {
 
@@ -129,7 +120,6 @@ public class ProfileServiceImpl implements ProfileService {
         try {
             String paramName = "image"; // 파라미터명은 image로 지정
             String imgFile = uploadPath + "\\" + photoName;
-            System.out.println("##################"+ imgFile +"################################3");
             File uploadFile = new File(imgFile);
             String apiURL = "https://naveropenapi.apigw.ntruss.com/vision/v1/celebrity"; // 유명인 얼굴 인식
             URL url = new URL(apiURL);
@@ -137,6 +127,7 @@ public class ProfileServiceImpl implements ProfileService {
             con.setUseCaches(false);
             con.setDoOutput(true);
             con.setDoInput(true);
+
             // multipart request
             String boundary = "---" + System.currentTimeMillis() + "---";
             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -145,6 +136,7 @@ public class ProfileServiceImpl implements ProfileService {
             OutputStream outputStream = con.getOutputStream();
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
             String LINE_FEED = "\r\n";
+
             // file 추가
             String fileName = uploadFile.getName();
             writer.append("--" + boundary).append(LINE_FEED);
@@ -182,24 +174,11 @@ public class ProfileServiceImpl implements ProfileService {
 
                 JSONObject jsonObject = new JSONObject(response.toString());
                 JSONArray facesArr = jsonObject.getJSONArray("faces");
-                System.out.println("---------------------facesArr-----------------" + facesArr);
-
                 JSONObject elem = facesArr.getJSONObject(0);
-                System.out.println("---------------------elem-----------------" + elem);
-
                 JSONObject celebObject = elem.getJSONObject("celebrity");
-                System.out.println("---------------------celebObject-----------------" + celebObject);
-
                 String resemble = celebObject.getString("value");
-                System.out.println("---------------------resemble-----------------" + resemble);
-
                 Double confidence = celebObject.getDouble("confidence");
-                System.out.println("---------------------confidence-----------------" + confidence);
-
-                System.out.println("===================================================================");
-
                 profileRepo.updateResembleAndConfidenceByProfileId(profileId, resemble, confidence);
-
             } else {
                 System.out.println("error !!!");
             }

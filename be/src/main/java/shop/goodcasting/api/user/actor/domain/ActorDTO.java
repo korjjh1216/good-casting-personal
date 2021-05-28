@@ -7,6 +7,7 @@ import shop.goodcasting.api.user.login.domain.UserVO;
 
 import java.sql.Timestamp;
 
+@ToString
 @Data
 @Builder
 @Component

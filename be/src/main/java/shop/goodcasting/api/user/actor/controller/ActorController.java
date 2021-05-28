@@ -13,7 +13,7 @@ import shop.goodcasting.api.user.actor.service.ActorServiceImpl;
 import java.util.List;
 import java.util.Optional;
 
-@Log
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/actors")
@@ -27,9 +27,9 @@ public class ActorController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/myPage/{id}")
-    public ResponseEntity<Optional<Actor>> myPage(@PathVariable Long id){
-        return ResponseEntity.ok(service.findById(id));
+    @GetMapping("/myPage/{actorId}")
+    public ResponseEntity<ActorDTO> myPage(@PathVariable Long actorId){
+        return ResponseEntity.ok(service.findById(actorId));
     }
 
     @PostMapping("/info")
