@@ -83,8 +83,8 @@ public class ActorServiceImpl implements ActorService {
     @Override
     @Transactional
     public ActorDTO moreDetail(ActorDTO actorDTO) {
-        String passwordUp =  passwordEncoder.encode(actorDTO.getUser().getPassword());
-        userRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
+//        String passwordUp =  passwordEncoder.encode(actorDTO.getUser().getPassword());
+//        userRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
 
         Actor actor = dto2EntityAll(actorDTO);
         actorRepository.save(actor);

@@ -27,7 +27,6 @@ public class ProducerServiceImpl implements ProducerService {
     private final UserRepository userRepository;
     private final ProducerRepository producerRepository;
     private final FileRepository fileRepository;
-    private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final HireRepository hireRepository;
 
@@ -37,8 +36,10 @@ public class ProducerServiceImpl implements ProducerService {
     }
 
     @Override
-    public Optional<Producer> findById(Long producerId) {
-        return producerRepository.findById(producerId);
+    public ProducerDTO findById(Long producerId) {
+        Optional<Producer> producer = producerRepository.findById(producerId);
+
+        return producer.isPresent()? entity2DtoAll(producer.get()): null;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ProducerServiceImpl implements ProducerService {
 
             hireRepository.delete(hire);
         }
-        userRepository.accountUpdate(producer.getUserVO().getUserId(), false);
+        userRepository.accountUpdate(producer.getUser().getUserId(), false);
         producerRepository.delete(producer);
 
         return producerRepository.findById(producer.getProducerId()).orElse(null) == null ? 1L : 0L;
@@ -79,11 +80,11 @@ public class ProducerServiceImpl implements ProducerService {
     @Override
     @Transactional
     public ProducerDTO moreDetail(ProducerDTO producerDTO) {
-        String passwordUp =  passwordEncoder.encode(producerDTO.getUser().getPassword());
-        System.out.println("있니?" + producerDTO.getUser().getUserId());
-        userRepository.passwordUpdate(producerDTO.getUser().getUserId(), passwordUp);
-
+//        String passwordUp =  passwordEncoder.encode(producerDTO.getUser().getPassword());
+//        userRepository.passwordUpdate(producerDTO.getUser().getUserId(), passwordUp);
+        System.out.println("producer DTO +++++++++++++" + producerDTO);
         Producer producer = dto2EntityAll(producerDTO);
+        System.out.println("producer DTO +" + producer);
         producerRepository.save(producer);
         return null;
     }

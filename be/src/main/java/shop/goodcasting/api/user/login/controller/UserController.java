@@ -34,7 +34,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code=400, message = "something wrong"),
             @ApiResponse(code=422, message = "유효하지 않은 아이디 / 비밀번호")})
-    public ResponseEntity<UserDTO> signin(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<List<Object>> signin(@RequestBody UserDTO userDTO) {
         System.out.println(userDTO.getUserId());
         return ResponseEntity.ok(service.signin(userDTO));
     }

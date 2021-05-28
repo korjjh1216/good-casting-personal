@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="producers")
-public class Producer {
+public class Producer extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "producer_id") private Long producerId;
@@ -25,9 +25,9 @@ public class Producer {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserVO userVO;
+    private UserVO user;
 
     public void changeUserVO(UserVO userVO) {
-        this.userVO = userVO;
+        this.user = userVO;
     }
 }

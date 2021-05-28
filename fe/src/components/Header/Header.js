@@ -62,8 +62,8 @@ const Header = () => {
     useEffect(() => {
         if (localStorage.getItem('USER') !== null) {
             dispatch(isUserLoggendIn(user.loggedIn))
-            JSON.stringify(userInfo.position)
-            console.log(userInfo.position)
+            JSON.stringify(userInfo[0].position)
+            console.log(userInfo[0].position)
         } else {
             console.log('토큰없음')
         }
@@ -114,7 +114,7 @@ const Header = () => {
                                                   </React.Fragment>
                                               )
                                           })
-                                        : user.loggedIn && userInfo.position
+                                        : user.loggedIn && userInfo[0].position
                                         ? actorMenuItems.map(({ label, isExternal = false, name, items, ...rest }, index) => {
                                               return (
                                                   <React.Fragment key={name + index}>
@@ -213,10 +213,7 @@ const Header = () => {
                                     className={`btn btn-${gContext.header.variant} text-uppercase font-size-3`}
                                     href="/"
                                     onClick={() => {
-                                        alert('정말 로그아웃 하시겠습니까?')
-                                        localStorage.removeItem('USER')
-                                        // 홈으로 이동이 안됨
-                                        // navigate('/');
+                                        window.confirm('정말 로그아웃 하시겠습니까?') ? localStorage.clear() : window.location.reload()
                                     }}
                                 >
                                     LogOut

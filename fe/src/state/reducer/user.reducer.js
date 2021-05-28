@@ -11,10 +11,10 @@ export const signin = createAsyncThunk('SIGN_IN', async (arg) => {
     console.log('reducer signin() arg: ' + JSON.stringify(arg))
     const response = await userService.signin(arg)
 
-    if (response.data.token === 'Wrong password') {
+    if (response.data[0].token === 'Wrong password') {
         alert('비밀번호를 다시 입력해주세요')
     } else {
-        localStorage.setItem('token', 'Bearer ' + response.data.token)
+        localStorage.setItem('token', 'Bearer ' + response.data[0].token)
         localStorage.setItem('USER', JSON.stringify(response.data))
         return response.data
     }

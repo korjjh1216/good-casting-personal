@@ -11,4 +11,7 @@ import shop.goodcasting.api.user.producer.domain.Producer;
 public interface ProducerRepository extends JpaRepository<Producer, Long> {
     @Query("select h.hireId from Producer p left join Hire h on p.producerId = h.producer.producerId where p.producerId = :producer_id")
     Long getHireId (@Param("producer_id") Long producerId);
+
+    @Query("select p.producerId from Producer p where p.user.userId = :user_id")
+    Long getProducerIdFromUserId(@Param("user_id") Long userId);
 }

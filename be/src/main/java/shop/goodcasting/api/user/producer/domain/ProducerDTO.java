@@ -18,6 +18,8 @@ public class ProducerDTO {
     private String phone;
     private String position;
     private String name;
+    private Timestamp regDate;
+    private Timestamp modDate;
 
     private UserDTO user;
 }

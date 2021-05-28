@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import shop.goodcasting.api.security.domain.SecurityProvider;
 import shop.goodcasting.api.security.exception.SecurityRuntimeException;
 import shop.goodcasting.api.user.actor.domain.Actor;
+import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.actor.service.ActorService;
 import shop.goodcasting.api.user.login.domain.Role;
@@ -16,6 +17,7 @@ import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
 import shop.goodcasting.api.user.login.repository.UserRepository;
 import shop.goodcasting.api.user.producer.domain.Producer;
+import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ public class UserServiceImpl implements UserService {
 
                 userRepo.save(userVO);
                 producer.changeUserVO(userVO);
+                log.info("producer.getUserVO() : " + producer.getUser());
                 producerRepo.save(producer);
             }
             return provider.createToken(userDTO.getUsername(), userDTO.getRoles());
@@ -69,28 +72,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO signin(UserDTO userDTO) {
+    public List<Object> signin(UserDTO userDTO) {
 
+        List<Object> infoList = new ArrayList<>();
         if(userRepo.checkAccount(userDTO.getUsername())){
             try{
                 UserVO userVO = dto2Entity(userDTO);
-
-                log.info("userVo---------" + userVO.getUserId());
-                log.info("userVo---------" + userVO.getUsername());
 
                 String token = (passwordEncoder.matches(userVO.getPassword(), userRepo.findByUsername(userVO.getUsername()).get().getPassword()))
                         ?provider.createToken(userVO.getUsername(), userRepo.findByUsername(userVO.getUsername()).get().getRoles())
                         : "Wrong password";
 
-                userDTO.setToken(token);
+                userDTO.setUserId(userRepo.findByUsername(userVO.getUsername()).get().getUserId());
+                userDTO.setAccount(userRepo.findByUsername(userVO.getUsername()).get().isAccount());
+                userDTO.setPosition(userRepo.findByUsername(userVO.getUsername()).get().isPosition());
 
-                log.info("userDto-----------" + userDTO);
-                return userDTO;
+                userDTO.setToken(token);
+                infoList.add(userDTO);
+                log.info("userDto : " + userDTO);
+                if(userDTO.isPosition()){
+                    ActorDTO actorDTO = new ActorDTO();
+                    Long actorId = actorRepo.getActorIdFromUserId(userDTO.getUserId());
+                    log.info("actorId : " + actorId);
+
+                    actorDTO.setActorId(actorId);
+                    infoList.add(actorDTO);
+                } else {
+                    ProducerDTO producerDTO = new ProducerDTO();
+                    Long producerId =producerRepo.getProducerIdFromUserId(userDTO.getUserId());
+                    log.info("ProducerId : " + producerId);
+                    producerDTO.setProducerId(producerId);
+                    infoList.add(producerDTO);
+                }
+
+                log.info("infoList :" + infoList);
+                return infoList;
             }catch(Exception e){
                 throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
             }
         } else{
-            throw new SecurityRuntimeException("회원탈퇴한 회원입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new SecurityRuntimeException("탈퇴한 회원입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -98,7 +119,6 @@ public class UserServiceImpl implements UserService {
     public List<UserVO> findAll() {
         return userRepo.findAll();
     }
-
 
     @Override
     public UserDTO findById(Long id) {

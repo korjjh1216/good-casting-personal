@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
     String signup(UserDTO userDTO);
-    UserDTO signin(UserDTO userDTO);
+    List<Object> signin(UserDTO userDTO);
     List<UserVO> findAll();
     UserDTO findById(Long id);
     Optional<UserVO> findByUsername(String username);

@@ -12,7 +12,7 @@ import shop.goodcasting.api.user.producer.service.ProducerServiceImpl;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin("*")
 @Log
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +25,9 @@ public class ProducerController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/myPage/{id}")
-    public ResponseEntity<Optional<Producer>> myPage(@PathVariable Long id){
-        return ResponseEntity.ok(service.findById(id));
+    @GetMapping("/myPage/{producerId}")
+    public ResponseEntity<ProducerDTO> myPage(@PathVariable Long producerId){
+        return ResponseEntity.ok(service.findById(producerId));
     }
 
     @PostMapping("/info")
