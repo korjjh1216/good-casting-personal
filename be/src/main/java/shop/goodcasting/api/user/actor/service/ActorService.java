@@ -1,20 +1,16 @@
 package shop.goodcasting.api.user.actor.service;
 
-import lombok.Builder;
-import lombok.extern.java.Log;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ActorService {
     List<Actor> findAll();
     ActorDTO findById(Long actorId);
     Long delete(ActorDTO actorDTO);
-
     ActorDTO moreDetail(ActorDTO actorDTO);
 
     default Actor dto2Entity(ActorDTO actorDTO){

@@ -6,11 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
-import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 import shop.goodcasting.api.user.producer.service.ProducerServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin("*")
 @Log

@@ -237,7 +237,6 @@ public class ProfileTest {
 
                 //profile 생성
                 ProfileDTO profileDTO = new ProfileDTO();
-                profileDTO.setCareer(career.text());
                 profileDTO.setContents(profileContents.text());
                 profileDTO.setActor(actorDTO1);
 

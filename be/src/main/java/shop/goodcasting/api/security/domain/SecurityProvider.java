@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class SecurityProvider implements AuthenticationProvider {
@@ -86,10 +88,12 @@ public class SecurityProvider implements AuthenticationProvider {
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+
+        log.info("bearerToken : " +bearerToken);
+        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
         } else {
-            return "----------No JWT token found in request headers-----------";
+            return "No JWT token found in request headers";
         }
     }
 
@@ -97,11 +101,11 @@ public class SecurityProvider implements AuthenticationProvider {
         System.out.println("validateToken : 진입");
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            System.out.println(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token));
-            System.out.println("true");
+            log.info(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token));
+            log.info("validateToken : true");
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            System.out.println("false");
+            log.info("validateToken : false");
             throw new Exception();
         }
     }

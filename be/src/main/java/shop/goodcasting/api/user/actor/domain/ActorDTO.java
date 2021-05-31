@@ -3,7 +3,6 @@ package shop.goodcasting.api.user.actor.domain;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.user.login.domain.UserDTO;
-import shop.goodcasting.api.user.login.domain.UserVO;
 
 import java.sql.Timestamp;
 

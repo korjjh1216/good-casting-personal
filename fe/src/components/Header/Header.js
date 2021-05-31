@@ -14,7 +14,7 @@ import { actorMenuItems, menuItems, producerMenuItems } from './menuItems'
 
 import imgP from '../../assets/image/header-profile.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { isUserLoggendIn, userSelctor } from '../../state/reducer/user.reducer'
+import { isUserLoggendIn, userSelector } from '../../state/reducer/user.reducer'
 
 const SiteHeader = styled.header`
     .dropdown-toggle::after {
@@ -56,16 +56,16 @@ const Header = () => {
 
     const gContext = useContext(GlobalContext)
     const size = useWindowSize()
-    const user = useSelector(userSelctor)
+    const user = useSelector(userSelector)
     const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null
 
     useEffect(() => {
         if (localStorage.getItem('USER') !== null) {
             dispatch(isUserLoggendIn(user.loggedIn))
             JSON.stringify(userInfo[0].position)
-            console.log(userInfo[0].position)
+            console.log('로그인 되어 있음 : ' + userInfo[0].position)
         } else {
-            console.log('토큰없음')
+            console.log('로그인 되어 있지 않음')
         }
     }, [])
 

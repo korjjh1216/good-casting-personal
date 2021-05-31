@@ -151,10 +151,7 @@ public void creatHire() throws Exception {
             hireDTO.setTitle(hire_title.text());
             hireDTO.setProject(project.text());
             hireDTO.setCast(cast.text());
-            hireDTO.setFilming(filming.text());
-            hireDTO.setGuarantee(guarantee.text());
             hireDTO.setPersonnel(personnel.text());
-            hireDTO.setDeadline(deadline.text());
             hireDTO.setContents(contents.text());
             hireDTO.setProducer(producerDTO1);
             hireList.add(hireDTO);

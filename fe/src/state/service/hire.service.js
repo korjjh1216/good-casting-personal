@@ -1,9 +1,9 @@
-const { default: axios } = require('axios');
+const { default: axios } = require('axios')
 
-const SERVER = 'http://localhost:8080';
+const SERVER = 'http://localhost:8080'
 
 const hireList = (pageRequest) => {
-    console.log('service hireList pageRequest: ' + JSON.stringify(pageRequest));
+    console.log('service hireList pageRequest: ' + JSON.stringify(pageRequest))
     return axios({
         url: `${SERVER}/hires/list`,
         method: 'post',
@@ -13,7 +13,7 @@ const hireList = (pageRequest) => {
             sort: pageRequest.sort,
         },
         headers: { Authorization: 'JWT fefege..' },
-    });
-};
+    })
+}
 
-export default { hireList };
+export default { hireList }

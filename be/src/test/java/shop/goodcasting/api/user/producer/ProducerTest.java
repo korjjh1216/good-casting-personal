@@ -34,7 +34,6 @@ public class ProducerTest {
                     .agency("소속사" + i)
                     .phone("대표번호" + i)
                     .position("직급" + i)
-                    .userVO(userVO)
                     .build();
             producerRepository.save(producer);
         });

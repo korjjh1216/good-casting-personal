@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="2" viewBox="0 0 24 2">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="btn_delete_list" transform="translate(-1408 -1291)">
+        <path id="사각형_2073" d="M0 0h24v2H0z" class="cls-1" data-name="사각형 2073" transform="translate(1408 1291)"/>
+    </g>
+</svg>

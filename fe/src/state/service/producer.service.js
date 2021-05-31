@@ -18,7 +18,7 @@ const updateProducerInfo = (arg) => {
         url: `${SERVER}/producers/info`,
         method: 'post',
         data: arg,
-        headers: { Authorization: localStorage.getItem('token') },
+        headers: { Authorization: localStorage.getItem('TOKEN') },
     })
 }
 

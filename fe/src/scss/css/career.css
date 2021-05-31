@@ -1,0 +1,33 @@
+/* color */
+.c_none {
+    color: rgba(0, 0, 0, 0.34);
+}
+
+.btn_input {
+    display: inline-block;
+    height: 60px;
+    padding: 0 10px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff !important;
+    background: #424b55;
+}
+.btn_input_add {
+    color: #fff;
+    display: inline-block;
+    border: 1px solid #dadada;
+    border-left: 0;
+    width: 60px;
+    height: 60px;
+    background: #424b55;
+}
+.btn_input_delete {
+    color: #fff;
+    display: inline-block;
+    border: 1px solid #dadada;
+    border-left: 0;
+    width: 60px;
+    height: 60px;
+    background: #424b55;
+}

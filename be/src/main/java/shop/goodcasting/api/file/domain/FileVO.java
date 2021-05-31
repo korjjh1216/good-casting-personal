@@ -21,8 +21,8 @@ public class FileVO extends BaseEntity {
     private Long fileId;
 
     @Column private String uuid;
-    @Column(name = "file_name") private String fileName;
     @Column private boolean first;
+    @Column(name = "file_name") private String fileName;
     @Column(name = "photo_type") private boolean photoType;
 
     @ManyToOne(fetch = FetchType.LAZY)

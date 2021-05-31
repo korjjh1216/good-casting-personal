@@ -1,38 +1,37 @@
 import React, { useCallback, useState, useEffect } from 'react'
+import { Link, navigate } from 'gatsby'
 import PageWrapper from '../components/PageWrapper'
 import { Select } from '../components/Core'
 import { useDispatch, useSelector } from 'react-redux'
-import { actorSelctor, updateActorInfo, getActorInfo } from '../state/reducer/actor.reducer'
+import { actorSelctor, updateActorInfo, unRegister } from '../state/reducer/actor.reducer'
+import '../scss/css/actorInfo.css'
 
 const defaultTypes = [
-    { value: 'male', label: '남성' },
-    { value: 'femail', label: '여성' },
+    { value: 'default', label: '선택하기', name: 'gender' },
+    { value: 'male', label: '남성', name: 'gender' },
+    { value: 'female', label: '여성', name: 'gender' },
 ]
 
 const defaultMajor = [
-    { value: true, label: '전공자' },
-    { value: false, label: '비전공자' },
+    { value: true, label: '선택하기', name: 'major' },
+    { value: true, label: '전공자', name: 'major' },
+    { value: false, label: '비전공자', name: 'major' },
 ]
 
 const ActorInfo = () => {
     const dispatch = useDispatch()
 
     const state = useSelector(actorSelctor)
-
     const [inputs, setInputs] = useState([])
 
     useEffect(() => {
         setInputs(state.actor)
     }, [])
 
-    useEffect(() => {
-        window.addEventListener('beforeunload', handleBeforeunload)
-    }, [])
-
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(inputs)
         dispatch(updateActorInfo(inputs))
+        navigate('/actor-mypage')
     }
 
     const handleChange = useCallback((e) => {
@@ -42,13 +41,16 @@ const ActorInfo = () => {
         })
     })
 
-    const handleBeforeunload = (e) => {
-        if (handleChange) {
-            e.preventDefault()
-            e.returnValue = ''
-            return ''
-        }
-        return undefined
+    const handleSelectChange = useCallback((e) => {
+        setInputs({
+            ...inputs,
+            [e.name]: e.value,
+        })
+    })
+
+    const handelClick = () => {
+        localStorage.clear()
+        dispatch(unRegister(inputs))
     }
 
     return (
@@ -84,7 +86,7 @@ const ActorInfo = () => {
                                                             <label htmlFor="select2" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
                                                                 성별
                                                             </label>
-                                                            <Select options={defaultTypes} className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center w-100 " border={false} />
+                                                            <Select className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center w-100 " options={defaultTypes} border={false} onChange={handleSelectChange} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -111,7 +113,7 @@ const ActorInfo = () => {
                                                             <label htmlFor="address" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
                                                                 생년
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.birthday} name="birthday" placeholder="숫자만 입력해주세요 예)2021" onChange={handleChange} />
+                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.birthday} name="birthday" placeholder="숫자만 입력해주세요" onChange={handleChange} />
                                                             <span className="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"></span>
                                                         </div>
                                                     </div>
@@ -120,7 +122,7 @@ const ActorInfo = () => {
                                                             <label htmlFor="address" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
                                                                 나이
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.age} name="age" placeholder="" onChange={handleChange} />
+                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.age} name="age" placeholder="숫자만 입력해주세요" onChange={handleChange} />
                                                             <span className="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"></span>
                                                         </div>
                                                     </div>
@@ -147,7 +149,7 @@ const ActorInfo = () => {
                                                             <label htmlFor="address" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
                                                                 소속사
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.agency} name="agency" placeholder="예) 010-1234-5678" onChange={handleChange} />
+                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.agency} name="agency" placeholder="소속이 없을 시 소속없음 표기" onChange={handleChange} />
                                                             <span className="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"></span>
                                                         </div>
                                                     </div>
@@ -156,7 +158,7 @@ const ActorInfo = () => {
                                                             <label htmlFor="address" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
                                                                 전공여부
                                                             </label>
-                                                            <Select options={defaultMajor} className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center w-100 " border={false} />
+                                                            <Select className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center w-100 " options={defaultMajor} border={false} onChange={handleSelectChange} />
                                                             <span className="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"></span>
                                                         </div>
                                                     </div>
@@ -168,6 +170,11 @@ const ActorInfo = () => {
                                                 </div>
                                             </fieldset>
                                         </form>
+                                        <Link to="/actor-out">
+                                            <button onClick={handelClick} className="user-out">
+                                                회원탈퇴하기
+                                            </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

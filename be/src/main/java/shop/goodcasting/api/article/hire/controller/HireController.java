@@ -1,50 +1,59 @@
 package shop.goodcasting.api.article.hire.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
+import shop.goodcasting.api.article.hire.domain.HireListDTO;
 import shop.goodcasting.api.article.hire.service.HireServiceImpl;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
 
-import java.util.List;
-import java.util.Optional;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @RequestMapping("/hires")
 public class HireController {
-    private final HireServiceImpl service;
+    private final HireServiceImpl hireService;
 
     @PostMapping("/register")
     public ResponseEntity<Long> register(@RequestBody HireDTO hireDTO) {
-        service.register(hireDTO);
+        System.out.println("Hire DTO: " + hireDTO);
+        hireService.register(hireDTO);
         return ResponseEntity.ok(1L);
     }
 
-    @GetMapping("/hire-detail/{hireId}")
+    @GetMapping("/detail/{hireId}")
     public ResponseEntity<HireDTO> hireDetail(@PathVariable Long hireId) {
-        return ResponseEntity.ok(service.readHire(hireId));
+        return ResponseEntity.ok(hireService.readHire(hireId));
     }
 
-    @GetMapping("/profile-list")
-    public ResponseEntity<List<HireDTO>> hireList(PageRequestDTO pageRequest) {
-        return new ResponseEntity<>(service.getHireList(pageRequest).getDtoList(), HttpStatus.OK);
+    @PostMapping("/list")
+    public ResponseEntity<PageResultDTO<HireListDTO, Object[]>> hireList(@RequestBody PageRequestDTO pageRequest) {
+        log.info("------------------" + pageRequest + "----------------------------------");
+
+        log.info("==================================" + hireService.getHireList(pageRequest));
+
+        return new ResponseEntity<>(hireService.getHireList(pageRequest), HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Long> update(@RequestBody HireDTO hireDTO) {
-        service.update(hireDTO);
+        hireService.update(hireDTO);
+
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{hireId}")
+    @DeleteMapping("/delete/{hireId}")
     public ResponseEntity<Long> delete(@PathVariable Long hireId) {
-        service.deleteHire(hireId);
+
+        hireService.deleteHire(hireId);
+
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
+
 }

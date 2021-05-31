@@ -2,19 +2,15 @@ package shop.goodcasting.api.user.actor.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
-import shop.goodcasting.api.user.login.domain.UserVO;
 import shop.goodcasting.api.user.login.repository.UserRepository;
-import shop.goodcasting.api.user.login.service.UserServiceImpl;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -25,23 +21,23 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ActorServiceImpl implements ActorService {
-    private final UserRepository userRepository;
-    private final FileRepository fileRepository;
-    private final ProfileRepository profileRepository;
-    private final ActorRepository actorRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepo;
+    private final FileRepository fileRepo;
+    private final ProfileRepository profileRepo;
+    private final ActorRepository actorRepo;
 
     @Override
     public List<Actor> findAll() {
-        return actorRepository.findAll();
+        return actorRepo.findAll();
     }
 
     @Override
     public ActorDTO findById(Long actorId) {
 
-        Optional<Actor> actor = actorRepository.findById(actorId);
+        Optional<Actor> actor = actorRepo.findById(actorId);
 
-        return actor.isPresent()? entity2DtoAll(actor.get()): null;
+        return actor.map(this::entity2DtoAll).orElse(null);
+
     }
 
     @Transactional
@@ -49,35 +45,33 @@ public class ActorServiceImpl implements ActorService {
     public Long delete(ActorDTO actorDTO) {
         Actor actor = dto2EntityAll(actorDTO);
 
-        Long profileId = actorRepository.getProfileId(actor.getActorId());
+        Long profileId = actorRepo.getProfileId(actor.getActorId());
 
         log.info("profileId : " + profileId);
 
         if(profileId != null){
-            Profile profile = profileRepository.findById(profileId).get();
-            List<FileVO> fileList = fileRepository.findFileListByProfileId(profileId);
+            Profile profile = profileRepo.findById(profileId).get();
+            List<FileVO> fileList = fileRepo.findFileListByProfileId(profileId);
 
             log.info("fileList : " + fileList);
 
             List<Long> fileId = new ArrayList<>();
-            fileList.forEach( i -> {
-                fileId.add(i.getFileId());
-            });
+            fileList.forEach( i -> fileId.add(i.getFileId()));
             log.info("fileId : " + fileId);
 
             fileId.forEach( id -> {
-                FileVO test = fileRepository.findById(id).get();
+                FileVO test = fileRepo.findById(id).get();
                 System.out.println(test);
-                fileRepository.delete(test);
+                fileRepo.delete(test);
             });
 
-            profileRepository.delete(profile);
+            profileRepo.delete(profile);
         }
-        actorRepository.delete(actor);
-        userRepository.accountUpdate(actor.getUser().getUserId(), false);
-        actorRepository.delete(actor);
+        actorRepo.delete(actor);
+        userRepo.accountUpdate(actor.getUser().getUserId(), false);
+        actorRepo.delete(actor);
 
-        return actorRepository.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
+        return actorRepo.findById(actor.getActorId()).orElse(null) == null ? 1L : 0L;
     }
 
     @Override
@@ -87,7 +81,7 @@ public class ActorServiceImpl implements ActorService {
 //        userRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
 
         Actor actor = dto2EntityAll(actorDTO);
-        actorRepository.save(actor);
+        actorRepo.save(actor);
         return null;
     }
 }
