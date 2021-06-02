@@ -1,54 +1,67 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'gatsby'
-
-import imgB1 from '../../assets/image/l1/png/feature-brand-1.png'
+import { useSelector, useDispatch } from 'react-redux'
+import { profileList, profileSelector } from '../../state/reducer/profile.reducer'
 
 const MyProfileList = () => {
+    const dispatch = useDispatch()
+
+    const pageResult = useSelector(profileSelector).pageResult
+    const pageRequest = useSelector(profileSelector).pageRequest
+
+    const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null
+
+    useEffect(() => {
+        dispatch(
+            profileList({
+                ...pageRequest,
+                actorId: userInfo[1].actorId,
+            })
+        )
+    }, [])
+
     return (
         <>
-            <div className="col-12 col-lg-6">
-                <div className="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
-                    <div className="d-block mb-7">
-                        <Link to="/#">
-                            <img src={imgB1} alt="" />
-                        </Link>
-                    </div>
-                    <Link to="/#" className="font-size-3 d-block mb-0 text-gray">
-                        Google INC
-                    </Link>
-                    <h2 className="mt-n4">
-                        <Link to="/#" className="font-size-7 text-black-2 font-weight-bold mb-4">
-                            배우이름
-                        </Link>
-                    </h2>
-                    <div className="card-btn-group">
-                        <Link to="/profile-detail" className="btn btn-green text-uppercase btn-medium rounded-3">
-                            프로필보기
-                        </Link>
-                    </div>
-                </div>
-            </div>
-            <div className="col-12 col-lg-6">
-                <div className="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
-                    <div className="d-block mb-7">
-                        <Link to="/#">
-                            <img src={imgB1} alt="" />
-                        </Link>
-                    </div>
-                    <Link to="/#" className="font-size-3 d-block mb-0 text-gray">
-                        Google INC
-                    </Link>
-                    <h2 className="mt-n4">
-                        <Link to="/#" className="font-size-7 text-black-2 font-weight-bold mb-4">
-                            배우이름
-                        </Link>
-                    </h2>
-                    <div className="card-btn-group">
-                        <Link to="/profile-detail" className="btn btn-green text-uppercase btn-medium rounded-3">
-                            프로필보기
-                        </Link>
-                    </div>
-                </div>
+            <div className="col-10 col-lg-8">
+                {pageResult.dtoList.map((profile) => {
+                    return (
+                        <>
+                            <ul
+                                style={{
+                                    listStyleType: 'none',
+                                }}
+                                key={profile.profileId}
+                            >
+                                <li>
+                                    <div>
+                                        <div className="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
+                                            <div className="d-block mb-7">
+                                                <Link to="/profile-detail">
+                                                    <img
+                                                        style={{
+                                                            width: '150px',
+                                                            height: '200px',
+                                                        }}
+                                                        src={'http://localhost:8080/files/display?fileName=s_' + profile.fileUuid + '_' + profile.fileName}
+                                                        alt=""
+                                                    />
+                                                </Link>
+                                            </div>
+                                            <h2 className="mt-n4">
+                                                <p className="font-size-7 text-black-2 font-weight-bold mb-4">{profile.actorName}</p>
+                                            </h2>
+                                            <div className="card-btn-group">
+                                                <Link to="/profile-detail" className="btn btn-green text-uppercase btn-medium rounded-3">
+                                                    프로필보기
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </>
+                    )
+                })}
             </div>
         </>
     )

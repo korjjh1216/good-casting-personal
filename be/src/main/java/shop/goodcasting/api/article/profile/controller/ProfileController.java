@@ -13,12 +13,14 @@ import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
 import shop.goodcasting.api.article.profile.service.ProfileServiceImpl;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
+
 import java.util.List;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RequestMapping("/profiles")
 public class ProfileController {
     private final ProfileServiceImpl profileService;
@@ -40,10 +42,10 @@ public class ProfileController {
 
 
     @PostMapping("/list")
-    public ResponseEntity<List<ProfileListDTO>> profileList(@RequestBody PageRequestDTO pageRequest) {
+    public ResponseEntity<PageResultDTO<ProfileListDTO, Object[]>> profileList(@RequestBody PageRequestDTO pageRequest) {
         log.info("------------------------------" + pageRequest + "----------------------------------------------------");
 
-        return new ResponseEntity<>(profileService.getProfileList(pageRequest).getDtoList(), HttpStatus.OK);
+        return new ResponseEntity<>(profileService.getProfileList(pageRequest), HttpStatus.OK);
     }
 
     @PutMapping("/update")
@@ -61,10 +63,5 @@ public class ProfileController {
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
 
-    @PostMapping("/search-resemble")
-    public ResponseEntity<List<ProfileListDTO>> searchResemble(@RequestBody PageRequestDTO pageRequest, MultipartFile uploadFile) {
-        log.info("----------------------image search()----------------------------------");
-
-        return new ResponseEntity<>(profileService.searchResemble(pageRequest, uploadFile).getDtoList(), HttpStatus.OK);
-    }
 }
+

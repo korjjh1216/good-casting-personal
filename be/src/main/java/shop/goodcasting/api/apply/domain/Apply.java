@@ -6,6 +6,7 @@ import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @ToString(exclude = {"profile", "hire"})
 @Builder

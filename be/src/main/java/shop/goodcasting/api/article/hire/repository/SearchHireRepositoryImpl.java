@@ -36,14 +36,14 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
 
         String type = pageRequest.getType();
         QHire hire = QHire.hire;
-
+        QFileVO file = QFileVO.fileVO;
         QProducer producer = QProducer.producer;
 
         JPQLQuery<Hire> jpqlQuery = from(hire);
         jpqlQuery.leftJoin(producer).on(hire.producer.eq(producer));
+        jpqlQuery.leftJoin(file).on(file.hire.eq(hire));
 
-
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(hire, producer);
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(hire, producer, file);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = hire.hireId.gt(0L);
@@ -61,27 +61,27 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
                 switch (t) {
                     case "g":
                         log.info("search guarantee, type: " + t);
-                        conditionBuilder.and(hire.guarantee.between(pageRequest.getGfrom(), pageRequest.getGto()));
+                        conditionBuilder.and(hire.guarantee.between(pageRequest.getSearchCond().getGfrom(), pageRequest.getSearchCond().getGto()));
                         break;
                     case "f":
                         log.info("search filming, type: " + t);
-                        conditionBuilder.and(hire.filming.between(pageRequest.getFfrom(), pageRequest.getFto()));
+                        conditionBuilder.and(hire.filming.between(pageRequest.getSearchCond().getFfrom(), pageRequest.getSearchCond().getFto()));
                         break;
                     case "t":
                         log.info("search title, type: " + t);
-                        conditionBuilder.or(hire.title.contains(pageRequest.getTkeyword()));
+                        conditionBuilder.or(hire.title.contains(pageRequest.getSearchCond().getTkeyword()));
                         break;
                     case "p":
                         log.info("search project, type: " + t);
-                        conditionBuilder.or(hire.project.contains(pageRequest.getPkeyword()));
+                        conditionBuilder.or(hire.project.contains(pageRequest.getSearchCond().getPkeyword()));
                         break;
                     case "c":
                         log.info("search contents, type: " + t);
-                        conditionBuilder.or(hire.contents.contains(pageRequest.getConKeyword()));
+                        conditionBuilder.or(hire.contents.contains(pageRequest.getSearchCond().getConKeyword()));
                         break;
                     case "C":
                         log.info("search cast, type: " + t);
-                        conditionBuilder.or(hire.cast.contains(pageRequest.getCastKeyword()));
+                        conditionBuilder.or(hire.cast.contains(pageRequest.getSearchCond().getCastKeyword()));
                         break;
                     default : break;
                 }
@@ -117,4 +117,6 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
         return new PageImpl<>(result.stream()
                 .map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
     }
+
+
 }

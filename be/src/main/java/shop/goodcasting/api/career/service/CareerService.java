@@ -27,7 +27,7 @@ public interface CareerService {
                 .contents(careerDTO.getContents())
                 .year(careerDTO.getYear())
                 .profile(Profile.builder()
-                        .profileId(careerDTO.getCareerId())
+                        .profileId(careerDTO.getProfile().getProfileId())
                         .build())
                 .build();
     }
@@ -50,7 +50,7 @@ public interface CareerService {
                 .contents(career.getContents())
                 .year(career.getYear())
                 .profile(ProfileDTO.builder()
-                        .profileId(career.getCareerId())
+                        .profileId(career.getProfile().getProfileId())
                         .build())
                 .build();
     }

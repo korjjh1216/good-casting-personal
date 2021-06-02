@@ -45,12 +45,16 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
         jpqlQuery.leftJoin(actor).on(profile.actor.eq(actor));
         jpqlQuery.leftJoin(file).on(file.profile.eq(profile));
 
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(profile, actor , file );
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(profile, actor, file);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = profile.profileId.gt(0L);
+        BooleanExpression expression1 = profile.first.eq(true);
+        BooleanExpression expression2 = profile.privacy.eq(true);
 
         booleanBuilder.and(expression);
+        booleanBuilder.and(expression1);
+        booleanBuilder.and(expression2);
 
         if (type != null) {
             String[] typeArr = type.split("");
@@ -62,23 +66,23 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
                 switch (t) {
                     case "r":
                         log.info("search type: " + t);
-                        conditionBuilder.and(profile.resemble.contains(pageRequest.getRkeyword()));
+                        conditionBuilder.and(profile.resemble.contains(pageRequest.getSearchCond().getRkeyword()));
                         break;
                     case "a":
                         log.info("search type: " + t);
-                        conditionBuilder.and(actor.age.between(pageRequest.getAfrom(), pageRequest.getAto()));
+                        conditionBuilder.and(actor.age.between(pageRequest.getSearchCond().getAfrom(), pageRequest.getSearchCond().getAto()));
                         break;
                     case "g":
                         log.info("search type: " + t);
-                        conditionBuilder.and(actor.gender.contains(pageRequest.getGkeyword()));
+                        conditionBuilder.and(actor.gender.contains(pageRequest.getSearchCond().getGkeyword()));
                         break;
                     case "h":
                         log.info("search type: " + t);
-                        conditionBuilder.and(actor.height.between(pageRequest.getHfrom(), pageRequest.getHto()));
+                        conditionBuilder.and(actor.height.between(pageRequest.getSearchCond().getHfrom(), pageRequest.getSearchCond().getHto()));
                         break;
                     case "w":
                         log.info("search type: " + t);
-                        conditionBuilder.and(actor.weight.between(pageRequest.getWfrom(), pageRequest.getWto()));
+                        conditionBuilder.and(actor.weight.between(pageRequest.getSearchCond().getWfrom(), pageRequest.getSearchCond().getWto()));
                         break;
                 }
             }
@@ -116,4 +120,63 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
                 pageable,
                 count);
     }
+
+    @Override
+    @Transactional
+    public Page<Object[]> myProfilePage(PageRequestDTO pageRequest, Pageable pageable) {
+
+        log.info("-------------------Search Profile Page Enter------------------------------------");
+
+        QProfile profile = QProfile.profile;
+        QFileVO file = QFileVO.fileVO;
+        QActor actor = QActor.actor;
+
+        JPQLQuery<Profile> jpqlQuery = from(profile);
+        jpqlQuery.leftJoin(actor).on(profile.actor.eq(actor));
+        jpqlQuery.leftJoin(file).on(file.profile.eq(profile));
+
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(profile, actor, file);
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanExpression expression = profile.profileId.gt(0L);
+        BooleanExpression expression1 = profile.first.eq(true);
+        BooleanExpression expression2 = profile.actor.actorId.eq(pageRequest.getActorId());
+
+        booleanBuilder.and(expression);
+        booleanBuilder.and(expression1);
+        booleanBuilder.and(expression2);
+
+        tuple.where(booleanBuilder);
+
+        Sort sort = pageable.getSort();
+
+        sort.stream().forEach(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String prop = order.getProperty();
+
+            PathBuilder orderByExpression = new PathBuilder(Profile.class, "profile");
+            tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
+        });
+        tuple.groupBy(profile);
+
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
+
+        List<Tuple> result = tuple.fetch();
+
+        result.forEach(tuple1 -> {
+            log.info("searchPage() tuple: " + tuple1);
+        });
+
+        long count = tuple.fetchCount();
+
+        log.info("COUNT: " + count);
+
+        return new PageImpl<>(result.stream()
+                .map(t -> t.toArray()).collect(Collectors.toList()),
+                pageable,
+                count);
+    }
+
+
 }

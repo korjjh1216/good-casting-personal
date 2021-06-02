@@ -3,15 +3,6 @@ import Swal from 'sweetalert2'
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit')
 
-const sweetalert = (icon, title, text, footer) => {
-    Swal.fire({
-        icon: icon,
-        title: title,
-        text: text,
-        footer: footer,
-    })
-}
-
 export const signup = createAsyncThunk('SIGN_UP', async (arg) => {
     console.log('reducer signup() arg: ' + JSON.stringify(arg))
     const response = await userService.signup(arg)
@@ -40,8 +31,7 @@ const userSlice = createSlice({
     },
     reducers: {
         isUserLoggendIn(state, { payload }) {
-            state.loggedIn = !state.loggedIn
-            payload = state.loggedIn
+            state.loggedIn = payload
         },
     },
     extraReducers: (builder) => {
@@ -75,7 +65,9 @@ const userSlice = createSlice({
             })
             .addCase(signin.fulfilled, (state, { payload }) => {
                 console.log('로그인() payload: ' + JSON.stringify(payload))
+                localStorage.setItem('TOKEN', 'Bearer ' + payload[0].token)
                 localStorage.setItem('USER', JSON.stringify(payload))
+                state.loggedIn = !state.loggedIn
             })
     },
 })

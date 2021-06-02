@@ -15,7 +15,7 @@ import shop.goodcasting.api.common.domain.PageResultDTO;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RequestMapping("/hires")
 public class HireController {
     private final HireServiceImpl hireService;

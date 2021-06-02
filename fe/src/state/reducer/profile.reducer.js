@@ -15,6 +15,12 @@ export const myProfileList = createAsyncThunk('MYPROFILE_LIST', async (pageReque
     return response.data
 })
 
+export const fileRegister = createAsyncThunk('FILE_REGISTER', async (arg) => {
+    console.log(arg)
+    const response = await profileService.fileRegister(arg)
+    return response.data
+})
+
 export const profileList = createAsyncThunk('PROFILE_LIST', async (pageRequest) => {
     console.log('reducer profileList() pageRequest: ' + JSON.stringify(pageRequest))
     const response = await profileService.profileList(pageRequest)
@@ -30,22 +36,25 @@ export const profileRead = createAsyncThunk('PROFILE_DETAIL', async () => {
 const profileSlice = createSlice({
     name: 'profile',
     initialState: {
-        profile: [],
-        careerList: [],
-        profileList: [],
         pageRequest: {
             page: 1,
             size: 10,
             type: '',
             sort: 'profileId',
-            ffrom: 0,
-            fto: 0,
-            conKeyword: '',
-            castKeyword: '',
-            gfrom: 0,
-            gto: 0,
-            tkeyword: 0,
-            pkeyword: 0,
+            searchCond: {
+                afrom: 0,
+                ato: 0,
+                rKeyword: '',
+                gKeyword: '',
+                wfrom: 0,
+                wto: 0,
+                hfrom: 0,
+                hto: 0,
+            },
+            file: {
+                fileName: '',
+                uuid: '',
+            },
         },
         pageResult: {
             pageList: [],
@@ -82,16 +91,6 @@ const profileSlice = createSlice({
             })
             .addCase(profileList.fulfilled, (state, { payload }) => {
                 console.log('payload :' + JSON.stringify(payload))
-                //state.profileList.push(...payload)
-                //     state.page = payload.page
-                //     state.pageList = payload.pageList
-                //     state.size = payload.size
-                //     state.totalPage = payload.totalPage
-                // })
-                if (!payload) {
-                    state.page = 1
-                    return state
-                }
 
                 return {
                     ...state,
@@ -101,6 +100,10 @@ const profileSlice = createSlice({
             .addCase(profileRead.fulfilled, (state, { payload }) => {
                 console.log('payload : ' + JSON.stringify(payload))
                 state.profile = payload
+            })
+            .addCase(fileRegister.fulfilled, (state, { payload }) => {
+                console.log('payload : ' + JSON.stringify(payload))
+                state.fileList = payload
             })
     },
 })

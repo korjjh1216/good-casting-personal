@@ -11,7 +11,7 @@ import shop.goodcasting.api.user.actor.service.ActorServiceImpl;
 
 import java.util.List;
 
-@CrossOrigin("*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/actors")

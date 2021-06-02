@@ -10,7 +10,7 @@ import shop.goodcasting.api.user.producer.service.ProducerServiceImpl;
 
 import java.util.List;
 
-@CrossOrigin("*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @Log
 @RestController
 @RequiredArgsConstructor

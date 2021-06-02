@@ -24,4 +24,6 @@ public class ProfileListDTO {
     private String fileName;
     private Timestamp regDate;
     private Timestamp modDate;
+
+    private boolean first;
 }

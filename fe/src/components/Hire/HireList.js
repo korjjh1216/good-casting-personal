@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'gatsby'
-import { hireList, pageListChange } from '../../state/reducer/hire.reducer'
+import { hireList } from '../../state/reducer/hire.reducer'
 import iconL from '../../assets/image/svg/icon-loaction-pin-black.svg'
 import iconC from '../../assets/image/svg/icon-clock.svg'
 import { useDispatch } from 'react-redux'
+import imgF from '../../assets/image/svg/icon-fire-rounded.svg'
 
 const HireList = ({ pageResult, pageRequest }) => {
     const dispatch = useDispatch()
@@ -16,12 +17,12 @@ const HireList = ({ pageResult, pageRequest }) => {
         <>
             {pageResult.dtoList.map((hire) => {
                 return (
-                    <ul key={hire.hireId} style={{ listStyleType: 'none' }}>
+                    <ul key={hire.hireId} style={{ listStyleType: 'none', paddingLeft: '0' }}>
                         <li>
-                            <Link state={{ id: hire.hireId }} to="/hire-detail">
-                                <div className="pt-9 px-xl-9 px-lg-7 px-7 pb-7 light-mode-texts bg-white rounded hover-shadow-3 ">
+                            <Link state={{ id: hire.hireId }} to={`/hire-detail`}>
+                                <div style={{ width: '830px' }} className="pt-6 px-xl-6 px-lg-6 px-7 pb-7 light-mode-texts bg-white rounded hover-shadow-3 ">
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-3">
                                             <div className="media align-items-center">
                                                 <div>
                                                     <h3 className="mb-0">
@@ -32,6 +33,16 @@ const HireList = ({ pageResult, pageRequest }) => {
                                                     </Link>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 text-right pt-7 pt-md-5">
+                                        <div className="media justify-content-md-end">
+                                            <div className="image mr-5 mt-2">
+                                                <img src={imgF} alt="" />
+                                            </div>
+                                            <p className="font-weight-bold font-size-7 text-hit-gray mb-0">
+                                                <span className="text-black-2">80-90K</span> PLN
+                                            </p>
                                         </div>
                                     </div>
                                     <div className="row pt-8">
@@ -57,6 +68,7 @@ const HireList = ({ pageResult, pageRequest }) => {
                                                     </span>
                                                     <span className="font-weight-semibold">Berlyn, UK</span>
                                                 </li>
+
                                                 <li className="mt-2 mr-8 font-size-small text-black-2 d-flex">
                                                     <span
                                                         className="mr-4"
@@ -77,60 +89,6 @@ const HireList = ({ pageResult, pageRequest }) => {
                     </ul>
                 )
             })}
-            <div>
-                {pageResult.prev ? (
-                    <div className="text-center pt-5 pt-lg-13">
-                        <button
-                            style={{ border: 0, outline: 0 }}
-                            onClick={() => {
-                                console.log('click')
-                                dispatch(pageListChange(pageResult.start - 1))
-                            }}
-                            className="text-green font-weight-bold text-uppercase font-size-3"
-                        >
-                            prev
-                        </button>
-                    </div>
-                ) : (
-                    <></>
-                )}
-                {pageResult.pageList.map((page, idx) => {
-                    return (
-                        <div key={idx} className="text-center pt-5 pt-lg-13">
-                            <button
-                                style={{ border: 0, outline: 0 }}
-                                onClick={() => {
-                                    dispatch(
-                                        hireList({
-                                            ...pageRequest,
-                                            page,
-                                        })
-                                    )
-                                }}
-                                className="text-green font-weight-bold text-uppercase font-size-6"
-                            >
-                                {page}
-                            </button>
-                        </div>
-                    )
-                })}
-                {pageResult.next ? (
-                    <div className="text-center pt-5 pt-lg-13">
-                        <button
-                            style={{ border: 0, outline: 0 }}
-                            onClick={() => {
-                                dispatch(pageListChange(pageResult.end + 1))
-                            }}
-                            className="text-green font-weight-bold text-uppercase font-size-3"
-                        >
-                            next
-                            <i className="fas fa-sort-down ml-3"></i>
-                        </button>
-                    </div>
-                ) : (
-                    <></>
-                )}
-            </div>
         </>
     )
 }

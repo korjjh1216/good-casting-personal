@@ -2,16 +2,23 @@ package shop.goodcasting.api.apply.service;
 
 import shop.goodcasting.api.apply.domain.Apply;
 import shop.goodcasting.api.apply.domain.ApplyDTO;
+import shop.goodcasting.api.apply.domain.ApplyListDTO;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
+import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
+import shop.goodcasting.api.user.actor.domain.Actor;
+import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
 import java.util.List;
 
 public interface ApplyService {
     ApplyDTO apply(ApplyDTO applyDTO);
     List<ApplyDTO> findAllByHireId(Long hireId);
+    PageResultDTO<ApplyListDTO, Object[]> getApplicantList(PageRequestDTO pageRequest);
 
     default Apply dto2Entity(ApplyDTO applyDTO){
         return Apply.builder()
@@ -53,4 +60,37 @@ public interface ApplyService {
                         .build())
                 .build();
     }
-}
+
+    default ApplyDTO entity2DtoAll2(Apply apply){
+        return ApplyDTO.builder()
+                .applyId(apply.getApplyId())
+                .applyStatus(apply.getApplyStatus())
+                .hire(HireDTO.builder()
+                        .hireId(apply.getHire().getHireId())
+                        .build())
+                .profile(ProfileDTO.builder()
+                        .profileId(apply.getProfile().getProfileId())
+                        .build())
+                .build();
+    }
+
+    default ApplyListDTO entity2DtoAll3(Apply apply) {
+
+        return ApplyListDTO.builder()
+                .applyId(apply.getApplyId())
+                .applyStatus(apply.getApplyStatus())
+                .modDate(apply.getModDate())
+                .hire(HireDTO.builder()
+                        .hireId(apply.getHire().getHireId())
+                        .title(apply.getHire().getTitle())
+                        .build())
+                .profile(ProfileDTO.builder()
+                        .profileId(apply.getProfile().getProfileId())
+                        .confidence(apply.getProfile().getConfidence())
+                        .actorName(apply.getProfile().getActor().getName())
+                        .build())
+                .build();
+    }
+    }
+
+

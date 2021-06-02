@@ -26,7 +26,7 @@ import java.util.UUID;
 
 @Log4j2
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RequestMapping("/files")
 @RequiredArgsConstructor
 public class FileController {
@@ -68,10 +68,10 @@ public class FileController {
 
                     File thumbnailFile = new File(thumbnailSaveName);
 
-                    Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 500, 500);
 
 
-                }else if(mimeType.startsWith("video")) {
+                } else if(mimeType.startsWith("video")) {
                     log.info("video thumbnail extract");
                     service.extractVideoThumbnail(new File(saveName));
                 }
@@ -83,8 +83,6 @@ public class FileController {
 
                 resultDTOList.add(fileDTO);
 
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

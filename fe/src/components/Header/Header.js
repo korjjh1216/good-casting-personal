@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import { Container, Dropdown } from 'react-bootstrap'
 import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
@@ -61,8 +61,8 @@ const Header = () => {
 
     useEffect(() => {
         if (localStorage.getItem('USER') !== null) {
-            dispatch(isUserLoggendIn(user.loggedIn))
-            JSON.stringify(userInfo[0].position)
+            // dispatch(isUserLoggendIn(user.loggedIn))
+            // JSON.stringify(userInfo[0].position)
             console.log('로그인 되어 있음 : ' + userInfo[0].position)
         } else {
             console.log('로그인 되어 있지 않음')
@@ -96,7 +96,7 @@ const Header = () => {
                         <div className="collapse navbar-collapse">
                             <div className="navbar-nav-wrapper">
                                 <ul className="navbar-nav main-menu d-none d-lg-flex">
-                                    {!user.loggedIn
+                                    {!userInfo
                                         ? menuItems.map(({ label, isExternal = false, name, items, ...rest }, index) => {
                                               return (
                                                   <React.Fragment key={name + index}>
@@ -114,7 +114,7 @@ const Header = () => {
                                                   </React.Fragment>
                                               )
                                           })
-                                        : user.loggedIn && userInfo[0].position
+                                        : userInfo[0].position
                                         ? actorMenuItems.map(({ label, isExternal = false, name, items, ...rest }, index) => {
                                               return (
                                                   <React.Fragment key={name + index}>
@@ -207,13 +207,15 @@ const Header = () => {
                             </div>
                         )}
 
-                        {user.loggedIn ? (
+                        {userInfo ? (
                             <div className="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex">
                                 <a
                                     className={`btn btn-${gContext.header.variant} text-uppercase font-size-3`}
                                     href="/"
                                     onClick={() => {
-                                        window.confirm('정말 로그아웃 하시겠습니까?') ? localStorage.clear() : window.location.reload()
+                                        localStorage.clear()
+                                        dispatch(isUserLoggendIn(!user.loggedIn))
+                                        navigate('/')
                                     }}
                                 >
                                     LogOut
@@ -223,7 +225,6 @@ const Header = () => {
                             <div className="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex">
                                 <a
                                     className="btn btn-transparent text-uppercase font-size-3 heading-default-color focus-reset"
-                                    href="/#"
                                     onClick={(e) => {
                                         e.preventDefault()
                                         gContext.toggleSignInModal()
@@ -233,7 +234,6 @@ const Header = () => {
                                 </a>
                                 <a
                                     className={`btn btn-${gContext.header.variant} text-uppercase font-size-3`}
-                                    href="/#"
                                     onClick={(e) => {
                                         e.preventDefault()
                                         gContext.toggleSignUpModal()

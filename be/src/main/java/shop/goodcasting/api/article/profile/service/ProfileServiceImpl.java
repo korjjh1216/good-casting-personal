@@ -94,12 +94,40 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public PageResultDTO<ProfileListDTO, Object[]> getProfileList(PageRequestDTO pageRequest) {
-        Page<Object[]> result = profileRepo.searchPage(pageRequest,
-                pageRequest.getPageable(Sort.by(pageRequest.getSort()).descending()));
+        if (!pageRequest.getFile().getFileName().equals("")) {
+            log.info("service enter: " + pageRequest);
 
-        Function<Object[], ProfileListDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
-                (Actor) entity[1], (FileVO) entity[2]));
+            String fileName = uploadPath + File.separator + "s_"
+                    + pageRequest.getFile().getUuid() + "_" + pageRequest.getFile().getFileName();
 
+
+            String[] arr = extractCelebrity(fileName);
+
+            pageRequest.getSearchCond().setRkeyword(arr[0]);
+
+            log.info("before get page list: " + pageRequest);
+        }
+
+        Page<Object[]> result;
+        Function<Object[], ProfileListDTO> fn;
+
+        if (pageRequest.getActorId() == null) {
+            result = profileRepo
+                    .searchPage(pageRequest, pageRequest
+                            .getPageable(Sort.by(pageRequest.getSort()).descending()));
+
+            fn = (entity -> entity2DtoFiles((Profile) entity[0],
+                    (Actor) entity[1], (FileVO) entity[2]));
+
+        } else {
+            result = profileRepo
+                    .myProfilePage(pageRequest, pageRequest
+                            .getPageable(Sort.by(pageRequest.getSort()).descending()));
+
+            fn = (entity -> entity2DtoFiles((Profile) entity[0],
+                    (Actor) entity[1], (FileVO) entity[2]));
+
+        }
         return new PageResultDTO<>(result, fn);
     }
 
@@ -124,6 +152,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     public String[] extractCelebrity(String photoName) {
+        log.info("extractCelebrity enter: " + photoName);
         StringBuffer reqStr = new StringBuffer();
         String clientId = "92mep69l88";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "qdbpwHd8pRZPszLr0gLfqKR7OHbdsDriRmOFdwno";//애플리케이션 클라이언트 시크릿값";
@@ -230,36 +259,7 @@ public class ProfileServiceImpl implements ProfileService {
         return 0L;
     }
 
-    public PageResultDTO<ProfileListDTO, Object[]> searchResemble(PageRequestDTO pageRequest, MultipartFile uploadFile) {
-        String orgName = uploadFile.getOriginalFilename();
-        String fileName = orgName.substring(orgName.lastIndexOf("//") + 1);
-        String uuid = UUID.randomUUID().toString();
-        String saveName = uploadPath + File.separator + uuid + "_" + fileName;
-        Path savePath = Paths.get(saveName);
 
-        try {
-            uploadFile.transferTo(savePath);
-
-            log.info("image thumbnail extract");
-
-            String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
-
-            File thumbnailFile = new File(thumbnailSaveName);
-
-            Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 500, 500);
-
-            String[] arr = extractCelebrity(thumbnailSaveName);
-
-            pageRequest.setRkeyword(arr[0]);
-
-            return getProfileList(pageRequest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public Long saveCareer(ProfileDTO profileDTO, List<CareerDTO> careers) {
         if(careers != null && careers.size() > 0) {

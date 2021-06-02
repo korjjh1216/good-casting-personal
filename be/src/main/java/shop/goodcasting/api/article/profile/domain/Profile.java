@@ -6,7 +6,7 @@ import shop.goodcasting.api.user.actor.domain.Actor;
 
 import javax.persistence.*;
 
-@ToString(exclude = {"actor", "hires"})
+@ToString(exclude = {"actor"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +24,7 @@ public class Profile extends BaseEntity {
     @Column(columnDefinition = "TEXT") private String contents;
     @Column private String resemble;
     @Column private Double confidence;
+    @Column private boolean first;
 
     // join column
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,23 +32,4 @@ public class Profile extends BaseEntity {
     private Actor actor;
 
 
-    public void changePrivacy(boolean privacy) {
-        this.privacy = privacy;
-    }
-    public void changeContents(String contents) {
-        this.contents = contents;
-    }
-    public void changeResemble(String resemble) {
-        this.resemble = resemble;
-    }
-    public void changeConfidence(Double confidence) {
-        this.confidence = confidence;
-    }
-
-
-    //temp
-    @Column(columnDefinition = "TEXT") private String career;
-    public void changeCareer(String career) {
-        this.career = career;
-    }
 }

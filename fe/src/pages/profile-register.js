@@ -1,15 +1,18 @@
 import React, { useState, useCallback } from 'react'
 import ProfileCareer from '../components/Profile/ProfileCareer'
 import { useDispatch } from 'react-redux'
-import { profileRegister } from '../state/reducer/profile.reducer'
+import { fileRegister, profileRegister } from '../state/reducer/profile.reducer'
 import PageWrapper from '../components/PageWrapper'
-
-import fileUploadImg from '../assets/image/img_default_pic.png'
-
+import cameraIcon from '../assets/image/ico_camera.png'
+import { profileSelector } from '../state/reducer/profile.reducer'
+import { useSelector } from 'react-redux'
+import '../scss/css/fileUpload.css'
 const ProfileRegister = () => {
     const dispatch = useDispatch()
-
     const [inputs, setInputs] = useState({})
+    const [test, setTests] = useState({})
+    const [image, setImages] = useState(null)
+    const photoResult = useSelector(profileSelector).fileList
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -17,23 +20,20 @@ const ProfileRegister = () => {
         console.log(inputs)
         dispatch(profileRegister(inputs))
     }
-
     const handleChage = useCallback((e) => {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value,
         })
     })
-
     const handleSelectedImg = useCallback((e) => {
         e.preventDefault()
-
         const formData = new FormData()
-        formData.append('file', e.target.files[0])
-        console.log(formData)
-        for (const keyValue of formData) console.log(keyValue)
+        const imgFile = e.target.files[0]
+        formData.append('uploadFiles', imgFile)
+        dispatch(fileRegister(formData))
+        console.log('확인' + photoResult)
     })
-
     return (
         <>
             <PageWrapper
@@ -54,16 +54,23 @@ const ProfileRegister = () => {
                                         <div className="upload-file mb-16 text-center">
                                             <div id="userActions" className="square-144 m-auto px-6 mb-7">
                                                 <label htmlFor="fileUpload" className="mb-0 font-size-4 text-smoke">
-                                                    d
+                                                    {image === null ? <img className="pic_basic btn_custom_file_camera" src={cameraIcon} /> : <img className="pic_basic btn_custom_file_camera" src={`http://localhost:8080/files/display?fileName=s_${test.uuid}_${test.fileName}`} />}
                                                 </label>
-                                                <img className="file-upload-form" src={fileUploadImg} />
                                                 <input type="file" accept="image/*" id="fileUpload" className="sr-only" onChange={handleSelectedImg} />
                                             </div>
-                                            <p>※ 프로필사진과 동영상을 업로드해주세요</p>
+                                            <p>※ 프로필사진을 등록해주세요</p>
                                         </div>
                                         <form onSubmit={handleSubmit}>
                                             <fieldset>
                                                 <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="form-group">
+                                                            <label htmlFor="aboutTextarea" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
+                                                                동영상 등록하기
+                                                            </label>
+                                                            <input type="file" accept="video/mp4, video/x-m4v, video/avi" id="fileUpload" className="sr-only" onChange={handleSelectedImg} />
+                                                        </div>
+                                                    </div>
                                                     <div className="col-md-12">
                                                         <div className="form-group">
                                                             <label htmlFor="aboutTextarea" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
@@ -94,5 +101,4 @@ const ProfileRegister = () => {
         </>
     )
 }
-
 export default ProfileRegister

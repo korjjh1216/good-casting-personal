@@ -29,14 +29,16 @@ const hireSlice = createSlice({
             size: 10,
             type: '',
             sort: 'hireId',
-            ffrom: 0,
-            fto: 0,
-            conKeyword: '',
-            castKeyword: '',
-            gfrom: 0,
-            gto: 0,
-            tkeyword: 0,
-            pkeyword: 0,
+            searchCond: {
+                ffrom: 0,
+                fto: 0,
+                conKeyword: '',
+                castKeyword: '',
+                gfrom: 0,
+                gto: 0,
+                tkeyword: 0,
+                pkeyword: 0,
+            },
         },
         pageResult: {
             pageList: [],
@@ -58,31 +60,35 @@ const hireSlice = createSlice({
         },
         setFfrom: ({ pageRequest }, { payload }) => {
             console.log('before ffrom: ' + pageRequest.ffrom)
-            pageRequest.ffrom = payload
+            pageRequest.searchCond.ffrom = payload
             console.log('after ffrom' + pageRequest.ffrom)
         },
         setFto: ({ pageRequest }, { payload }) => {
             console.log('before fto: ' + pageRequest.fto)
-            pageRequest.fto = payload
+            pageRequest.searchCond.fto = payload
             console.log('after fto: ' + pageRequest.fto)
         },
         setKeywords: ({ pageRequest }, { payload }) => {
             console.log('keyword: ' + payload)
-            pageRequest.castKeyword = payload
-            pageRequest.conKeyword = payload
-            pageRequest.pkeyword = payload
-            pageRequest.tkeyword = payload
+
+            pageRequest.searchCond.castKeyword = payload
+            pageRequest.searchCond.conKeyword = payload
+            pageRequest.searchCond.pkeyword = payload
+            pageRequest.searchCond.tkeyword = payload
         },
         setType: ({ pageRequest }, { payload }) => {
-            pageRequest.type += payload
+            pageRequest.searchCond.type += payload
         },
         setGfrom: ({ pageRequest }, { payload }) => {
             console.log('guarantee from: ' + payload)
-            pageRequest.gfrom = payload
+            pageRequest.searchCond.gfrom = payload
         },
         setGto: ({ pageRequest }, { payload }) => {
             console.log('guarantee to: ' + payload)
-            pageRequest.gto = payload
+            pageRequest.searchCond.gto = payload
+        },
+        resetSearchCondition: ({ pageRequest }) => {
+            pageRequest.searchCond = {}
         },
     },
     extraReducers: (builder) => {
@@ -111,5 +117,5 @@ const hireSlice = createSlice({
 
 export const hireSelector = (state) => state.hireReducer
 
-export const { pageListChange, setFfrom, setFto, setKeywords, setType, setGfrom, setGto } = hireSlice.actions
+export const { pageListChange, setFfrom, setFto, setKeywords, setType, setGfrom, setGto, resetSearchCondition } = hireSlice.actions
 export default hireSlice.reducer

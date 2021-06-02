@@ -82,7 +82,6 @@ public class ProfileTest {
 
         Profile profile = Profile.builder()
                 .actor(actor)
-                .career("Career")
                 .contents("content...")
                 .build();
 
