@@ -5,12 +5,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.hire.domain.Hire;
-import shop.goodcasting.api.article.hire.domain.HireDTO;
-import shop.goodcasting.api.article.hire.domain.HireListDTO;
+import shop.goodcasting.api.article.hire.domain.*;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.repository.FileRepository;
@@ -20,15 +16,9 @@ import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 import shop.goodcasting.api.user.producer.service.ProducerService;
 
 import javax.transaction.Transactional;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -74,14 +64,25 @@ public class HireServiceImpl implements HireService {
     }
 
     @Override
-    public PageResultDTO<HireListDTO, Object[]> getHireList(PageRequestDTO pageRequest) {
-        Page<Object[]> result = hireRepo.searchPage(pageRequest,
-                pageRequest.getPageable(Sort.by(pageRequest.getSort()).descending()));
+    public HirePageResultDTO<HireListDTO, Object[]> getHireList(HirePageRequestDTO pageRequest) {
 
-        Function<Object[], HireListDTO> fn = (entity -> entity2DtoFiles((Hire) entity[0],
-                (Producer) entity[1]));
+        Page<Object[]> result;
+        Function<Object[], HireListDTO> fn;
+        if (pageRequest.getProducerId() == null) {
+            result = hireRepo.searchPage(pageRequest,
+                    pageRequest.getPageable(Sort.by(pageRequest.getSort()).descending()));
 
-        return new PageResultDTO<>(result, fn);
+            fn = (entity -> entity2DtoFiles((Hire) entity[0],
+                    (Producer) entity[1]));
+        } else {
+            result = hireRepo.myHirePage(pageRequest,
+                    pageRequest.getPageable(Sort.by(pageRequest.getSort()).descending()));
+
+            fn = (entity -> entity2DtoMy((Hire) entity[0],
+                    (Producer) entity[1], (FileVO) entity[2]));
+        }
+
+        return new HirePageResultDTO<>(result, fn ,pageRequest);
     }
 
     @Transactional

@@ -14,10 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import shop.goodcasting.api.apply.domain.Apply;
+import shop.goodcasting.api.apply.domain.ApplyPageRequestDTO;
 import shop.goodcasting.api.apply.domain.QApply;
-import shop.goodcasting.api.article.hire.domain.QHire;
-import shop.goodcasting.api.article.profile.domain.QProfile;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.user.actor.domain.QActor;
 import shop.goodcasting.api.user.producer.domain.QProducer;
 
@@ -34,7 +32,7 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
 
     @Override
     @Transactional
-    public Page<Object[]> applicantList(PageRequestDTO pageRequest, Pageable pageable) {
+    public Page<Object[]> applicantList(ApplyPageRequestDTO pageRequest, Pageable pageable) {
 
         log.info("-------------------Search Profile Page Enter------------------------------------");
 

@@ -3,19 +3,14 @@ package shop.goodcasting.api.article.profile.controller;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
+import shop.goodcasting.api.article.profile.domain.ProfilePageRequestDTO;
+import shop.goodcasting.api.article.profile.domain.ProfilePageResultDTO;
 import shop.goodcasting.api.article.profile.service.ProfileServiceImpl;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
-
-import java.util.List;
 
 @Log4j2
 @RestController
@@ -42,7 +37,7 @@ public class ProfileController {
 
 
     @PostMapping("/list")
-    public ResponseEntity<PageResultDTO<ProfileListDTO, Object[]>> profileList(@RequestBody PageRequestDTO pageRequest) {
+    public ResponseEntity<ProfilePageResultDTO<ProfileListDTO, Object[]>> profileList(@RequestBody ProfilePageRequestDTO pageRequest) {
         log.info("------------------------------" + pageRequest + "----------------------------------------------------");
 
         return new ResponseEntity<>(profileService.getProfileList(pageRequest), HttpStatus.OK);

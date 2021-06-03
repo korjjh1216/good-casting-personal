@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.domain.HireListDTO;
+import shop.goodcasting.api.article.hire.domain.HirePageRequestDTO;
+import shop.goodcasting.api.article.hire.domain.HirePageResultDTO;
 import shop.goodcasting.api.article.hire.service.HireServiceImpl;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
 
 
 @Log4j2
@@ -33,7 +33,7 @@ public class HireController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<PageResultDTO<HireListDTO, Object[]>> hireList(@RequestBody PageRequestDTO pageRequest) {
+    public ResponseEntity<HirePageResultDTO<HireListDTO, Object[]>> hireList(@RequestBody HirePageRequestDTO pageRequest) {
         log.info("------------------" + pageRequest + "----------------------------------");
 
         log.info("==================================" + hireService.getHireList(pageRequest));

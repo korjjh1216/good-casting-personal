@@ -1,4 +1,5 @@
-package shop.goodcasting.api.common.domain;
+package shop.goodcasting.api.apply.domain;
+
 
 import lombok.Data;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import java.util.stream.IntStream;
 @Log4j2
 @ToString
 @Data
-public class PageResultDTO<D, E> {
+public class ApplyPageResultDTO<D, E> {
     private List<D> dtoList;
 
     //총 페이지 번호
@@ -33,11 +34,15 @@ public class PageResultDTO<D, E> {
 
     private long totalElement;
 
+    private ApplyPageRequestDTO pageRequest;
+
     //페이지 번호  목록
     private List<Integer> pageList;
 
-    public PageResultDTO(Page<E> result, Function<E, D> fn) {
+    public ApplyPageResultDTO(Page<E> result, Function<E, D> fn, ApplyPageRequestDTO pageRequest) {
         dtoList = result.stream().map(fn).collect(Collectors.toList());
+
+        this.pageRequest = pageRequest;
 
         totalPage = result.getTotalPages();
         totalElement = result.getTotalElements();
@@ -64,6 +69,6 @@ public class PageResultDTO<D, E> {
         next = totalPage > tempEnd;
 
         pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
-
     }
+
 }

@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react'
-import { Link } from 'gatsby'
-import { useDispatch } from 'react-redux'
-import { profileList } from '../../state/reducer/profile.reducer'
-import { readOne } from '../../state/reducer/profile.reducer'
+import React, { useEffect } from 'react';
+import { Link } from 'gatsby';
 
-const ProfileList = ({ pageRequest, pageResult }) => {
-    const dispatch = useDispatch()
+import { useDispatch, useSelector } from 'react-redux';
+import { profileList, profileSelector } from '../../state/reducer/profile.reducer';
+
+const ProfileList = () => {
+    const dispatch = useDispatch();
+    const { reset } = useSelector(profileSelector);
+    const pageRequest = useSelector(profileSelector).pageRequest;
+    const pageResult = useSelector(profileSelector).pageResult;
 
     useEffect(() => {
-        console.log('ProfileList pageRequest: ' + JSON.stringify(pageRequest))
-        dispatch(profileList(pageRequest))
-    }, [])
+        dispatch(profileList(pageRequest));
+    }, [reset]);
 
     return (
         <>
@@ -52,7 +54,7 @@ const ProfileList = ({ pageRequest, pageResult }) => {
                 </>
             ))}
         </>
-    )
-}
+    );
+};
 
-export default ProfileList
+export default ProfileList;

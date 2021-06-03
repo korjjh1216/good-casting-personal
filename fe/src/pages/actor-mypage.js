@@ -22,16 +22,7 @@ const ActorMypage = () => {
                                     <Link to="/profile-register">
                                         <button className="btn btn-primary text-uppercase font-size-3">프로필등록하기</button>
                                     </Link>
-                                    <div className="pt-6 row justify-content-center">
-                                        {state.profile !== null ? (
-                                            <div className="col-12 col-lg-6">
-                                                <MyProfileList />
-                                            </div>
-                                        ) : (
-                                            <p>프로필없음</p>
-                                        )}
-                                        <div className="col-12 col-lg-6"></div>
-                                    </div>
+                                    <div className="row justify-content-center">{state.profile !== null ? <MyProfileList /> : <p>프로필없음</p>}</div>
                                 </div>
                             </div>
                         </div>

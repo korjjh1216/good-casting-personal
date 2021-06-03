@@ -1,4 +1,4 @@
-package shop.goodcasting.api.common.domain;
+package shop.goodcasting.api.apply.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,31 +7,23 @@ import lombok.ToString;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import shop.goodcasting.api.file.domain.FileDTO;
-import shop.goodcasting.api.file.domain.FileVO;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @ToString
 @Builder
 @AllArgsConstructor
 @Data
-public class PageRequestDTO {
+public class ApplyPageRequestDTO {
     private Integer page;
     private Integer size;
-    private String type;
     private String sort;
 
-    private SearchConditionDTO searchCond;
-
     private Long actorId;
-    private Long producerId;
+    private Long ProducerId;
 
     private FileDTO file;
 
-    public PageRequestDTO() {
+    public ApplyPageRequestDTO() {
         this.page = 1;
         this.size = 10;
     }
@@ -40,3 +32,4 @@ public class PageRequestDTO {
         return PageRequest.of(page - 1, size, sort);
     }
 }
+

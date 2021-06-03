@@ -1,18 +1,18 @@
-import React, { useContext, useEffect } from 'react'
-import { Link } from 'gatsby'
-import { Collapse } from 'react-bootstrap'
-import GlobalContext from '../../context/GlobalContext'
-import imgL from '../../assets/image/logo-main-black.png'
-import Logo from '../Logo'
-import { useDispatch, useSelector } from 'react-redux'
-import { producerSelctor, getProducerInfo } from '../../state/reducer/producer.reducer'
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'gatsby';
+import { Collapse } from 'react-bootstrap';
+import GlobalContext from '../../context/GlobalContext';
+import imgL from '../../assets/image/logo-main-black.png';
+import Logo from '../Logo';
+import { useDispatch, useSelector } from 'react-redux';
+import { producerSelctor, getProducerInfo } from '../../state/reducer/producer.reducer';
 
 const Sidebar = () => {
-    const gContext = useContext(GlobalContext)
-    const dispatch = useDispatch()
+    const gContext = useContext(GlobalContext);
+    const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getProducerInfo())
-    }, [dispatch])
+        dispatch(getProducerInfo());
+    }, []);
 
     return (
         <>
@@ -57,14 +57,14 @@ const Sidebar = () => {
                 href="/#"
                 className="sidebar-mobile-button"
                 onClick={(e) => {
-                    e.preventDefault()
-                    gContext.toggleSidebarDashboard()
+                    e.preventDefault();
+                    gContext.toggleSidebarDashboard();
                 }}
             >
                 <i className="icon icon-sidebar-2"></i>
             </a>
         </>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

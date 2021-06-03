@@ -1,39 +1,51 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { hireList, setType } from '../../state/reducer/hire.reducer';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { hireList, hireSelector } from '../../state/reducer/hire.reducer'
 
-const SearchBtnComponent = ({ type, pageRequest, text, className }) => {
-    const dispatch = useDispatch();
+const SearchBtnComponent = ({ data, text, className }) => {
+    const dispatch = useDispatch()
+
+    const pageRequest = useSelector(hireSelector).pageRequest
+
+    const clickSearch = (text) => {
+        if (text === 'search') {
+            dispatch(
+                hireList({
+                    ...pageRequest,
+                    searchKey: { keyword: data },
+                })
+            )
+        }
+        if (text === '기간 설정') {
+            dispatch(
+                hireList({
+                    ...pageRequest,
+                    period: { from: data.startDate, to: data.endDate },
+                })
+            )
+        }
+        if (text === '출연료 검색') {
+            dispatch(
+                hireList({
+                    ...pageRequest,
+                    pay: {
+                        start: data[0],
+                        end: data[1],
+                    },
+                })
+            )
+        }
+    }
+
     return (
         <>
             <div className="button-block">
-                <button
-                    onClick={() => {
-                        console.log('type: ' + pageRequest.type);
-                        if (!pageRequest.type.includes(type)) {
-                            dispatch(
-                                hireList({
-                                    ...pageRequest,
-                                    type: pageRequest.type + type,
-                                })
-                            );
-                            dispatch(setType(type));
-                        } else {
-                            dispatch(
-                                hireList({
-                                    ...pageRequest,
-                                    type: pageRequest.type,
-                                })
-                            );
-                        }
-                    }}
-                    className={className}
-                >
+                <button onClick={() => clickSearch(text)} className={className}>
                     {text}
                 </button>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default SearchBtnComponent;
+export default SearchBtnComponent

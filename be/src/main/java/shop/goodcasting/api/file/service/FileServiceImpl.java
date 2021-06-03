@@ -28,7 +28,7 @@ public class FileServiceImpl implements FileService {
         DemuxerTrack vt = dm.getVideoTrack();
 
         String fileName = file.getAbsolutePath();
-        fileName = fileName.substring(0, fileName.lastIndexOf(".")) +".jpg";
+        fileName =fileName.substring(0, fileName.lastIndexOf(".")) +".jpg";
 
         File imageFile = new File(fileName);
 

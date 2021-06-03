@@ -1,6 +1,4 @@
-
 package shop.goodcasting.api.article.profile.domain;
-
 import lombok.*;
 import org.springframework.stereotype.Component;
 

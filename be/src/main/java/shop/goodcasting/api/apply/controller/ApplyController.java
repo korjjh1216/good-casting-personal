@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.apply.domain.ApplyDTO;
 import shop.goodcasting.api.apply.domain.ApplyListDTO;
+import shop.goodcasting.api.apply.domain.ApplyPageRequestDTO;
+import shop.goodcasting.api.apply.domain.ApplyPageResultDTO;
 import shop.goodcasting.api.apply.service.ApplyServiceImpl;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class ApplyController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<PageResultDTO<ApplyListDTO,Object[]>> applicantList(@RequestBody PageRequestDTO pageRequest){
+    public ResponseEntity<ApplyPageResultDTO<ApplyListDTO,Object[]>> applicantList(@RequestBody ApplyPageRequestDTO pageRequest){
         log.info("------------------------------" + pageRequest + "----------------------------------------------------");
 
         return new ResponseEntity<>(applyService.getApplicantList(pageRequest), HttpStatus.OK);

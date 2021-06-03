@@ -1,6 +1,6 @@
-import React from 'react';
-import DashboardApplicantList from '../components/Dashboard/DashboardApplicantList';
-import PageWrapper from '../components/PageWrapper';
+import React from 'react'
+import DashboardApplicantList from '../components/Dashboard/DashboardApplicantList'
+import PageWrapper from '../components/PageWrapper'
 
 const DashboardApplicants = () => {
     return (
@@ -18,6 +18,6 @@ const DashboardApplicants = () => {
                 </div>
             </PageWrapper>
         </>
-    );
-};
-export default DashboardApplicants;
+    )
+}
+export default DashboardApplicants

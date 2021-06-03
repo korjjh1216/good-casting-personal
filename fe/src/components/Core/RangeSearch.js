@@ -1,30 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import { useDispatch } from 'react-redux';
+import SearchBtnComponent from './SearchBtn';
 import { setGfrom, setGto } from '../../state/reducer/hire.reducer';
 
 const STEP = 1;
 const MIN = 0;
-const MAX = 50;
+const MAX = 500000;
 
-const RangeSearchComponent = ({ className }) => {
-    const [rangeValues, setRangeValues] = useState([0, 50]);
+const RangeSearchComponent = ({ text }) => {
+    const [rangeValues, setRangeValues] = useState([0, 500000]);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (className === '출연료') {
-            dispatch(setGfrom(rangeValues[0]));
-            dispatch(setGto(rangeValues[1]));
-        }
-    }, [rangeValues]);
 
     return (
         <div className="widgets mb-11 ">
             <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
-                <h4 className="font-size-6 font-weight-semibold mb-6 w-75">
-                    {className}
-                </h4>
+                <h4 className="font-size-6 font-weight-semibold mb-6 w-75">{text}</h4>
                 {/* <!-- Range Slider --> */}
 
                 <div className="slider-price w-25 text-right mr-7">
@@ -35,8 +27,7 @@ const RangeSearchComponent = ({ className }) => {
                                 white-space: nowrap;
                             `}
                         >
-                            {rangeValues[0].toFixed()} -
-                            {rangeValues[1].toFixed()}
+                            {rangeValues[0].toFixed()} -{rangeValues[1].toFixed()}
                         </span>
                     </p>
                 </div>
@@ -123,6 +114,7 @@ const RangeSearchComponent = ({ className }) => {
                     />
                 </>
             </div>
+            <SearchBtnComponent data={rangeValues} text={'출연료 검색'} className="btn btn-primary line-height-reset h-50 w-50 text-uppercase" />
         </div>
     );
 };

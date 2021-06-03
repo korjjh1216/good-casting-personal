@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { Range, getTrackBackground } from 'react-range'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Range, getTrackBackground } from 'react-range';
+import CustomizedRadios from '../Core/CustomizedRadios';
 
-const STEP = 1
-const MIN = 0
-const MAX = 100
+const STEP = 1;
+const MIN = 0;
+const MAX = 100;
 
 const CheckStyled = styled.span`
     cursor: pointer;
@@ -31,43 +32,35 @@ const CheckStyled = styled.span`
             color: #00b074;
         }
     }
-`
+`;
 
 const Check = ({ children }) => {
-    const [active, setActive] = useState(false)
+    const [active, setActive] = useState(false);
 
     useEffect(() => {
         if (active) {
         }
-    }, [active])
+    }, [active]);
 
     return (
         <CheckStyled
             className={`toggle-item ${active ? 'active' : ''}`}
             onClick={() => {
-                setActive(!active)
+                setActive(!active);
             }}
         >
             {children}
         </CheckStyled>
-    )
-}
+    );
+};
 
 const Sidebar = () => {
-    const [rangeValues, setRangeValues] = useState([0, 100])
+    const [rangeValues, setRangeValues] = useState([0, 100]);
     return (
         <>
             {/* <!-- Sidebar Start --> */}
             <div className="widgets mb-11">
-                <h4 className="font-size-6 font-weight-semibold mb-6">성별</h4>
-                <ul className="list-unstyled filter-check-list">
-                    <li className="mb-2">
-                        <Check>남성</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>여성</Check>
-                    </li>
-                </ul>
+                <CustomizedRadios />
             </div>
             <div className="widgets mb-11 ">
                 <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
@@ -110,7 +103,7 @@ const Sidebar = () => {
                             min={MIN}
                             max={MAX}
                             onChange={(values) => {
-                                setRangeValues(values)
+                                setRangeValues(values);
                             }}
                             renderTrack={({ props, children }) => (
                                 <div
@@ -129,11 +122,11 @@ const Sidebar = () => {
                                         ref={props.ref}
                                         style={{
                                             height: '5px',
-                                            width: '100%',
+                                            width: '90%',
                                             borderRadius: '4px',
                                             background: getTrackBackground({
                                                 values: rangeValues,
-                                                colors: ['#ccc', '#00b074', '#ccc'],
+                                                colors: ['#ccc', '#755dd9', '#ccc'],
                                                 min: MIN,
                                                 max: MAX,
                                             }),
@@ -149,8 +142,8 @@ const Sidebar = () => {
                                     {...props}
                                     style={{
                                         ...props.style,
-                                        height: '24px',
-                                        width: '24px',
+                                        height: '17px',
+                                        width: '17px',
                                         borderRadius: '50%',
                                         backgroundColor: '#FFF',
                                         display: 'flex',
@@ -170,43 +163,10 @@ const Sidebar = () => {
                     </>
                 </div>
             </div>
-            <div className="widgets mb-11">
-                <h4 className="font-size-6 font-weight-semibold mb-6">Experience Level </h4>
-                <ul className="list-unstyled filter-check-list">
-                    <li className="mb-2">
-                        <Check>All</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>Senior</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>Mid</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>Junior</Check>
-                    </li>
-                </ul>
-            </div>
-            <div className="widgets mb-11">
-                <h4 className="font-size-6 font-weight-semibold mb-6">Posted Time</h4>
-                <ul className="list-unstyled filter-check-list">
-                    <li className="mb-2">
-                        <Check>Anytime</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>Last day</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>Last 3 days</Check>
-                    </li>
-                    <li className="mb-2">
-                        <Check>Last week</Check>
-                    </li>
-                </ul>
-            </div>
+
             {/* <!-- Sidebar End --> */}
         </>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

@@ -14,8 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import shop.goodcasting.api.article.profile.domain.Profile;
+import shop.goodcasting.api.article.profile.domain.ProfilePageRequestDTO;
 import shop.goodcasting.api.article.profile.domain.QProfile;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.file.domain.QFileVO;
 import shop.goodcasting.api.user.actor.domain.QActor;
 
@@ -32,11 +32,10 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
 
     @Override
     @Transactional
-    public Page<Object[]> searchPage(PageRequestDTO pageRequest, Pageable pageable) {
+    public Page<Object[]> searchPage(ProfilePageRequestDTO pageRequest, Pageable pageable) {
 
         log.info("-------------------Search Profile Page Enter------------------------------------");
 
-        String type = pageRequest.getType();
         QProfile profile = QProfile.profile;
         QFileVO file = QFileVO.fileVO;
         QActor actor = QActor.actor;
@@ -47,49 +46,44 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
 
         JPQLQuery<Tuple> tuple = jpqlQuery.select(profile, actor, file);
 
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanBuilder totalBuilder = new BooleanBuilder();
         BooleanExpression expression = profile.profileId.gt(0L);
         BooleanExpression expression1 = profile.first.eq(true);
         BooleanExpression expression2 = profile.privacy.eq(true);
 
-        booleanBuilder.and(expression);
-        booleanBuilder.and(expression1);
-        booleanBuilder.and(expression2);
+        totalBuilder.and(expression);
+        totalBuilder.and(expression1);
+        totalBuilder.and(expression2);
 
-        if (type != null) {
-            String[] typeArr = type.split("");
-
-            BooleanBuilder conditionBuilder = new BooleanBuilder();
-
-            for (String t: typeArr) {
-                log.info("search type loop enter");
-                switch (t) {
-                    case "r":
-                        log.info("search type: " + t);
-                        conditionBuilder.and(profile.resemble.contains(pageRequest.getSearchCond().getRkeyword()));
-                        break;
-                    case "a":
-                        log.info("search type: " + t);
-                        conditionBuilder.and(actor.age.between(pageRequest.getSearchCond().getAfrom(), pageRequest.getSearchCond().getAto()));
-                        break;
-                    case "g":
-                        log.info("search type: " + t);
-                        conditionBuilder.and(actor.gender.contains(pageRequest.getSearchCond().getGkeyword()));
-                        break;
-                    case "h":
-                        log.info("search type: " + t);
-                        conditionBuilder.and(actor.height.between(pageRequest.getSearchCond().getHfrom(), pageRequest.getSearchCond().getHto()));
-                        break;
-                    case "w":
-                        log.info("search type: " + t);
-                        conditionBuilder.and(actor.weight.between(pageRequest.getSearchCond().getWfrom(), pageRequest.getSearchCond().getWto()));
-                        break;
-                }
-            }
-            booleanBuilder.and(conditionBuilder);
+        if (pageRequest.getResembleKey() != null) {
+            BooleanBuilder resembleBuilder = makeResembleKey(profile, pageRequest.getResembleKey());
+            totalBuilder.and(resembleBuilder);
         }
 
-        tuple.where(booleanBuilder);
+        if (pageRequest.getGenderKey() != null && pageRequest.getGenderKey().trim().length() != 0) {
+            BooleanBuilder genderBuilder = makeGenderKey(profile, pageRequest.getGenderKey());
+            totalBuilder.and(genderBuilder);
+        }
+
+        if (pageRequest.getAge() != null) {
+            BooleanBuilder ageBuilder = makeAgeCondition(profile, pageRequest.getAge().getFrom(), pageRequest.getAge().getTo());
+            totalBuilder.and(ageBuilder);
+        }
+
+        if (pageRequest.getHeight() != null) {
+            BooleanBuilder heightBuilder = makeHeightCondition(profile, pageRequest.getHeight().getFrom(), pageRequest.getHeight().getTo());
+            totalBuilder.and(heightBuilder);
+        }
+
+        if (pageRequest.getWeight() != null) {
+            BooleanBuilder weightBuilder = makeWeightBuilder(profile, pageRequest.getWeight().getFrom(), pageRequest.getWeight().getTo());
+            totalBuilder.and(weightBuilder);
+        }
+
+        tuple.where(totalBuilder);
+
+        log.info("-----------tuple test----------------");
+        log.info(tuple);
 
         Sort sort = pageable.getSort();
 
@@ -121,9 +115,54 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
                 count);
     }
 
+    private BooleanBuilder makeGenderKey(QProfile profile, String genderKey) {
+        BooleanBuilder conditions = new BooleanBuilder();
+        conditions.and(profile.actor.gender.eq(genderKey));
+        return conditions;
+    }
+
+    private BooleanBuilder makeWeightBuilder(QProfile profile, Integer from, Integer to) {
+        BooleanBuilder conditions = new BooleanBuilder();
+        conditions.and(profile.actor.weight.between(from, to));
+
+        return conditions;
+    }
+
+    private BooleanBuilder makeHeightCondition(QProfile profile, Integer from, Integer to) {
+        BooleanBuilder conditions = new BooleanBuilder();
+        conditions.and(profile.actor.height.between(from, to));
+
+        return conditions;
+    }
+
+    private BooleanBuilder makeAgeCondition(QProfile profile, Integer from, Integer to) {
+
+        if (from == null || to == null) {
+            return null;
+        }
+
+        BooleanBuilder conditions = new BooleanBuilder();
+        conditions.and(profile.actor.age.between(from, to));
+
+        return conditions;
+    }
+
+    private BooleanBuilder makeResembleKey(QProfile profile, String keyword) {
+        if (keyword == null || keyword.trim().length() == 0) {
+            return null;
+        }
+
+        BooleanBuilder conditions = new BooleanBuilder();
+
+        conditions.and(profile.resemble.contains(keyword));
+
+        return conditions;
+    }
+
+
     @Override
     @Transactional
-    public Page<Object[]> myProfilePage(PageRequestDTO pageRequest, Pageable pageable) {
+    public Page<Object[]> myProfilePage(ProfilePageRequestDTO pageRequest, Pageable pageable) {
 
         log.info("-------------------Search Profile Page Enter------------------------------------");
 
@@ -139,7 +178,7 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = profile.profileId.gt(0L);
-        BooleanExpression expression1 = profile.first.eq(true);
+        BooleanExpression expression1 = file.first.eq(true);
         BooleanExpression expression2 = profile.actor.actorId.eq(pageRequest.getActorId());
 
         booleanBuilder.and(expression);

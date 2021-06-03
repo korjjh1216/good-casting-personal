@@ -12,16 +12,20 @@ import java.time.LocalDateTime;
 @Data
 @Component
 public class HireListDTO {
+    // pk
     private Long hireId;
 
+    private String title;
     private String project;
     private String cast;
     private LocalDateTime deadline;
+    private String personnel;
     private Timestamp regDate;
     private Timestamp modDate;
 
     private String fileName;
     private String fileUuid;
+    private boolean first;
 
     private String producerAgency;
 }

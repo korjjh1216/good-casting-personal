@@ -1,21 +1,23 @@
-import React, { useEffect } from 'react'
-import { Link } from 'gatsby'
-import { hireList } from '../../state/reducer/hire.reducer'
-import iconL from '../../assets/image/svg/icon-loaction-pin-black.svg'
-import iconC from '../../assets/image/svg/icon-clock.svg'
-import { useDispatch } from 'react-redux'
-import imgF from '../../assets/image/svg/icon-fire-rounded.svg'
+import React, { useEffect } from 'react';
+import { Link } from 'gatsby';
+import { hireList, hireSelector } from '../../state/reducer/hire.reducer';
+import iconL from '../../assets/image/svg/icon-loaction-pin-black.svg';
+import iconC from '../../assets/image/svg/icon-clock.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import imgF from '../../assets/image/svg/icon-fire-rounded.svg';
 
-const HireList = ({ pageResult, pageRequest }) => {
-    const dispatch = useDispatch()
-
+const HireList = () => {
+    const dispatch = useDispatch();
+    const pageRequest = useSelector(hireSelector).pageRequest;
+    const { dtoList } = useSelector(hireSelector).pageResult;
+    const { reset } = useSelector(hireSelector);
     useEffect(() => {
-        dispatch(hireList(pageRequest))
-    }, [])
+        dispatch(hireList(pageRequest));
+    }, [reset]);
 
     return (
         <>
-            {pageResult.dtoList.map((hire) => {
+            {dtoList.map((hire) => {
                 return (
                     <ul key={hire.hireId} style={{ listStyleType: 'none', paddingLeft: '0' }}>
                         <li>
@@ -87,10 +89,10 @@ const HireList = ({ pageResult, pageRequest }) => {
                             </Link>
                         </li>
                     </ul>
-                )
+                );
             })}
         </>
-    )
-}
+    );
+};
 
-export default HireList
+export default HireList;

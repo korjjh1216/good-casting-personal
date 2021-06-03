@@ -1,16 +1,16 @@
-import React from 'react'
-import PageWrapper from '../components/PageWrapper'
-import Sidebar from '../components/Profile/Sidebar'
-import ProfileList from '../components/Profile/ProfileList'
-import { profileSelector } from '../state/reducer/profile.reducer'
-import { useSelector } from 'react-redux'
-import '../scss/css/fileUpload.css'
-import DragNDropComponent from '../components/Profile/DragNDrop'
-import PageListComponent from '../components/Core/PageList'
+import React from 'react';
+import PageWrapper from '../components/PageWrapper';
+import Sidebar from '../components/Profile/Sidebar';
+import ProfileList from '../components/Profile/ProfileList';
+import { profileSelector } from '../state/reducer/profile.reducer';
+import { useSelector } from 'react-redux';
+import '../scss/css/fileUpload.css';
+import DragNDropComponent from '../components/Core/DragNDrop';
+import PageListComponent from '../components/Core/PageList';
 
 const SearchGrid = () => {
-    const pageResult = useSelector(profileSelector).pageResult
-    const pageRequest = useSelector(profileSelector).pageRequest
+    const pageResult = useSelector(profileSelector).pageResult;
+    const pageRequest = useSelector(profileSelector).pageRequest;
     return (
         <>
             <PageWrapper>
@@ -38,7 +38,7 @@ const SearchGrid = () => {
                                         </div>
                                     </div>
                                     <div className="text-center pt-5 pt-lg-13">
-                                        <PageListComponent pageRequest={pageRequest} pageResult={pageResult} flag={'prifileList'} />
+                                        <PageListComponent flag={'profileList'} />
                                     </div>
                                 </div>
                                 {/* <!-- form end --> */}
@@ -48,6 +48,6 @@ const SearchGrid = () => {
                 </div>
             </PageWrapper>
         </>
-    )
-}
-export default SearchGrid
+    );
+};
+export default SearchGrid;

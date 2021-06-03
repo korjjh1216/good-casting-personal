@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
 import { useDispatch } from 'react-redux'
-import { hireList, setFfrom, setFto } from '../../state/reducer/hire.reducer'
+import SearchBtnComponent from '../Core/SearchBtn'
 
 const DatePickerStyled = styled.div`
     display: flex;
@@ -51,8 +51,8 @@ const DatePickerComponent = ({ isRangeSearch }) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setFfrom(dateToString(startDate)))
-        dispatch(setFto(dateToString(endDate)))
+        dateToString(startDate)
+        dateToString(endDate)
     }, [startDate, endDate])
 
     return (
@@ -80,6 +80,7 @@ const DatePickerComponent = ({ isRangeSearch }) => {
                             }}
                         />
                     </DatePickerStyled>
+                    <SearchBtnComponent data={{ startDate, endDate }} text={'기간 설정'} className="btn btn-primary line-height-reset h-50 w-50 text-uppercase" />
                 </>
             )}
         </>

@@ -15,12 +15,14 @@ import { actorMenuItems, menuItems, producerMenuItems } from './menuItems'
 import imgP from '../../assets/image/header-profile.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggendIn, userSelector } from '../../state/reducer/user.reducer'
+import { resetHireSearch } from '../../state/reducer/hire.reducer'
+import { resetProfileSearch } from '../../state/reducer/profile.reducer'
+import { resetFile } from '../../state/reducer/file.reducer'
 
 const SiteHeader = styled.header`
     .dropdown-toggle::after {
         opacity: 0;
     }
-
     padding: 10px 0 10px 0;
     position: absolute !important;
     top: 0;
@@ -61,8 +63,7 @@ const Header = () => {
 
     useEffect(() => {
         if (localStorage.getItem('USER') !== null) {
-            // dispatch(isUserLoggendIn(user.loggedIn))
-            // JSON.stringify(userInfo[0].position)
+            // dispatch(isUserLoggendIn(user.loggedIn));
             console.log('로그인 되어 있음 : ' + userInfo[0].position)
         } else {
             console.log('로그인 되어 있지 않음')
@@ -101,15 +102,25 @@ const Header = () => {
                                               return (
                                                   <React.Fragment key={name + index}>
                                                       <li className="nav-item" {...rest}>
-                                                          {isExternal ? (
-                                                              <a className="nav-link" href={`${name}`} target="_blank" rel="noopener noreferrer">
-                                                                  {label}
-                                                              </a>
-                                                          ) : (
-                                                              <Link className="nav-link" to={`/${name}`} role="button" aria-expanded="false">
-                                                                  {label}
-                                                              </Link>
-                                                          )}
+                                                          {' '}
+                                                          <Link
+                                                              onClick={(e) => {
+                                                                  if (index === 0) {
+                                                                      dispatch(resetHireSearch())
+                                                                  }
+                                                                  if (index === 1) {
+                                                                      console.log('enter?')
+                                                                      dispatch(resetProfileSearch())
+                                                                      dispatch(resetFile())
+                                                                  }
+                                                              }}
+                                                              className="nav-link"
+                                                              to={`/${name}`}
+                                                              role="button"
+                                                              aria-expanded="false"
+                                                          >
+                                                              {label}
+                                                          </Link>
                                                       </li>
                                                   </React.Fragment>
                                               )
@@ -119,15 +130,24 @@ const Header = () => {
                                               return (
                                                   <React.Fragment key={name + index}>
                                                       <li className="nav-item" {...rest}>
-                                                          {isExternal ? (
-                                                              <a className="nav-link" href={`${name}`} target="_blank" rel="noopener noreferrer">
-                                                                  {label}
-                                                              </a>
-                                                          ) : (
-                                                              <Link className="nav-link" to={`/${name}`} role="button" aria-expanded="false">
-                                                                  {label}
-                                                              </Link>
-                                                          )}
+                                                          <Link
+                                                              onClick={(e) => {
+                                                                  if (index === 0) {
+                                                                      dispatch(resetHireSearch())
+                                                                  }
+                                                                  if (index === 1) {
+                                                                      console.log('enter?')
+                                                                      dispatch(resetProfileSearch())
+                                                                      dispatch(resetFile())
+                                                                  }
+                                                              }}
+                                                              className="nav-link"
+                                                              to={`/${name}`}
+                                                              role="button"
+                                                              aria-expanded="false"
+                                                          >
+                                                              {label}
+                                                          </Link>
                                                       </li>
                                                   </React.Fragment>
                                               )
@@ -136,15 +156,24 @@ const Header = () => {
                                               return (
                                                   <React.Fragment key={name + index}>
                                                       <li className="nav-item" {...rest}>
-                                                          {isExternal ? (
-                                                              <a className="nav-link" href={`${name}`} target="_blank" rel="noopener noreferrer">
-                                                                  {label}
-                                                              </a>
-                                                          ) : (
-                                                              <Link className="nav-link" to={`/${name}`} role="button" aria-expanded="false">
-                                                                  {label}
-                                                              </Link>
-                                                          )}
+                                                          <Link
+                                                              onClick={() => {
+                                                                  if (index === 0) {
+                                                                      dispatch(resetHireSearch())
+                                                                  }
+                                                                  if (index === 1) {
+                                                                      console.log('enter?')
+                                                                      dispatch(resetProfileSearch())
+                                                                      dispatch(resetFile())
+                                                                  }
+                                                              }}
+                                                              className="nav-link"
+                                                              to={`/${name}`}
+                                                              role="button"
+                                                              aria-expanded="false"
+                                                          >
+                                                              {label}
+                                                          </Link>
                                                       </li>
                                                   </React.Fragment>
                                               )
@@ -211,7 +240,6 @@ const Header = () => {
                             <div className="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex">
                                 <a
                                     className={`btn btn-${gContext.header.variant} text-uppercase font-size-3`}
-                                    href="/"
                                     onClick={() => {
                                         localStorage.clear()
                                         dispatch(isUserLoggendIn(!user.loggedIn))

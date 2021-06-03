@@ -13,12 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import shop.goodcasting.api.article.hire.domain.Hire;
+import shop.goodcasting.api.article.hire.domain.HirePageRequestDTO;
 import shop.goodcasting.api.article.hire.domain.QHire;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.file.domain.QFileVO;
 import shop.goodcasting.api.user.producer.domain.QProducer;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,10 +32,10 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
 
     @Override
     @Transactional
-    public Page<Object[]> searchPage(PageRequestDTO pageRequest, Pageable pageable) {
+    public Page<Object[]> searchPage(HirePageRequestDTO pageRequest, Pageable pageable) {
         log.info("----------------------Search Hire Page Enter------------------------------");
 
-        String type = pageRequest.getType();
+
         QHire hire = QHire.hire;
         QFileVO file = QFileVO.fileVO;
         QProducer producer = QProducer.producer;
@@ -45,51 +46,33 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
 
         JPQLQuery<Tuple> tuple = jpqlQuery.select(hire, producer, file);
 
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        //hireId >0
+        BooleanBuilder totalBuilder = new BooleanBuilder();
         BooleanExpression expression = hire.hireId.gt(0L);
+        totalBuilder.and(expression);
 
-        booleanBuilder.and(expression);
+        BooleanBuilder keywordBuilder = makeKeyword(hire, pageRequest.getSearchKey().getKeyword());
 
-        if (type != null) {
-            String[] typeArr = type.split("");
-
-            BooleanBuilder conditionBuilder = new BooleanBuilder();
-
-            for (String t : typeArr) {
-                log.info("search type loop enter");
-
-                switch (t) {
-                    case "g":
-                        log.info("search guarantee, type: " + t);
-                        conditionBuilder.and(hire.guarantee.between(pageRequest.getSearchCond().getGfrom(), pageRequest.getSearchCond().getGto()));
-                        break;
-                    case "f":
-                        log.info("search filming, type: " + t);
-                        conditionBuilder.and(hire.filming.between(pageRequest.getSearchCond().getFfrom(), pageRequest.getSearchCond().getFto()));
-                        break;
-                    case "t":
-                        log.info("search title, type: " + t);
-                        conditionBuilder.or(hire.title.contains(pageRequest.getSearchCond().getTkeyword()));
-                        break;
-                    case "p":
-                        log.info("search project, type: " + t);
-                        conditionBuilder.or(hire.project.contains(pageRequest.getSearchCond().getPkeyword()));
-                        break;
-                    case "c":
-                        log.info("search contents, type: " + t);
-                        conditionBuilder.or(hire.contents.contains(pageRequest.getSearchCond().getConKeyword()));
-                        break;
-                    case "C":
-                        log.info("search cast, type: " + t);
-                        conditionBuilder.or(hire.cast.contains(pageRequest.getSearchCond().getCastKeyword()));
-                        break;
-                    default : break;
-                }
-            }
-            booleanBuilder.and(conditionBuilder);
+        if(keywordBuilder != null) {
+            totalBuilder.and(keywordBuilder);
         }
 
-        tuple.where(booleanBuilder);
+        BooleanBuilder periodBuilder = makePeriodRange(hire, pageRequest.getPeriod().getFrom(), pageRequest.getPeriod().getTo());
+
+        if(periodBuilder != null) {
+            totalBuilder.and(periodBuilder);
+        }
+
+        BooleanBuilder payBuilder = makePayRange(hire, pageRequest.getPay().getStart(), pageRequest.getPay().getEnd());
+
+        if(payBuilder != null) {
+            totalBuilder.and(payBuilder);
+        }
+
+        tuple.where(totalBuilder);
+
+        log.info("----------------------------------------------");
+        log.info(tuple);
 
         Sort sort = pageable.getSort();
         sort.stream().forEach(order -> {
@@ -118,5 +101,103 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
                 .map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
     }
 
+    private BooleanBuilder makePayRange(QHire hire, Integer start, Integer end) {
 
+        log.info("start: " + start);
+        log.info("end: " + end);
+        if (start == null || end == null) {
+            return null;
+        }
+
+        BooleanBuilder conditions = new BooleanBuilder();
+        conditions.and(hire.guarantee.between(start, end));
+
+        return conditions;
+    }
+
+    private BooleanBuilder makePeriodRange(QHire hire, LocalDate from, LocalDate to) {
+
+        if (from == null || to == null) {
+            return null;
+        }
+
+        BooleanBuilder conditions = new BooleanBuilder();
+
+        log.info("search filming");
+        conditions.and(hire.filming.between(from, to));
+
+        return conditions;
+    }
+
+    private BooleanBuilder makeKeyword(QHire hire, String keyword) {
+
+        if (keyword == null || keyword.trim().length() == 0) {
+            return null;
+        }
+
+        BooleanBuilder conditions = new BooleanBuilder();
+        log.info("search title");
+        conditions.or(hire.title.contains(keyword));
+        log.info("search project");
+        conditions.or(hire.project.contains(keyword));
+        log.info("search contents");
+        conditions.or(hire.contents.contains(keyword));
+        log.info("search cast");
+        conditions.or(hire.cast.contains(keyword));
+
+        return conditions;
+    }
+
+    @Override
+    public Page<Object[]> myHirePage(HirePageRequestDTO pageRequest, Pageable pageable) {
+
+        log.info("-------------------Search Profile Page Enter------------------------------------");
+
+        QHire hire = QHire.hire;
+        QFileVO file = QFileVO.fileVO;
+        QProducer producer = QProducer.producer;
+
+        JPQLQuery<Hire> jpqlQuery = from(hire);
+        jpqlQuery.leftJoin(producer).on(hire.producer.eq(producer));
+        jpqlQuery.leftJoin(file).on(file.hire.eq(hire));
+
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(hire,producer,file);
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanExpression expression = hire.producer.producerId.eq(pageRequest.getProducerId());
+
+        booleanBuilder.and(expression);
+
+        tuple.where(booleanBuilder);
+
+        Sort sort = pageable.getSort();
+
+        sort.stream().forEach(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String prop = order.getProperty();
+
+            PathBuilder orderByExpression = new PathBuilder(Hire.class, "hire");
+            tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
+        });
+
+        tuple.groupBy(hire);
+
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
+
+        List<Tuple> result = tuple.fetch();
+
+        result.forEach(tuple1 -> {
+            log.info("searchPage() tuple: " + tuple1);
+        });
+
+        long count = tuple.fetchCount();
+
+        log.info("COUNT: " + count);
+
+        return new PageImpl<>(result.stream()
+                .map(t -> t.toArray()).collect(Collectors.toList()),
+                pageable,
+                count);
+    }
 }

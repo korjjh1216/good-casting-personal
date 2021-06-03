@@ -54,17 +54,16 @@ public class FileController {
             String uuid = UUID.randomUUID().toString();
 
             String saveName = uploadPath + File.separator + uuid + "_" + fileName;
+
             Path savePath = Paths.get(saveName);
 
             log.info("register() - fileName: " + fileName);
 
             try {
+                String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
                 uploadFile.transferTo(savePath);
-
                 if(mimeType.startsWith("image")){
                     log.info("image thumbnail extract");
-
-                    String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
 
                     File thumbnailFile = new File(thumbnailSaveName);
 
@@ -73,7 +72,7 @@ public class FileController {
 
                 } else if(mimeType.startsWith("video")) {
                     log.info("video thumbnail extract");
-                    service.extractVideoThumbnail(new File(saveName));
+                    service.extractVideoThumbnail(new File(thumbnailSaveName));
                 }
 
                 FileDTO fileDTO = FileDTO.builder()
