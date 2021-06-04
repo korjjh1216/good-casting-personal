@@ -19,3 +19,140 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+.pic_basic .btn_custom_file_camera {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.5) url(../../assets//image/ico_camera.svg) no-repeat 50% 50% / 30px 26px;
+}
+
+.select-dropdown {
+    width: 228px;
+}
+
+.btn-center {
+    margin: 0 auto !important;
+}
+
+.thumnail-size {
+    width: 200px !important;
+    height: 200px !important;
+    display: flex !important;
+}
+
+.thumnails-size {
+    width: 150px !important;
+    height: 150px !important;
+}
+
+.thumnails-container {
+    width: 100%;
+    position: relative;
+}
+
+.thumnails-container .thumnails-delBtn {
+    visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 4%;
+}
+
+.thumnails-size:hover {
+    opacity: 30%;
+    cursor: pointer;
+}
+
+.thumnails-size:hover + .thumnails-delBtn {
+    visibility: visible;
+}
+
+#dropzone {
+    background: white;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    border-image: none;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    height: 200px;
+    width: 200px;
+    margin: 50px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 1px 15px -5px black;
+    transition: all 0.3s ease;
+}
+
+.thumnail-camera-icon {
+    position: absolute;
+    top: 45%;
+    right: 42%;
+}
+
+.avatar-wrapper .fileUpload-newform {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+.avatar-wrapper:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.avatar-wrapper:hover .profile-pic {
+    opacity: 0.5;
+}
+
+.avatar-wrapper .profile-pic {
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+.avatar-wrapper .profile-pic:after {
+    content: '\f007';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-size: 190px;
+    background: #ecf0f1;
+    color: #34495e;
+    text-align: center;
+}
+.avatar-wrapper .upload-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.avatar-wrapper .upload-button .fa-arrow-circle-up {
+    position: absolute;
+    font-size: 234px;
+    top: -17px;
+    left: 0;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #34495e;
+}
+.avatar-wrapper .upload-button:hover .fa-arrow-circle-up {
+    opacity: 0.9;
+}
