@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { hireList, hireSelector } from '../../state/reducer/hire.reducer'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { hireList, hireSelector } from '../../state/reducer/hire.reducer';
 
 const SearchBtnComponent = ({ data, text, className }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const pageRequest = useSelector(hireSelector).pageRequest
+    const pageRequest = useSelector(hireSelector).pageRequest;
 
     const clickSearch = (text) => {
         if (text === 'search') {
@@ -14,7 +14,7 @@ const SearchBtnComponent = ({ data, text, className }) => {
                     ...pageRequest,
                     searchKey: { keyword: data },
                 })
-            )
+            );
         }
         if (text === '기간 설정') {
             dispatch(
@@ -22,7 +22,7 @@ const SearchBtnComponent = ({ data, text, className }) => {
                     ...pageRequest,
                     period: { from: data.startDate, to: data.endDate },
                 })
-            )
+            );
         }
         if (text === '출연료 검색') {
             dispatch(
@@ -33,9 +33,9 @@ const SearchBtnComponent = ({ data, text, className }) => {
                         end: data[1],
                     },
                 })
-            )
+            );
         }
-    }
+    };
 
     return (
         <>
@@ -45,7 +45,7 @@ const SearchBtnComponent = ({ data, text, className }) => {
                 </button>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default SearchBtnComponent
+export default SearchBtnComponent;

@@ -18,5 +18,7 @@ public interface ActorRepository extends JpaRepository<Actor, Long> {
     @Query("select a.actorId from Actor a where a.user.userId = :user_id")
     Long getActorIdFromUserId(@Param("user_id") Long userId);
 
+    @Query("select a.name from Actor a where a.user.userId = :user_id")
+    String getActorNameFromUserId(@Param("user_id") Long userId);
 }
 

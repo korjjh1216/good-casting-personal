@@ -29,6 +29,7 @@ const DashboardHireList = () => {
             })
         );
     }, []);
+
     return (
         <>
             <div className="container">

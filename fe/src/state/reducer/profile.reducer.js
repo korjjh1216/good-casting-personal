@@ -1,25 +1,17 @@
 import profileService from '../service/profile.service';
+import uuid from 'uuid/dist/v4';
+import Swal from 'sweetalert2';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const profileRegister = createAsyncThunk('PROFILE_REGISTER', async (arg) => {
-    console.log(arg);
-    const response = await profileService.profileRegister();
-    return response.data;
-});
-
-export const myProfileList = createAsyncThunk('MYPROFILE_LIST', async (pageRequest) => {
-    console.log('reducer myProfileList() pageRequest: ' + JSON.stringify(pageRequest));
-    const response = await profileService.profileList(pageRequest);
-
-    return response.data;
-});
-
-export const fileRegister = createAsyncThunk('FILE_REGISTER', async (arg) => {
-    console.log(arg);
-    const response = await profileService.fileRegister(arg);
-    return response.data;
-});
+const sweetalert = (icon, title, text, footer) => {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        footer: footer,
+    });
+};
 
 export const profileList = createAsyncThunk('PROFILE_LIST', async (pageRequest) => {
     console.log('reducer profileList() pageRequest: ' + JSON.stringify(pageRequest));
@@ -33,7 +25,22 @@ export const profileRead = createAsyncThunk('PROFILE_DETAIL', async () => {
     return response.data;
 });
 
+export const myProfileList = createAsyncThunk('MYPROFILE_LIST', async (pageRequest) => {
+    console.log('reducer myProfileList() pageRequest: ' + JSON.stringify(pageRequest));
+    const response = await profileService.profileList(pageRequest);
+
+    return response.data;
+});
+
+export const profileRegister = createAsyncThunk('PROFILE_REGISTER', async (arg) => {
+    const response = await profileService.profileRegister(arg);
+    return response.data;
+});
+
 const initialState = {
+    profileList: [],
+    careerList: [],
+    fileList: [],
     pageRequest: {
         page: 1,
         size: 10,
@@ -61,16 +68,15 @@ const profileSlice = createSlice({
     reducers: {
         addCareer(state, { payload }) {
             state.careerList.push({
+                uuid: uuid(),
                 year: payload.year,
-                gerne: payload.gerne,
+                genre: payload.genre,
                 title: payload.title,
                 contents: payload.contents,
             });
         },
         deleteCareer(state, { payload }) {
-            console.log('삭제');
-            console.log(payload);
-            state.careerList = state.careerList.filter((career) => career.id !== payload);
+            state.careerList = state.careerList.filter((career) => career.uuid !== payload);
         },
         resetProfileSearch: (state = initialState) => {
             return {
@@ -81,9 +87,6 @@ const profileSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(profileRegister.fulfilled, (state, { payload }) => {
-                console.log(JSON.stringify(payload));
-            })
             .addCase(profileList.fulfilled, (state, { payload }) => {
                 console.log('payload :' + JSON.stringify(payload));
 
@@ -93,19 +96,28 @@ const profileSlice = createSlice({
                     pageRequest: payload.pageRequest,
                 };
             })
+            .addCase(profileRegister.fulfilled, (state, { payload }) => {
+                console.log(payload);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '프로필이 등록되었습니다.',
+                });
+            })
+            .addCase(profileRegister.rejected, (state, { payload }) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: '내용을 모두 입력해주세요',
+                });
+            })
             .addCase(profileRead.fulfilled, (state, { payload }) => {
                 console.log('payload : ' + JSON.stringify(payload));
                 state.profile = payload;
-            })
-            .addCase(fileRegister.fulfilled, (state, { payload }) => {
-                console.log('payload : ' + JSON.stringify(payload));
-                state.fileList = payload;
             });
     },
 });
 
 export const profileSelector = (state) => state.profileReducer;
-
 export const { addCareer, deleteCareer, resetProfileSearch } = profileSlice.actions;
 
 export default profileSlice.reducer;

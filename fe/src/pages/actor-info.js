@@ -1,57 +1,57 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Link, navigate } from 'gatsby'
-import PageWrapper from '../components/PageWrapper'
-import { Select } from '../components/Core'
-import { useDispatch, useSelector } from 'react-redux'
-import { actorSelctor, updateActorInfo, unRegister } from '../state/reducer/actor.reducer'
-import '../scss/css/actorInfo.css'
+import React, { useCallback, useState, useEffect } from 'react';
+import { Link, navigate } from 'gatsby';
+import PageWrapper from '../components/PageWrapper';
+import { Select } from '../components/Core';
+import { useDispatch, useSelector } from 'react-redux';
+import { actorSelctor, updateActorInfo, unRegister } from '../state/reducer/actor.reducer';
+import '../scss/css/actorInfo.css';
 
 const defaultTypes = [
     { value: 'default', label: '선택하기', name: 'gender' },
     { value: 'male', label: '남성', name: 'gender' },
     { value: 'female', label: '여성', name: 'gender' },
-]
+];
 
 const defaultMajor = [
     { value: true, label: '선택하기', name: 'major' },
     { value: true, label: '전공자', name: 'major' },
     { value: false, label: '비전공자', name: 'major' },
-]
+];
 
 const ActorInfo = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const state = useSelector(actorSelctor)
-    const [inputs, setInputs] = useState([])
+    const state = useSelector(actorSelctor);
+    const [inputs, setInputs] = useState([]);
 
     useEffect(() => {
-        setInputs(state.actor)
-    }, [])
+        setInputs(state.actor);
+    }, []);
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        dispatch(updateActorInfo(inputs))
-        navigate('/actor-mypage')
-    }
+        e.preventDefault();
+        dispatch(updateActorInfo(inputs));
+        navigate('/actor-mypage');
+    };
 
     const handleChange = useCallback((e) => {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value,
-        })
-    })
+        });
+    });
 
     const handleSelectChange = useCallback((e) => {
         setInputs({
             ...inputs,
             [e.name]: e.value,
-        })
-    })
+        });
+    });
 
     const handelClick = () => {
-        localStorage.clear()
-        dispatch(unRegister(inputs))
-    }
+        localStorage.clear();
+        dispatch(unRegister(inputs));
+    };
 
     return (
         <>
@@ -78,7 +78,7 @@ const ActorInfo = () => {
                                                             <label htmlFor="namedash" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
                                                                 이름
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.name} name="name" onChange={handleChange} />
+                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.name} name="name" onChange={handleChange} readOnly />
                                                         </div>
                                                     </div>
                                                     <div className="col-lg-6">
@@ -183,7 +183,7 @@ const ActorInfo = () => {
                 </div>
             </PageWrapper>
         </>
-    )
-}
+    );
+};
 
-export default ActorInfo
+export default ActorInfo;

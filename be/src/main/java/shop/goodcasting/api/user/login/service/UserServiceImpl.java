@@ -93,9 +93,11 @@ public class UserServiceImpl implements UserService {
                 if(userDTO.isPosition()){
                     ActorDTO actorDTO = new ActorDTO();
                     Long actorId = actorRepo.getActorIdFromUserId(userDTO.getUserId());
+                    String actorName = actorRepo.getActorNameFromUserId(userDTO.getUserId());
                     log.info("actorId : " + actorId);
 
                     actorDTO.setActorId(actorId);
+                    actorDTO.setName(actorName);
                     infoList.add(actorDTO);
                 } else {
                     ProducerDTO producerDTO = new ProducerDTO();

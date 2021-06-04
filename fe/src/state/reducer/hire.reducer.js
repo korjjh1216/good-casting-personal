@@ -27,6 +27,13 @@ export const hireDetail = createAsyncThunk('HIRE_DETAIL', async (id) => {
     return response.data;
 });
 
+export const hireDelete = createAsyncThunk('HIRE_DELETE', async (id) => {
+    console.log('createAsyncThunk enter: ' + JSON.stringify(id));
+    const response = await hireService.hireDelete(id);
+    console.log('hireDelete: ' + response.data);
+    return response.data;
+});
+
 const initialState = {
     pageRequest: {
         page: 1,
