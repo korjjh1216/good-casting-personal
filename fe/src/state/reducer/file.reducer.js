@@ -25,12 +25,7 @@ export const fileRegisterChan = createAsyncThunk('FILE_REGISTER22', async (formD
 });
 
 const initialState = {
-    fileList: [
-        {
-            fileName: '',
-            uuid: '',
-        },
-    ],
+    fileList: [],
     reset: false,
 };
 

@@ -1,15 +1,17 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'gatsby';
-import { Collapse } from 'react-bootstrap';
 import GlobalContext from '../../context/GlobalContext';
-import imgL from '../../assets/image/logo-main-black.png';
+import { useDispatch } from 'react-redux';
+import { getProducerInfo } from '../../state/reducer/producer.reducer';
+import { Collapse } from 'react-bootstrap';
+import MailOutline from '@material-ui/icons/MailOutline';
 import Logo from '../Logo';
-import { useDispatch, useSelector } from 'react-redux';
-import { producerSelctor, getProducerInfo } from '../../state/reducer/producer.reducer';
 
 const Sidebar = () => {
     const gContext = useContext(GlobalContext);
+
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getProducerInfo());
     }, []);
@@ -43,6 +45,12 @@ const Sidebar = () => {
                             <Link to="/dashboard-applicants" activeClassName="active" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
                                 <i className="fas fa-user mr-7"></i>지원자리스트
                                 <span className="ml-auto px-1 h-1 bg-dodger text-white font-size-3 rounded-5 max-height-px-18 flex-all-center">14</span>
+                            </Link>
+                        </li>
+                        <li className="">
+                            <Link to="/dashboard-contact" activeClassName="active" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
+                                <MailOutline />
+                                　메시지함
                             </Link>
                         </li>
                         <li className="">

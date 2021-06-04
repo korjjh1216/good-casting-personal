@@ -1,12 +1,18 @@
-import applyService from '../service/apply.service'
-const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit')
+import applyService from '../service/apply.service';
+const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const applicantList = createAsyncThunk('APPLICANTLIST', async (pageRequest) => {
-    console.log('reducer applicantList() pageRequest: ' + JSON.stringify(pageRequest))
-    const response = await applyService.applicantist(pageRequest)
+    console.log('reducer applicantList() pageRequest: ' + JSON.stringify(pageRequest));
+    const response = await applyService.applicantist(pageRequest);
 
-    return response.data
-})
+    return response.data;
+});
+
+export const hireApply = createAsyncThunk('HIRE_APPLY', async (apply) => {
+    console.log('createAsyncThunk enter : ' + JSON.stringify(apply));
+    const response = await applyService.hireApply(apply);
+    return response.data;
+});
 
 const applySlice = createSlice({
     name: 'apply',
@@ -42,18 +48,22 @@ const applySlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(applicantList.fulfilled, (state, { payload }) => {
-            console.log(JSON.stringify(payload))
-            return {
-                ...state,
-                pageResult: { ...payload },
-            }
-        })
+        builder
+            .addCase(hireApply.fulfilled, (state, { payload }) => {
+                console.log('payload : ' + JSON.stringify(payload));
+            })
+            .addCase(applicantList.fulfilled, (state, { payload }) => {
+                console.log(JSON.stringify(payload));
+                return {
+                    ...state,
+                    pageResult: { ...payload },
+                };
+            });
     },
-})
+});
 
-export const applySelector = (state) => state.applyReducer
+export const applySelector = (state) => state.applyReducer;
 
-export const {} = applySlice.actions
+export const {} = applySlice.actions;
 
-export default applySlice.reducer
+export default applySlice.reducer;

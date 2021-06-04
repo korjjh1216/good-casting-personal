@@ -1,6 +1,7 @@
 package shop.goodcasting.api.apply.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import shop.goodcasting.api.apply.domain.Apply;
@@ -15,5 +16,9 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, SearchApply
 
     @Query("select a.profile.actor.actorId  from Apply a  inner join Producer on a.hire.producer.producerId = :producerId" )
     List<Apply> findAllByProducerId(Long producerId);
+
+    @Modifying
+    @Query("delete from Apply a where a.hire.hireId = :hireId")
+    void deleteByHireId(Long hireId);
 
 }

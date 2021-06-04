@@ -32,11 +32,8 @@ const FileUploads = ({ image }) => {
             for (let i = 0; i < imgFile.length; i++) {
                 formData.append('uploadFiles', imgFile[i]);
 
-                if (imgFile[i].name.includes('video')) {
-                    const removeMP4 = imgFile[i].name.slice(
-                        0,
-                        imgFile[i].name.length - 4
-                    );
+                if (imgFile[i].type.includes('video')) {
+                    const removeMP4 = imgFile[i].name.slice(0, imgFile[i].name.length - 4);
                     setRemove(removeMP4);
                 }
             }
@@ -53,10 +50,7 @@ const FileUploads = ({ image }) => {
     return (
         <>
             <div id="dropzone">
-                <label
-                    htmlFor="fileUpload"
-                    className="mb-0 font-size-4 text-smoke"
-                ></label>
+                <label htmlFor="fileUpload" className="mb-0 font-size-4 text-smoke"></label>
                 {fileList.map((file) => {
                     return (
                         <div className="thumnails-container">
@@ -85,14 +79,7 @@ const FileUploads = ({ image }) => {
                         </div>
                     );
                 })}
-                <input
-                    multiple="multiple"
-                    accept="image/*, video/*"
-                    id="fileUpload"
-                    type="file"
-                    name="filename[]"
-                    onChange={handleSelectedImgs}
-                />
+                <input multiple="multiple" accept="image/*, video/*" id="fileUpload" type="file" name="filename[]" onChange={handleSelectedImgs} />
             </div>
         </>
     );

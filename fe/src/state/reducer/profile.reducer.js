@@ -4,15 +4,6 @@ import Swal from 'sweetalert2';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-const sweetalert = (icon, title, text, footer) => {
-    Swal.fire({
-        icon: icon,
-        title: title,
-        text: text,
-        footer: footer,
-    });
-};
-
 export const profileList = createAsyncThunk('PROFILE_LIST', async (pageRequest) => {
     console.log('reducer profileList() pageRequest: ' + JSON.stringify(pageRequest));
     const response = await profileService.profileList(pageRequest);

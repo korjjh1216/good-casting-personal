@@ -1,22 +1,97 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'gatsby';
 import PageWrapper from '../components/PageWrapper';
+import { makeStyles } from '@material-ui/core/styles';
+import { Modal } from '@material-ui/core';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { hireDetail, hireSelector } from '../state/reducer/hire.reducer';
+import { profileList, profileSelector } from '../state/reducer/profile.reducer';
+import { hireApply } from '../state/reducer/apply.reducer';
 
 import imgF1 from '../assets/image/l2/png/featured-job-logo-1.png';
 import iconD from '../assets/image/svg/icon-dolor.svg';
 import iconB from '../assets/image/svg/icon-briefcase.svg';
 import iconL from '../assets/image/svg/icon-location.svg';
-import { useDispatch, useSelector } from 'react-redux';
-import { hireDetail, hireSelector } from '../state/reducer/hire.reducer';
 
 const JobDetails = ({ location }) => {
+    const getModalStyle = () => {
+        const top = 50 + rand();
+        const left = 50 + rand();
+        return {
+            top: `${top}%`,
+            left: `${left}%`,
+            height: '50vh',
+            // weight: "50vh",
+            transform: `translate(-70%, -${left}%)`,
+            overflow: 'scroll',
+        };
+    };
+    const useStyles = makeStyles((theme) => ({
+        paper: {
+            position: 'absolute',
+            width: 'auto',
+            height: 'auto',
+            backgroundColor: theme.palette.background.paper,
+            border: '2px solid #000',
+            boxShadow: theme.shadows[5],
+            display: 'flex',
+        },
+    }));
+    const classes = useStyles();
+    const rand = () => {
+        return Math.round(Math.random() * 20) - 10;
+    };
+    const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
+
     const dispatch = useDispatch();
 
     const hire = useSelector(hireSelector).hire;
+    const pageResult = useSelector(profileSelector).pageResult;
+    const pageRequest = useSelector(profileSelector).pageRequest;
+
+    const [inputs, setInputs] = useState({});
+    const [modalStyle, setModalStyle] = useState(getModalStyle);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         dispatch(hireDetail(location.state.id));
     }, []);
+
+    useEffect(() => {
+        dispatch(
+            profileList({
+                ...pageRequest,
+                actorId: userInfo[1].actorId,
+            })
+        );
+    }, [inputs]);
+
+    const [apply, setApply] = useState({
+        applyStatus: 1,
+        hire: { hireId: location.state.id },
+    });
+    const handleChange = (e) => {
+        const profileId = e.target.getAttribute('data-profileid');
+        console.log('checked before profileId : ' + profileId);
+
+        if (e.target.checked) {
+            setApply({ ...apply, profile: { profileId } });
+        }
+    };
+
+    const handleApply = (e) => {
+        e.preventDefault();
+        console.log('handleApply : ' + JSON.stringify(apply));
+        dispatch(hireApply(apply));
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <>
@@ -67,10 +142,40 @@ const JobDetails = ({ location }) => {
                                         <div className="row pt-9">
                                             <div className="col-12">
                                                 {/* <!-- card-btn-group start --> */}
-                                                <div className="card-btn-group">
-                                                    <Link to="/#" className="btn btn-green text-uppercase btn-medium rounded-3 w-180 mr-4 mb-5">
+                                                <div>
+                                                    <button type="button" onClick={handleOpen} className="btn btn-green text-uppercase btn-medium rounded-3 w-180 mr-4 mb-5">
                                                         Apply to this job
-                                                    </Link>
+                                                    </button>
+
+                                                    <Modal open={open} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
+                                                        <div style={modalStyle} className={classes.paper}>
+                                                            {pageResult.dtoList.map((profile) => {
+                                                                return (
+                                                                    <>
+                                                                        <div className="col-10 col-lg-8" style={modalStyle}>
+                                                                            <img
+                                                                                style={{
+                                                                                    width: '150px',
+                                                                                    height: '200px',
+                                                                                }}
+                                                                                src={'http://localhost:8080/files/display?fileName=s_' + profile.fileUuid + '_' + profile.fileName}
+                                                                                alt=""
+                                                                            />
+                                                                            <h2 className="mt-n4">
+                                                                                <p className="font-size-7 text-black-2 font-weight-bold mb-4">{profile.actorName}</p>
+                                                                            </h2>
+                                                                            <input type="radio" data-profileid={profile.profileId} name="select" checked={inputs.select} onChange={(e) => handleChange(e)} />
+                                                                            <div className="card-btn-group">
+                                                                                <div className="btn btn-green text-uppercase btn-medium rounded-3 center" onClick={handleApply}>
+                                                                                    APPLY
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </Modal>
                                                 </div>
                                                 {/* <!-- card-btn-group end --> */}
                                             </div>

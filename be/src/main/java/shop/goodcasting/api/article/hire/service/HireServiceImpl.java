@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import shop.goodcasting.api.apply.repository.ApplyRepository;
 import shop.goodcasting.api.article.hire.domain.*;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
 import shop.goodcasting.api.file.domain.FileVO;
@@ -26,6 +27,7 @@ import java.util.function.Function;
 public class HireServiceImpl implements HireService {
     private final HireRepository hireRepo;
     private final FileRepository fileRepo;
+    private final ApplyRepository applyRepo;
     private final FileService fileService;
     private final ProducerService producerService;
 
@@ -100,9 +102,10 @@ public class HireServiceImpl implements HireService {
 
     @Transactional
     public void deleteHire(Long hireId) {
+        applyRepo.deleteByHireId(hireId);
         fileRepo.deleteByHireId(hireId);
-
         hireRepo.deleteById(hireId);
+
     }
 
     public Long saveFile(HireDTO hireDTO, List<FileDTO> files) {

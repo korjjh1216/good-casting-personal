@@ -60,11 +60,10 @@ public class FileController {
             log.info("register() - fileName: " + fileName);
 
             try {
-                String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
                 uploadFile.transferTo(savePath);
                 if(mimeType.startsWith("image")){
                     log.info("image thumbnail extract");
-
+                    String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
                     File thumbnailFile = new File(thumbnailSaveName);
 
                     Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 500, 500);
@@ -72,7 +71,7 @@ public class FileController {
 
                 } else if(mimeType.startsWith("video")) {
                     log.info("video thumbnail extract");
-                    service.extractVideoThumbnail(new File(thumbnailSaveName));
+                    service.extractVideoThumbnail(new File(saveName));
                 }
 
                 FileDTO fileDTO = FileDTO.builder()

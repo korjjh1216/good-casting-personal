@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import { Select } from '../Core';
 import { useSelector, useDispatch } from 'react-redux';
-import { hireSelector, myHireList } from '../../state/reducer/hire.reducer';
+import { hireSelector, myHireList, hireDelete } from '../../state/reducer/hire.reducer';
 import PageListComponent from '../Core/PageList';
 
 const defaultJobs = [
@@ -79,7 +79,7 @@ const DashboardHireList = () => {
                                                 <tr className="border border-color-2" key={list.hireId}>
                                                     <th scope="row" className="pl-6 border-0 py-7 min-width-px-235">
                                                         <div className="">
-                                                            <Link to="/hire-detail" className="font-size-4 mb-0 font-weight-semibold text-black-2">
+                                                            <Link state={{ id: list.hireId }} to="/hire-detail" className="font-size-4 mb-0 font-weight-semibold text-black-2">
                                                                 {list.project}
                                                             </Link>
                                                         </div>
@@ -100,18 +100,20 @@ const DashboardHireList = () => {
                                                         <h3 className="font-size-4 font-weight-bold text-black-2 mb-0">어찌할꺼야?</h3>
                                                     </td>
                                                     <td className="table-y-middle py-7 min-width-px-80">
-                                                        <Link
-                                                            to="/hire-modify"
-                                                            className="font-size-3
-                                                        font-weight-bold
-                                                        text-green
-                                                        text-uppercase"
-                                                        >
+                                                        <Link to="/hire-modify" className="font-size-3 font-weight-bold text-green text-uppercase">
                                                             수정하기
                                                         </Link>
                                                     </td>
                                                     <td className="table-y-middle py-7 min-width-px-100">
-                                                        <a href="#" className="font-size-3 font-weight-bold text-red-2 text-uppercase">
+                                                        <a
+                                                            href="#"
+                                                            className="font-size-3 font-weight-bold text-red-2 text-uppercase"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                console.log(list.hireId);
+                                                                dispatch(hireDelete(list.hireId));
+                                                            }}
+                                                        >
                                                             삭제하기
                                                         </a>
                                                     </td>
