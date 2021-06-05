@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Range, getTrackBackground } from 'react-range';
-import CustomizedRadios from '../Core/CustomizedRadios';
+import { profileSelector } from '../../state/reducer/profile.reducer';
 
-const STEP = 1;
-const MIN = 0;
-const MAX = 100;
+import CustomizedRadios from '../Core/CustomizedRadios';
+import RangeSearchComponent from '../Core/RangeSearch';
 
 const CheckStyled = styled.span`
     cursor: pointer;
@@ -34,133 +32,23 @@ const CheckStyled = styled.span`
     }
 `;
 
-const Check = ({ children }) => {
-    const [active, setActive] = useState(false);
-
-    useEffect(() => {
-        if (active) {
-        }
-    }, [active]);
-
-    return (
-        <CheckStyled
-            className={`toggle-item ${active ? 'active' : ''}`}
-            onClick={() => {
-                setActive(!active);
-            }}
-        >
-            {children}
-        </CheckStyled>
-    );
-};
-
 const Sidebar = () => {
-    const [rangeValues, setRangeValues] = useState([0, 100]);
     return (
         <>
             {/* <!-- Sidebar Start --> */}
             <div className="widgets mb-11">
+                <h4 className="font-size-6 font-weight-semibold mb-6 w-75">성별</h4>
                 <CustomizedRadios />
             </div>
             <div className="widgets mb-11 ">
                 <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
-                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">나이 범위</h4>
-                    {/* <!-- Range Slider --> */}
-
-                    <div className="slider-price w-25 text-right mr-7">
-                        <p className="font-weight-bold">
-                            <span
-                                className="text-primary font-weight-semibold font-size-4 "
-                                css={`
-                                    white-space: nowrap;
-                                `}
-                            >
-                                {rangeValues[0].toFixed()} - {rangeValues[1].toFixed()}세
-                            </span>
-                        </p>
-                    </div>
+                    <RangeSearchComponent selector={profileSelector} MAX={100} MIN={0} STEP={1} text={'나이'} />
                 </div>
-                <div className="graph text-center mx-0 mt-5 position-relative chart-postion">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
+                    <RangeSearchComponent selector={profileSelector} MAX={200} MIN={80} STEP={5} text={'키'} />
                 </div>
-                <div className="range-slider">
-                    <>
-                        <Range
-                            values={rangeValues}
-                            step={STEP}
-                            min={MIN}
-                            max={MAX}
-                            onChange={(values) => {
-                                setRangeValues(values);
-                            }}
-                            renderTrack={({ props, children }) => (
-                                <div
-                                    role="button"
-                                    tabIndex={0}
-                                    onMouseDown={props.onMouseDown}
-                                    onTouchStart={props.onTouchStart}
-                                    style={{
-                                        ...props.style,
-                                        height: '15px',
-                                        display: 'flex',
-                                        width: '290px',
-                                    }}
-                                >
-                                    <div
-                                        ref={props.ref}
-                                        style={{
-                                            height: '5px',
-                                            width: '90%',
-                                            borderRadius: '4px',
-                                            background: getTrackBackground({
-                                                values: rangeValues,
-                                                colors: ['#ccc', '#755dd9', '#ccc'],
-                                                min: MIN,
-                                                max: MAX,
-                                            }),
-                                            alignSelf: 'center',
-                                        }}
-                                    >
-                                        {children}
-                                    </div>
-                                </div>
-                            )}
-                            renderThumb={({ props, isDragged }) => (
-                                <div
-                                    {...props}
-                                    style={{
-                                        ...props.style,
-                                        height: '17px',
-                                        width: '17px',
-                                        borderRadius: '50%',
-                                        backgroundColor: '#FFF',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        boxShadow: 'none !important',
-                                        outline: 'none !important',
-                                    }}
-                                    css={`
-                                        &:focus {
-                                            outline: none !important;
-                                        }
-                                    `}
-                                ></div>
-                            )}
-                        />
-                    </>
+                <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
+                    <RangeSearchComponent selector={profileSelector} MAX={150} MIN={20} STEP={5} text={'몸무게'} />
                 </div>
             </div>
 

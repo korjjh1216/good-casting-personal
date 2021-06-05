@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'gatsby';
 import PageWrapper from '../components/PageWrapper';
 import Sidebar from '../components/Profile/Sidebar';
 import ProfileList from '../components/Profile/ProfileList';
@@ -9,8 +10,8 @@ import DragNDropComponent from '../components/Core/DragNDrop';
 import PageListComponent from '../components/Core/PageList';
 
 const SearchGrid = () => {
-    const pageResult = useSelector(profileSelector).pageResult;
     const pageRequest = useSelector(profileSelector).pageRequest;
+    const pageResult = useSelector(profileSelector).pageResult;
     return (
         <>
             <PageWrapper>
@@ -34,11 +35,11 @@ const SearchGrid = () => {
                                     </div>
                                     <div className="pt-6">
                                         <div className="row justify-content-center">
-                                            <ProfileList pageResult={pageResult} pageRequest={pageRequest} />
+                                            <ProfileList />
                                         </div>
                                     </div>
                                     <div className="text-center pt-5 pt-lg-13">
-                                        <PageListComponent flag={'profileList'} />
+                                        <PageListComponent flag={'profileList'} pageRequest={pageRequest} pageResult={pageResult} />
                                     </div>
                                 </div>
                                 {/* <!-- form end --> */}

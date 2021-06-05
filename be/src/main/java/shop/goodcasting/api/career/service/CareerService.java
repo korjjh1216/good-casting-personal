@@ -12,7 +12,7 @@ public interface CareerService {
     default Career dto2Entity(CareerDTO careerDTO) {
         return Career.builder()
                 .careerId(careerDTO.getCareerId())
-                .gerne(careerDTO.getGerne())
+                .genre(careerDTO.getGenre())
                 .title(careerDTO.getTitle())
                 .contents(careerDTO.getContents())
                 .year(careerDTO.getYear())
@@ -22,7 +22,7 @@ public interface CareerService {
     default Career dto2EntityAll(CareerDTO careerDTO) {
         return Career.builder()
                 .careerId(careerDTO.getCareerId())
-                .gerne(careerDTO.getGerne())
+                .genre(careerDTO.getGenre())
                 .title(careerDTO.getTitle())
                 .contents(careerDTO.getContents())
                 .year(careerDTO.getYear())
@@ -35,7 +35,7 @@ public interface CareerService {
     default CareerDTO entity2Dto(Career career) {
         return CareerDTO.builder()
                 .careerId(career.getCareerId())
-                .gerne(career.getGerne())
+                .genre(career.getGenre())
                 .title(career.getTitle())
                 .contents(career.getContents())
                 .year(career.getYear())
@@ -45,7 +45,7 @@ public interface CareerService {
     default CareerDTO entity2DtoAll(Career career) {
         return CareerDTO.builder()
                 .careerId(career.getCareerId())
-                .gerne(career.getGerne())
+                .genre(career.getGenre())
                 .title(career.getTitle())
                 .contents(career.getContents())
                 .year(career.getYear())

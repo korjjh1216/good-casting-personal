@@ -1,15 +1,22 @@
 import React from 'react';
 import PageWrapper from '../components/PageWrapper';
 import HireList from '../components/Hire/HireList';
-import { useSelector } from 'react-redux';
-import { hireSelector } from '../state/reducer/hire.reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { hireList, hireSelector, resetSearchCondition } from '../state/reducer/hire.reducer';
 import ActorSearch from '../components/Hire/ActorSearch';
 import HireListSidebar from '../components/Hire/HireListSidebar';
 import PageListComponent from '../components/Core/PageList';
 
 const SearchGrid = () => {
+    const temp = useSelector((state) => state);
+
+    console.log('------------------------------------------');
+    console.log(temp);
+
     const pageResult = useSelector(hireSelector).pageResult;
     const pageRequest = useSelector(hireSelector).pageRequest;
+
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -30,17 +37,17 @@ const SearchGrid = () => {
                                         <h5 className="font-size-4 font-weight-normal text-gray">
                                             <span className="heading-default-color">{pageResult.totalElement}</span>
                                             results for <span className="heading-default-color">Actor</span>
-                                        </h5>
+                                        </h5>{' '}
                                         <div className="button-block">
                                             <button onClick={() => {}} className="btn btn-primary line-height-reset h-5 w-5 text-uppercase font-weight-bold">
-                                                초기화
+                                                전체
                                             </button>
                                         </div>
                                     </div>
                                     <div className="mb-8">
                                         <HireList pageResult={pageResult} pageRequest={pageRequest} />
                                     </div>
-                                    <PageListComponent flag={'hireList'} />
+                                    <PageListComponent pageRequest={pageRequest} pageResult={pageResult} flag="hireList" />
                                 </div>
                             </div>
                         </div>

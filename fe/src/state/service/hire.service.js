@@ -23,7 +23,7 @@ const hireList = (pageRequest) => {
         url: `${SERVER}/hires/list`,
         method: 'post',
         data: pageRequest,
-        headers: { Authorization: localStorage.getItem('TOKEN') },
+        headers: { Authorization: 'JWT fefege..' },
     });
 };
 

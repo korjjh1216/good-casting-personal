@@ -4,15 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteFile } from '../../state/reducer/file.reducer';
 import Swal from 'sweetalert2';
 
-const sweetalert = (icon, title, text, footer) => {
-    Swal.fire({
-        icon: icon,
-        title: title,
-        text: text,
-        footer: footer,
-    });
-};
-
 const FileUploads = ({ image }) => {
     const dispatch = useDispatch();
 

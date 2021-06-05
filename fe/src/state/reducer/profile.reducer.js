@@ -11,14 +11,10 @@ export const profileList = createAsyncThunk('PROFILE_LIST', async (pageRequest) 
     return response.data;
 });
 
-export const profileRead = createAsyncThunk('PROFILE_DETAIL', async () => {
-    const response = await profileService.profileRead();
-    return response.data;
-});
+export const profileDetail = createAsyncThunk('PROFILE_DETAIL', async (id) => {
+    console.log('profileDetail() id: ' + id);
 
-export const myProfileList = createAsyncThunk('MYPROFILE_LIST', async (pageRequest) => {
-    console.log('reducer myProfileList() pageRequest: ' + JSON.stringify(pageRequest));
-    const response = await profileService.profileList(pageRequest);
+    const response = await profileService.profileDetail(id);
 
     return response.data;
 });
@@ -50,6 +46,11 @@ const initialState = {
         totalElement: 0,
         pageRequest: {},
     },
+    profile: {
+        actor: {},
+        files: [],
+        careers: [],
+    },
     reset: false,
 };
 
@@ -57,6 +58,12 @@ const profileSlice = createSlice({
     name: 'profile',
     initialState: initialState,
     reducers: {
+        resetProfileSearch: (state = initialState) => {
+            return {
+                ...initialState,
+                reset: !state.reset,
+            };
+        },
         addCareer(state, { payload }) {
             state.careerList.push({
                 uuid: uuid(),
@@ -68,12 +75,6 @@ const profileSlice = createSlice({
         },
         deleteCareer(state, { payload }) {
             state.careerList = state.careerList.filter((career) => career.uuid !== payload);
-        },
-        resetProfileSearch: (state = initialState) => {
-            return {
-                ...initialState,
-                reset: !state.reset,
-            };
         },
     },
     extraReducers: (builder) => {
@@ -101,14 +102,16 @@ const profileSlice = createSlice({
                     title: '내용을 모두 입력해주세요',
                 });
             })
-            .addCase(profileRead.fulfilled, (state, { payload }) => {
-                console.log('payload : ' + JSON.stringify(payload));
-                state.profile = payload;
+            .addCase(profileDetail.fulfilled, (state, { payload }) => {
+                return {
+                    ...state,
+                    profile: payload,
+                };
             });
     },
 });
 
 export const profileSelector = (state) => state.profileReducer;
-export const { addCareer, deleteCareer, resetProfileSearch } = profileSlice.actions;
 
+export const { resetProfileSearch, addCareer, deleteCareer } = profileSlice.actions;
 export default profileSlice.reducer;

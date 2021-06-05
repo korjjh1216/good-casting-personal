@@ -48,11 +48,9 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
 
         BooleanBuilder totalBuilder = new BooleanBuilder();
         BooleanExpression expression = profile.profileId.gt(0L);
-        BooleanExpression expression1 = profile.first.eq(true);
         BooleanExpression expression2 = profile.privacy.eq(true);
 
         totalBuilder.and(expression);
-        totalBuilder.and(expression1);
         totalBuilder.and(expression2);
 
         if (pageRequest.getResembleKey() != null) {

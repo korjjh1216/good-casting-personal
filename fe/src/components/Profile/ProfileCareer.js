@@ -42,7 +42,6 @@ const ProfileCareer = () => {
     });
 
     const handleChange = useCallback((e) => {
-        e.preventDefault();
         setCareers({
             ...careers,
             [e.target.name]: e.target.value,
@@ -72,8 +71,8 @@ const ProfileCareer = () => {
                         onClick={() => {
                             dispatch(addCareer(careers));
                             setCareers({
-                                year: '',
-                                genre: '',
+                                year: defaultYear[0],
+                                genre: defaultGenre[0],
                                 title: '',
                                 contents: '',
                             });

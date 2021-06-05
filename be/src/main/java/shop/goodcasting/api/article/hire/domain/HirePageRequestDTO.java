@@ -18,11 +18,11 @@ public class HirePageRequestDTO {
     private Integer size;
     private String sort;
 
-    private SearchKeyword searchKey;
+    private String searchKey;
     private Pay pay;
     private Period period;
-
     private Long producerId;
+
 
     private FileDTO file;
 

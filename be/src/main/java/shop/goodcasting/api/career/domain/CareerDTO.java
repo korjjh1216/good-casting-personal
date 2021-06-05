@@ -13,7 +13,7 @@ import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 public class CareerDTO {
     private Long careerId;
     private Integer year;
-    private String gerne;
+    private String genre;
     private String title;
     private String contents;
 

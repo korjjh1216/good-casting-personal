@@ -19,7 +19,7 @@ public class Career extends BaseEntity {
     @Column(name = "career_id") private Long careerId;
 
     @Column private Integer year;
-    @Column private String gerne;
+    @Column private String genre;
     @Column private String title;
     @Column private String contents;
 

@@ -45,15 +45,7 @@ const initialState = {
     pageRequest: {
         page: 1,
         size: 10,
-        type: '',
         sort: 'hireId',
-        searchKey: {},
-        period: {},
-        pay: {},
-        file: {
-            fileName: '',
-            uuid: '',
-        },
     },
     pageResult: {
         pageList: [],
@@ -67,7 +59,6 @@ const initialState = {
         next: false,
         totalElement: 0,
     },
-    hireDetail: {},
     reset: false,
     hire: {
         deadline: '',
@@ -110,7 +101,7 @@ const hireSlice = createSlice({
 
                 Swal.fire({
                     icon: 'success',
-                    title: '프로필이 등록되었습니다.',
+                    title: '공고문이 등록되었습니다.',
                 });
             })
             .addCase(hireDetail.fulfilled, (state, { payload }) => {

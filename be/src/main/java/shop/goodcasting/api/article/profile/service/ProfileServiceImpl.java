@@ -10,10 +10,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.*;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
+
 import shop.goodcasting.api.career.domain.Career;
 import shop.goodcasting.api.career.domain.CareerDTO;
 import shop.goodcasting.api.career.repository.CareerRepository;
 import shop.goodcasting.api.career.service.CareerService;
+import shop.goodcasting.api.article.hire.domain.HirePageRequestDTO;
+import shop.goodcasting.api.article.hire.domain.HirePageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
@@ -55,6 +58,40 @@ public class ProfileServiceImpl implements ProfileService {
 
         saveCareer(finalProfileDto, careers);
         return saveFile(finalProfileDto, files);
+    }
+
+    public Long saveCareer(ProfileDTO profileDTO, List<CareerDTO> careers) {
+        if(careers != null && careers.size() > 0) {
+            careers.forEach(careerDTO -> {
+                careerDTO.setProfile(profileDTO);
+                Career career = careerService.dto2EntityAll(careerDTO);
+                careerRepo.save(career);
+            });
+            return 1L;
+        }
+        return 0L;
+    }
+
+    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
+        if(files != null && files.size() > 0) {
+            files.forEach(fileDTO -> {
+                fileDTO.setProfile(profileDTO);
+                FileVO file = fileService.dto2EntityProfile(fileDTO);
+                fileRepo.save(file);
+
+                if (file.isPhotoType() && fileDTO.isFirst()) {
+                    String[] arr = extractCelebrity(
+                            uploadPath + File.separator + file.getUuid() + "_" + file.getFileName());
+
+                    log.info("extract end ----------------------");
+                    log.info("profileDTO: " + profileDTO.getProfileId());
+                    profileRepo.updateResembleAndConfidenceByProfileId(
+                            profileDTO.getProfileId(), arr[0], Double.parseDouble(arr[1]));
+                }
+            });
+            return 1L;
+        }
+        return 0L;
     }
 
     @Transactional
@@ -226,39 +263,5 @@ public class ProfileServiceImpl implements ProfileService {
             System.out.println(e);
         }
         return null;
-    }
-
-    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
-        if(files != null && files.size() > 0) {
-            files.forEach(fileDTO -> {
-                fileDTO.setProfile(profileDTO);
-                FileVO file = fileService.dto2EntityProfile(fileDTO);
-                fileRepo.save(file);
-
-                if (file.isPhotoType() && fileDTO.isFirst()) {
-                    String[] arr = extractCelebrity(
-                            uploadPath + File.separator + file.getUuid() + "_" + file.getFileName());
-
-                    profileRepo.updateResembleAndConfidenceByProfileId(
-                            profileDTO.getProfileId(), arr[0], Double.parseDouble(arr[1]));
-                }
-            });
-            return 1L;
-        }
-        return 0L;
-    }
-
-
-
-    public Long saveCareer(ProfileDTO profileDTO, List<CareerDTO> careers) {
-        if(careers != null && careers.size() > 0) {
-            careers.forEach(careerDTO -> {
-                careerDTO.setProfile(profileDTO);
-                Career career = careerService.dto2EntityAll(careerDTO);
-                careerRepo.save(career);
-            });
-            return 1L;
-        }
-        return 0L;
     }
 }

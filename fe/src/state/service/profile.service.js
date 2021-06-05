@@ -5,13 +5,12 @@ const SERVER = 'http://localhost:8080';
 const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
 
 const profileRegister = (arg) => {
-    console.log('service profileList pageRequest: ' + JSON.stringify(arg));
     return axios({
         url: `${SERVER}/profiles/register`,
         method: 'post',
         data: arg,
         headers: {
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
             Authorization: localStorage.getItem('TOKEN'),
         },
     });
@@ -26,12 +25,11 @@ const profileList = (pageRequest) => {
         headers: { Authorization: 'JWT fefege..' },
     });
 };
-
-const profileRead = () => {
+const profileDetail = (id) => {
     return axios({
-        url: `${SERVER}/profiles/detail/${userInfo[1].profileId}`,
+        url: `${SERVER}/profiles/detail/${id}`,
         method: 'get',
-        headers: { Authorization: localStorage.getItem('TOKEN') },
+        headers: { Authorization: 'JWT fefege..' },
     });
 };
-export default { profileRegister, profileList, profileRead };
+export default { profileRegister, profileList, profileDetail };

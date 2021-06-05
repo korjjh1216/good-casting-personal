@@ -51,21 +51,22 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
         BooleanExpression expression = hire.hireId.gt(0L);
         totalBuilder.and(expression);
 
-        BooleanBuilder keywordBuilder = makeKeyword(hire, pageRequest.getSearchKey().getKeyword());
 
-        if(keywordBuilder != null) {
+
+        if (pageRequest.getSearchKey() != null && pageRequest.getSearchKey().trim().length() != 0) {
+            BooleanBuilder keywordBuilder = makeKeyword(hire, pageRequest.getSearchKey());
             totalBuilder.and(keywordBuilder);
         }
 
-        BooleanBuilder periodBuilder = makePeriodRange(hire, pageRequest.getPeriod().getFrom(), pageRequest.getPeriod().getTo());
 
-        if(periodBuilder != null) {
+        if (pageRequest.getPeriod() != null) {
+            BooleanBuilder periodBuilder = makePeriodRange(hire, pageRequest.getPeriod().getFrom(), pageRequest.getPeriod().getTo());
             totalBuilder.and(periodBuilder);
         }
 
-        BooleanBuilder payBuilder = makePayRange(hire, pageRequest.getPay().getStart(), pageRequest.getPay().getEnd());
 
-        if(payBuilder != null) {
+        if (pageRequest.getPay() != null) {
+            BooleanBuilder payBuilder = makePayRange(hire, pageRequest.getPay().getStart(), pageRequest.getPay().getEnd());
             totalBuilder.and(payBuilder);
         }
 
@@ -102,13 +103,6 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     private BooleanBuilder makePayRange(QHire hire, Integer start, Integer end) {
-
-        log.info("start: " + start);
-        log.info("end: " + end);
-        if (start == null || end == null) {
-            return null;
-        }
-
         BooleanBuilder conditions = new BooleanBuilder();
         conditions.and(hire.guarantee.between(start, end));
 
@@ -116,33 +110,17 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     private BooleanBuilder makePeriodRange(QHire hire, LocalDate from, LocalDate to) {
-
-        if (from == null || to == null) {
-            return null;
-        }
-
         BooleanBuilder conditions = new BooleanBuilder();
-
-        log.info("search filming");
         conditions.and(hire.filming.between(from, to));
 
         return conditions;
     }
 
     private BooleanBuilder makeKeyword(QHire hire, String keyword) {
-
-        if (keyword == null || keyword.trim().length() == 0) {
-            return null;
-        }
-
         BooleanBuilder conditions = new BooleanBuilder();
-        log.info("search title");
         conditions.or(hire.title.contains(keyword));
-        log.info("search project");
         conditions.or(hire.project.contains(keyword));
-        log.info("search contents");
         conditions.or(hire.contents.contains(keyword));
-        log.info("search cast");
         conditions.or(hire.cast.contains(keyword));
 
         return conditions;

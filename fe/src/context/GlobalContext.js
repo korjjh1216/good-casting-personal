@@ -5,9 +5,8 @@ const GlobalContext = React.createContext();
 const GlobalProvider = ({ children }) => {
     const [themeDark, setThemeDark] = useState(false);
     const [showSidebarDashboard, setShowSidebarDashboard] = useState(true);
-    const [applicationModalVisible, setApplicationModalVisible] = useState(
-        false
-    );
+    const [showSidebarActor, setShowSidebarActor] = useState(true);
+    const [applicationModalVisible, setApplicationModalVisible] = useState(false);
     const [signInModalVisible, setSignInModalVisible] = useState(false);
     const [signUpModalVisible, setSignUpModalVisible] = useState(false);
     const [videoModalVisible, setVideoModalVisible] = useState(false);
@@ -33,6 +32,10 @@ const GlobalProvider = ({ children }) => {
 
     const toggleSidebarDashboard = () => {
         setShowSidebarDashboard(!showSidebarDashboard);
+    };
+
+    const toggleShowSidebarActor = () => {
+        setShowSidebarActor(!showSidebarActor);
     };
 
     const toggleVideoModal = () => {
@@ -62,6 +65,8 @@ const GlobalProvider = ({ children }) => {
     return (
         <GlobalContext.Provider
             value={{
+                showSidebarActor,
+                toggleShowSidebarActor,
                 themeDark,
                 toggleTheme,
                 showSidebarDashboard,
