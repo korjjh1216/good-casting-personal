@@ -1,6 +1,7 @@
 import profileService from '../service/profile.service';
 import uuid from 'uuid/dist/v4';
 import Swal from 'sweetalert2';
+import { navigate } from 'gatsby-link';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
@@ -21,6 +22,16 @@ export const profileDetail = createAsyncThunk('PROFILE_DETAIL', async (id) => {
 
 export const profileRegister = createAsyncThunk('PROFILE_REGISTER', async (arg) => {
     const response = await profileService.profileRegister(arg);
+    return response.data;
+});
+
+export const profileDelete = createAsyncThunk('PROFILE_DELETE', async (id) => {
+    const response = await profileService.profileDelete(id);
+    navigate('/actor-mypage');
+    return response.data;
+});
+export const delcheck = createAsyncThunk('DELETE_CHECK', async (id) => {
+    const response = await profileService.delcheck(id);
     return response.data;
 });
 
@@ -107,6 +118,14 @@ const profileSlice = createSlice({
                     ...state,
                     profile: payload,
                 };
+            })
+            .addCase(profileDelete.fulfilled, (state, { payload }) => {
+                console.log(payload);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '프로필이 삭제되었습니다.',
+                });
             });
     },
 });

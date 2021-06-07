@@ -8,9 +8,23 @@ export const applicantList = createAsyncThunk('APPLICANTLIST', async (pageReques
     return response.data;
 });
 
+export const applylist = createAsyncThunk('APPLYTLIST', async (pageRequest) => {
+    console.log('reducer appllyList() pageRequest: ' + JSON.stringify(pageRequest));
+    const response = await applyService.applylist(pageRequest);
+
+    return response.data;
+});
+
 export const hireApply = createAsyncThunk('HIRE_APPLY', async (apply) => {
     console.log('createAsyncThunk enter : ' + JSON.stringify(apply));
     const response = await applyService.hireApply(apply);
+    return response.data;
+});
+
+export const deleteApply = createAsyncThunk('DELETE_APPLY', async (id) => {
+    console.log('DELETE_APPLY: ' + JSON.stringify(id));
+    const response = await applyService.applyDelete(id);
+    console.log('deleteApply: ' + response.data);
     return response.data;
 });
 
@@ -53,6 +67,13 @@ const applySlice = createSlice({
                 console.log('payload : ' + JSON.stringify(payload));
             })
             .addCase(applicantList.fulfilled, (state, { payload }) => {
+                console.log(JSON.stringify(payload));
+                return {
+                    ...state,
+                    pageResult: { ...payload },
+                };
+            })
+            .addCase(applylist.fulfilled, (state, { payload }) => {
                 console.log(JSON.stringify(payload));
                 return {
                     ...state,

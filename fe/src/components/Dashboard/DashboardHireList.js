@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Link, navigate } from 'gatsby';
 import { Select } from '../Core';
 import { useSelector, useDispatch } from 'react-redux';
-import { hireSelector, myHireList, hireDelete } from '../../state/reducer/hire.reducer';
+import { hireSelector, myHireList, hireDelete, hireList } from '../../state/reducer/hire.reducer';
 import PageListComponent from '../Core/PageList';
 
 const defaultJobs = [
@@ -23,7 +23,7 @@ const DashboardHireList = () => {
     useEffect(() => {
         console.log('myHireList pageRequest: ' + JSON.stringify(pageRequest));
         dispatch(
-            myHireList({
+            hireList({
                 ...pageRequest,
                 producerId: userInfo[1].producerId,
             })

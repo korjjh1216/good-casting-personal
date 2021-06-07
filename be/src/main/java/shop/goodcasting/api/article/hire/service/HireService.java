@@ -92,8 +92,8 @@ public interface HireService {
                 .regDate(hire.getRegDate())
                 .personnel(hire.getPersonnel())
                 .producerAgency(producer.getAgency())
-                .fileName(file.getFileName())
-                .fileUuid(file.getUuid())
+//                .fileName(file.getFileName())
+//                .fileUuid(file.getUuid())
                 .build();
     }
 

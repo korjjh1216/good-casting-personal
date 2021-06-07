@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-
+import { Link, navigate } from 'gatsby';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
-import { profileDetail, profileSelector } from '../../state/reducer/profile.reducer';
+import { profileDetail, profileDelete, profileSelector } from '../../state/reducer/profile.reducer';
 
 const ProfileSidebar = (props) => {
     const dispatch = useDispatch();
 
     const profile = useSelector(profileSelector).profile;
-
     const video = profile.files.find((file) => file.photoType === false) || { fileName: '', uuid: '' };
     const photos = profile.files.filter((file) => file.photoType === true);
+    const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
 
     useEffect(() => {
         dispatch(profileDetail(props.id));
@@ -62,6 +62,31 @@ const ProfileSidebar = (props) => {
                                     <a className="text-black-2 text-break">{profile.actor.phone}</a>
                                 </h5>
                             </div>
+                            {userInfo[1].actorId == profile.actor.actorId ? (
+                                <div className="mb-7">
+                                    <td className="table-y-middle py-7 min-width-px-80">
+                                        <Link to="/hire-modify" className="font-size-3 font-weight-bold text-green text-uppercase">
+                                            수정하기
+                                        </Link>
+                                    </td>
+                                    <td className="table-y-middle py-7 min-width-px-100">
+                                        <a
+                                            href="#"
+                                            className="font-size-3 font-weight-bold text-red-2 text-uppercase"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (window.confirm('지원한 공고가 있는 프로필일 수 있습니다. 그래도 정말 삭제하시겠습니까?')) {
+                                                    dispatch(profileDelete(props.id));
+                                                }
+                                            }}
+                                        >
+                                            삭제하기
+                                        </a>
+                                    </td>
+                                </div>
+                            ) : (
+                                undefined
+                            )}
                         </div>
                     </div>
                 </div>

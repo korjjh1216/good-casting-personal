@@ -38,7 +38,7 @@ const Sidebar = () => {
                         <li className="">
                             <Link to="/dashboard-hires" activeClassName="active" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
                                 <i className="fas fa-briefcase mr-7"></i>
-                                업로드리스트
+                                공고문리스트
                             </Link>
                         </li>
                         <li className="">

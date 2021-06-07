@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Range, getTrackBackground } from 'react-range';
-import { useDispatch } from 'react-redux';
-import SearchBtnComponent from './SearchBtn';
-import { setGfrom, setGto } from '../../state/reducer/hire.reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { hireList } from '../../state/reducer/hire.reducer';
+import { profileList } from '../../state/reducer/profile.reducer';
 
-const STEP = 1;
-const MIN = 0;
-const MAX = 500000;
+const RangeSearchComponent = ({ text, MAX, MIN, STEP, selector }) => {
+    const [rangeValues, setRangeValues] = useState([MIN, MAX]);
 
-const RangeSearchComponent = ({ text }) => {
-    const [rangeValues, setRangeValues] = useState([0, 500000]);
+    const pageRequest = useSelector(selector).pageRequest;
 
     const dispatch = useDispatch();
 
@@ -32,21 +30,7 @@ const RangeSearchComponent = ({ text }) => {
                     </p>
                 </div>
             </div>
-            <div className="graph text-center mx-0 mt-5 position-relative chart-postion">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+
             <div className="range-slider">
                 <>
                     <Range
@@ -74,11 +58,11 @@ const RangeSearchComponent = ({ text }) => {
                                     ref={props.ref}
                                     style={{
                                         height: '5px',
-                                        width: '100%',
+                                        width: '90%',
                                         borderRadius: '4px',
                                         background: getTrackBackground({
                                             values: rangeValues,
-                                            colors: ['#ccc', '#00b074', '#ccc'],
+                                            colors: ['#ccc', '#755dd9', '#ccc'],
                                             min: MIN,
                                             max: MAX,
                                         }),
@@ -91,11 +75,59 @@ const RangeSearchComponent = ({ text }) => {
                         )}
                         renderThumb={({ props, isDragged }) => (
                             <div
+                                onMouseUp={() => {
+                                    if (text === '출연료') {
+                                        dispatch(
+                                            hireList({
+                                                ...pageRequest,
+                                                pay: {
+                                                    start: rangeValues[0],
+                                                    end: rangeValues[1],
+                                                },
+                                            })
+                                        );
+                                    }
+                                    if (text === '나이') {
+                                        dispatch(
+                                            profileList({
+                                                ...pageRequest,
+                                                age: {
+                                                    from: rangeValues[0],
+                                                    to: rangeValues[1],
+                                                },
+                                            })
+                                        );
+                                    }
+
+                                    if (text === '키') {
+                                        dispatch(
+                                            profileList({
+                                                ...pageRequest,
+                                                height: {
+                                                    from: rangeValues[0],
+                                                    to: rangeValues[1],
+                                                },
+                                            })
+                                        );
+                                    }
+
+                                    if (text === '몸무게') {
+                                        dispatch(
+                                            profileList({
+                                                ...pageRequest,
+                                                weight: {
+                                                    from: rangeValues[0],
+                                                    to: rangeValues[1],
+                                                },
+                                            })
+                                        );
+                                    }
+                                }}
                                 {...props}
                                 style={{
                                     ...props.style,
-                                    height: '24px',
-                                    width: '24px',
+                                    height: '17px',
+                                    width: '17px',
                                     borderRadius: '50%',
                                     backgroundColor: '#FFF',
                                     display: 'flex',
@@ -114,7 +146,6 @@ const RangeSearchComponent = ({ text }) => {
                     />
                 </>
             </div>
-            <SearchBtnComponent data={rangeValues} text={'출연료 검색'} className="btn btn-primary line-height-reset h-50 w-50 text-uppercase" />
         </div>
     );
 };

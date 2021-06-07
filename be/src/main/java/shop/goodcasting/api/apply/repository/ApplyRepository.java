@@ -17,8 +17,16 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, SearchApply
     @Query("select a.profile.actor.actorId  from Apply a  inner join Producer on a.hire.producer.producerId = :producerId" )
     List<Apply> findAllByProducerId(Long producerId);
 
+    @Query("select a.applyId from Apply a where a.profile.profileId = :profileId")
+    Long findByProfileId(Long profileId);
+
     @Modifying
     @Query("delete from Apply a where a.hire.hireId = :hireId")
     void deleteByHireId(Long hireId);
+
+    @Modifying
+    @Query("delete from Apply a where a.profile.profileId = :profileId")
+    void deleteByProfileId(Long profileId);
+
 
 }

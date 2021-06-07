@@ -10,9 +10,6 @@ import PageListComponent from '../components/Core/PageList';
 const SearchGrid = () => {
     const temp = useSelector((state) => state);
 
-    console.log('------------------------------------------');
-    console.log(temp);
-
     const pageResult = useSelector(hireSelector).pageResult;
     const pageRequest = useSelector(hireSelector).pageRequest;
 

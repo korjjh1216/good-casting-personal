@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import shop.goodcasting.api.apply.repository.ApplyRepository;
 import shop.goodcasting.api.article.profile.domain.*;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 
@@ -15,8 +16,6 @@ import shop.goodcasting.api.career.domain.Career;
 import shop.goodcasting.api.career.domain.CareerDTO;
 import shop.goodcasting.api.career.repository.CareerRepository;
 import shop.goodcasting.api.career.service.CareerService;
-import shop.goodcasting.api.article.hire.domain.HirePageRequestDTO;
-import shop.goodcasting.api.article.hire.domain.HirePageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
@@ -43,6 +42,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final FileService fileService;
     private final ActorService actorService;
     private final CareerService careerService;
+    private final ApplyRepository applyRepo;
     private final CareerRepository careerRepo;
 
     @Value("${shop.goodcast.upload.path}")
@@ -173,9 +173,14 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void deleteProfile(Long profileId) {
         fileRepo.deleteByProfileId(profileId);
-
+        Long careerId =careerRepo.getCareerIdByProfileId(profileId);
+        Long applyId =applyRepo.findByProfileId(profileId);
+        if(careerId !=null){ careerRepo.deleteById(careerId);}
+        if(applyId != null){ applyRepo.deleteById(applyId);}
         profileRepo.deleteById(profileId);
     }
+
+
 
     public String[] extractCelebrity(String photoName) {
         log.info("extractCelebrity enter: " + photoName);

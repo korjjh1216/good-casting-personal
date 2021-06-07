@@ -1,13 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { hireList, hireSelector, pageListChange } from '../../state/reducer/hire.reducer';
+import { useDispatch } from 'react-redux';
+import { hireList, pageListChange } from '../../state/reducer/hire.reducer';
 import { profileList } from '../../state/reducer/profile.reducer';
 
-const PageListComponent = ({ flag }) => {
+const PageListComponent = ({ flag, pageResult, pageRequest }) => {
     const dispatch = useDispatch();
-    const pageRequest = useSelector(hireSelector).pageRequest;
 
-    const { next, prev, pageList, start, end } = useSelector(hireSelector).pageResult;
+    const { next, prev, pageList, start, end } = pageResult;
 
     const changePage = (page) => {
         if (flag === 'hireList') {

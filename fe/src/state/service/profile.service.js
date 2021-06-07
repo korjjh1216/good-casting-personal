@@ -32,4 +32,20 @@ const profileDetail = (id) => {
         headers: { Authorization: 'JWT fefege..' },
     });
 };
-export default { profileRegister, profileList, profileDetail };
+
+const profileDelete = (id) => {
+    return axios({
+        url: `${SERVER}/profiles/delete/${id}`,
+        method: 'delete',
+        headers: { Authorization: 'JWT fefege..' },
+    });
+};
+
+const delcheck = (id) => {
+    return axios({
+        url: `${SERVER}/profiles/delcheck/${id}`,
+        method: 'post',
+        headers: { Authorization: 'JWT fefege..' },
+    });
+};
+export default { profileRegister, profileList, profileDetail, profileDelete, delcheck };

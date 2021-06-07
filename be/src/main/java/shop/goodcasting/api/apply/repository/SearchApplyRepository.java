@@ -6,4 +6,5 @@ import shop.goodcasting.api.apply.domain.ApplyPageRequestDTO;
 
 public interface SearchApplyRepository {
     Page<Object[]> applicantList(ApplyPageRequestDTO pageRequest, Pageable pageable);
+    Page<Object[]> applyList(ApplyPageRequestDTO pageRequest, Pageable pageable);
 }

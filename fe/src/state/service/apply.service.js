@@ -26,4 +26,22 @@ const applicantist = (pageRequest) => {
     });
 };
 
-export default { applicantist, hireApply };
+const applylist = (pageRequest) => {
+    console.log('service applicantist pageRequest: ' + JSON.stringify(pageRequest));
+    return axios({
+        url: `${SERVER}/applies/applylist`,
+        method: 'post',
+        data: pageRequest,
+        headers: { Authorization: localStorage.getItem('TOKEN') },
+    });
+};
+
+const applyDelete = (id) => {
+    return axios({
+        url: `${SERVER}/applies/delete/${id}`,
+        method: 'delete',
+        headers: { Authorization: 'JWT fefege..' },
+    });
+};
+
+export default { applicantist, hireApply, applylist, applyDelete };

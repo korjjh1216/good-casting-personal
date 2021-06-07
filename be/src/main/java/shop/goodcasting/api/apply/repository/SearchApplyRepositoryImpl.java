@@ -84,4 +84,59 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
                 pageable,
                 count);
     }
+
+    @Override
+    @Transactional
+    public Page<Object[]> applyList(ApplyPageRequestDTO pageRequest, Pageable pageable) {
+
+        log.info("-------------------Search Profile Page Enter------------------------------------");
+
+        QApply apply = QApply.apply;
+        QProducer producer = QProducer.producer;
+        QActor actor =QActor.actor;
+
+        JPQLQuery<Apply> jpqlQuery = from(apply);
+        jpqlQuery.innerJoin(producer).on(apply.hire.producer.eq(producer));
+        jpqlQuery.innerJoin(actor).on(apply.profile.actor.eq(actor));
+
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(apply,producer, actor);
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanExpression expression1 = apply.profile.actor.actorId.eq(pageRequest.getActorId());
+
+        booleanBuilder.and(expression1);
+
+        tuple.where(booleanBuilder);
+
+        log.info(tuple);
+
+        Sort sort = pageable.getSort();
+
+        sort.stream().forEach(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String prop = order.getProperty();
+
+            PathBuilder orderByExpression = new PathBuilder(Apply.class, "apply");
+            tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
+        });
+        tuple.groupBy(apply);
+
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
+
+        List<Tuple> result = tuple.fetch();
+
+        result.forEach(tuple1 -> {
+            log.info("searchPage() tuple: " + tuple1);
+        });
+
+        long count = tuple.fetchCount();
+
+        log.info("COUNT: " + count);
+
+        return new PageImpl<>(result.stream()
+                .map(t -> t.toArray()).collect(Collectors.toList()),
+                pageable,
+                count);
+    }
 }

@@ -44,4 +44,21 @@ public class ApplyServiceImpl implements ApplyService{
         return new ApplyPageResultDTO<>(result, fn, pageRequest);
     }
 
+    @Override
+    @Transactional
+    public ApplyPageResultDTO<ApplyListDTO, Object[]> getApplyList(ApplyPageRequestDTO pageRequest) {
+        Page<Object[]> result;
+        Function<Object[], ApplyListDTO> fn;
+        result = applyRepo.applyList(pageRequest,pageRequest
+                .getPageable(Sort.by(pageRequest.getSort()).descending()));
+
+        fn = (entity -> entity2DtoAll2((Apply) entity[0]));
+        return new ApplyPageResultDTO<>(result, fn, pageRequest);
+    }
+
+    @Transactional
+    public void deleteApply(Long applyId) {
+        applyRepo.deleteById(applyId);
+    }
+
 }
