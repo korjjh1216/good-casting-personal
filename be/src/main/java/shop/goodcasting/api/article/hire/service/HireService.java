@@ -75,6 +75,7 @@ public interface HireService {
                 .hireId(hire.getHireId())
                 .cast(hire.getCast())
                 .deadline(hire.getDeadline())
+                .personnel(hire.getPersonnel())
                 .project(hire.getProject())
                 .modDate(hire.getModDate())
                 .regDate(hire.getRegDate())

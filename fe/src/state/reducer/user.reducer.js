@@ -3,19 +3,16 @@ import Swal from 'sweetalert2';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const signup = createAsyncThunk(
-    'SIGN_UP',
-    async (arg, { rejectWithValue }) => {
-        console.log('reducer signup() arg: ' + JSON.stringify(arg));
+export const signup = createAsyncThunk('SIGN_UP', async (arg, { rejectWithValue }) => {
+    console.log('reducer signup() arg: ' + JSON.stringify(arg));
 
-        try {
-            const response = await userService.signup(arg);
-            return response.data;
-        } catch (e) {
-            return rejectWithValue(e.response.data);
-        }
+    try {
+        const response = await userService.signup(arg);
+        return response.data;
+    } catch (e) {
+        return rejectWithValue(e.response.data);
     }
-);
+});
 
 export const signin = createAsyncThunk('SIGN_IN', async (arg) => {
     console.log('reducer signin() arg: ' + JSON.stringify(arg));
