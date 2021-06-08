@@ -1,4 +1,5 @@
 package shop.goodcasting.api.article.hire.domain;
+
 import lombok.*;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,9 @@
 package shop.goodcasting.api.career.service;
 
-import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.career.domain.Career;
 import shop.goodcasting.api.career.domain.CareerDTO;
+import shop.goodcasting.api.article.profile.domain.Profile;
+import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 
 
 public interface CareerService {
@@ -55,3 +54,4 @@ public interface CareerService {
                 .build();
     }
 }
+

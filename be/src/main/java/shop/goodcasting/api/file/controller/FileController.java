@@ -11,11 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.service.FileServiceImpl;
+import shop.goodcasting.api.file.domain.FileDTO;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,6 +62,7 @@ public class FileController {
                 uploadFile.transferTo(savePath);
                 if(mimeType.startsWith("image")){
                     log.info("image thumbnail extract");
+
                     String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
                     File thumbnailFile = new File(thumbnailSaveName);
 

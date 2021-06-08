@@ -18,6 +18,7 @@ import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
 import shop.goodcasting.api.article.hire.service.HireService;
+import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.service.ProfileService;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
@@ -40,6 +41,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -94,7 +99,7 @@ public void creatHire() throws Exception {
     int k =0;
 
 
-    for (int j = 1; j < 50; j++) {
+    for (int j = 1; j < 10; j++) {
         Document document = connectUrl("https://www.filmmakers.co.kr/performerWanted/page/" + j);
         Elements link = document.select("table.table>tbody>tr>td>a");
         for (int i = 1; i < link.size(); i++) {
@@ -121,6 +126,12 @@ public void creatHire() throws Exception {
 
 
         if (deadlineTrue) {
+                String deadTime = deadline.text()+" 00:00";
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse(deadTime, formatter);
+
+                //System.out.println(dateTime);
+
             // 유저 생성
             UserVO userVO = UserVO.builder()
                     .username("userP" + i)
@@ -154,6 +165,7 @@ public void creatHire() throws Exception {
             hireDTO.setPersonnel(personnel.text());
             hireDTO.setContents(contents.text());
             hireDTO.setProducer(producerDTO1);
+            hireDTO.setDeadline(dateTime);
             hireList.add(hireDTO);
             System.out.println("hire 다 가져오니?" + hireDTO);
 
@@ -161,45 +173,29 @@ public void creatHire() throws Exception {
             Hire finalHire = hireRepository.save(hire);
             hireDTO.setHireId(finalHire.getHireId());
 
-            // 크롤링 사진
-            Document namuEnt = connectUrl("http://www.namooactors.com/");
-            Elements eles = namuEnt.select(".actor_small").get(k).select("img");
-            if (eles == null || eles.size() == 0) { return;}
-            String imgLink = eles.attr("src");
-            URL url = new URL("http://www.namooactors.com/" + imgLink);
-            System.out.println("완벽한 url" + url);
-            InputStream in = url.openStream();
-            FileOutputStream fos = new FileOutputStream("\\\\DESKTOP-F9UL04V\\Users\\bitcamp\\Pictures\\Goodcasting\\" + producerDTO1.getName() + ".jpg");
-            FileUtil.copyStream(in, fos);
-            k++;
-
-            // 썸네일 생성
-            String uuid = UUID.randomUUID().toString();
-            FileVO fileVO = FileVO.builder()
-                    .fileName(producerDTO1.getName() + ".jpg")
-                    .hire(finalHire)
-                    .uuid(uuid)
-                    .first(true)
-                    .photoType(true)
-                    .build();
-            fileRepository.save(fileVO);
-
-            String saveName = uploadPath + File.separator + producerDTO1.getName() + ".jpg";
-            Path savePath = Paths.get(saveName);
-            System.out.println("image thumbnail extract");
-            String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + producerDTO1.getName() + ".jpg";
-            File thumbnailFile = new File(thumbnailSaveName);
-            Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 500, 500);
-
-            List<FileDTO> files = new ArrayList<>();
-            files.add(fileService.entity2Dto(fileVO));
-            saveFile(hireDTO, files);
-
-
         }
     }
 
 }
+
+    @Test
+    public void testset() {
+        //2021-06-10
+        String str = "2021-06-10 "+"00:00:00";
+        try {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+
+            System.out.println(dateTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+//        LocalDateTime deadlineTime = LocalDateTime.parse("2021-06-10T12:30:30+0530");
+//        System.out.println("de"+deadlineTime);
+    }
 
     public void extractCelebrity(String photoName, Long hireId) {
 

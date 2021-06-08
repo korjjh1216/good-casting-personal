@@ -11,8 +11,8 @@ exports.onCreatePage = ({ page, actions }) => {
         createPage(page);
     }
 
-    if (page.path.match(/actor-mypage/)) {
-        page.context.layout = 'actor-mypage';
+        if (page.path.match(/actor-/)) {
+        page.context.layout = 'actor-';
         createPage(page);
     }
 };

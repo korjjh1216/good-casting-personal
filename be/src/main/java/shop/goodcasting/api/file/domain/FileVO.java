@@ -32,16 +32,5 @@ public class FileVO extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hire_id")
     private Hire hire;
-
-    public void changeUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void changeFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public void changeFirst(boolean first) {
-        this.first = first;
-    }
 }
+

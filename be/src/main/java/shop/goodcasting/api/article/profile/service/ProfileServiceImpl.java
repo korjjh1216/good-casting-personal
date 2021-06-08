@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.apply.repository.ApplyRepository;
 import shop.goodcasting.api.article.profile.domain.*;
+import shop.goodcasting.api.career.repository.CareerRepository;
+import shop.goodcasting.api.apply.repository.ApplyRepository;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
-
 import shop.goodcasting.api.career.domain.Career;
 import shop.goodcasting.api.career.domain.CareerDTO;
-import shop.goodcasting.api.career.repository.CareerRepository;
 import shop.goodcasting.api.career.service.CareerService;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
@@ -42,8 +41,8 @@ public class ProfileServiceImpl implements ProfileService {
     private final FileService fileService;
     private final ActorService actorService;
     private final CareerService careerService;
-    private final ApplyRepository applyRepo;
     private final CareerRepository careerRepo;
+    private final ApplyRepository applyRepo;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
@@ -54,13 +53,21 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileDTO finalProfileDto = entity2DtoAll(profileRepo.save(dto2EntityAll(profileDTO)));
 
         List<FileDTO> files = profileDTO.getFiles();
-        List<CareerDTO> careers = profileDTO.getCareers();
 
-        saveCareer(finalProfileDto, careers);
-        return saveFile(finalProfileDto, files);
+        log.info("files : " + files.size());
+
+        if(files.size() == 0){
+            throw new RuntimeException("no files");
+        } else {
+            List<CareerDTO> careers = profileDTO.getCareers();
+
+            saveCareer(finalProfileDto, careers);
+            return saveFile(finalProfileDto, files);
+        }
     }
 
     public Long saveCareer(ProfileDTO profileDTO, List<CareerDTO> careers) {
+
         if(careers != null && careers.size() > 0) {
             careers.forEach(careerDTO -> {
                 careerDTO.setProfile(profileDTO);
@@ -83,8 +90,6 @@ public class ProfileServiceImpl implements ProfileService {
                     String[] arr = extractCelebrity(
                             uploadPath + File.separator + file.getUuid() + "_" + file.getFileName());
 
-                    log.info("extract end ----------------------");
-                    log.info("profileDTO: " + profileDTO.getProfileId());
                     profileRepo.updateResembleAndConfidenceByProfileId(
                             profileDTO.getProfileId(), arr[0], Double.parseDouble(arr[1]));
                 }
@@ -120,18 +125,15 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfilePageResultDTO<ProfileListDTO, Object[]> getProfileList(ProfilePageRequestDTO pageRequest) {
-        if (!(pageRequest.getFile() == null)) {
-            log.info("service enter: " + pageRequest);
+        if (pageRequest.getFile() != null) {
 
             String fileName = uploadPath + File.separator + "s_"
                     + pageRequest.getFile().getUuid() + "_" + pageRequest.getFile().getFileName();
-
 
             String[] arr = extractCelebrity(fileName);
 
             pageRequest.setResembleKey(arr[0]);
 
-            log.info("before get page list: " + pageRequest);
         }
 
         Page<Object[]> result;
@@ -162,7 +164,6 @@ public class ProfileServiceImpl implements ProfileService {
         Long profileId = profileDTO.getProfileId();
 
         profileRepo.save(dto2EntityAll(profileDTO));
-
         fileRepo.deleteByProfileId(profileId);
 
         List<FileDTO> files = profileDTO.getFiles();
@@ -173,17 +174,15 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void deleteProfile(Long profileId) {
         fileRepo.deleteByProfileId(profileId);
-        Long careerId =careerRepo.getCareerIdByProfileId(profileId);
-        Long applyId =applyRepo.findByProfileId(profileId);
-        if(careerId !=null){ careerRepo.deleteById(careerId);}
+        Long careerId = careerRepo.getCareerIdByProfileId(profileId);
+        Long applyId = applyRepo.findByProfileId(profileId);
+        if(careerId != null){ careerRepo.deleteById(careerId);}
         if(applyId != null){ applyRepo.deleteById(applyId);}
         profileRepo.deleteById(profileId);
     }
 
 
-
     public String[] extractCelebrity(String photoName) {
-        log.info("extractCelebrity enter: " + photoName);
         StringBuffer reqStr = new StringBuffer();
         String clientId = "92mep69l88";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "qdbpwHd8pRZPszLr0gLfqKR7OHbdsDriRmOFdwno";//애플리케이션 클라이언트 시크릿값";
@@ -199,6 +198,7 @@ public class ProfileServiceImpl implements ProfileService {
             con.setUseCaches(false);
             con.setDoOutput(true);
             con.setDoInput(true);
+
             // multipart request
             String boundary = "---" + System.currentTimeMillis() + "---";
             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -207,6 +207,7 @@ public class ProfileServiceImpl implements ProfileService {
             OutputStream outputStream = con.getOutputStream();
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
             String LINE_FEED = "\r\n";
+
             // file 추가
             String fileName = uploadFile.getName();
             writer.append("--" + boundary).append(LINE_FEED);
@@ -214,9 +215,11 @@ public class ProfileServiceImpl implements ProfileService {
             writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(fileName)).append(LINE_FEED);
             writer.append(LINE_FEED);
             writer.flush();
+
             FileInputStream inputStream = new FileInputStream(uploadFile);
             byte[] buffer = new byte[4096];
             int bytesRead = -1;
+
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
@@ -225,40 +228,34 @@ public class ProfileServiceImpl implements ProfileService {
             writer.append(LINE_FEED).flush();
             writer.append("--" + boundary + "--").append(LINE_FEED);
             writer.close();
+
             BufferedReader br = null;
+
             int responseCode = con.getResponseCode();
+
             if (responseCode == 200) { // 정상 호출
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             } else {  // 오류 발생
                 System.out.println("error!!!!!!! responseCode= " + responseCode);
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             }
+
             String inputLine;
+
             if (br != null) {
                 StringBuffer response = new StringBuffer();
                 while ((inputLine = br.readLine()) != null) {
                     response.append(inputLine);
                 }
                 br.close();
-                System.out.println("response: " + response.toString());
 
                 JSONObject jsonObject = new JSONObject(response.toString());
                 JSONArray facesArr = jsonObject.getJSONArray("faces");
-                System.out.println("---------------------facesArr-----------------" + facesArr);
-
                 JSONObject elem = facesArr.getJSONObject(0);
-                System.out.println("---------------------elem-----------------" + elem);
-
                 JSONObject celebObject = elem.getJSONObject("celebrity");
-                System.out.println("---------------------celebObject-----------------" + celebObject);
 
                 String resemble = celebObject.getString("value");
-                System.out.println("---------------------resemble-----------------" + resemble);
-
                 String confidence = String.valueOf(celebObject.getDouble("confidence"));
-                System.out.println("---------------------confidence-----------------" + confidence);
-
-                System.out.println("===================================================================");
 
                 return new String[] {resemble, confidence};
             } else {

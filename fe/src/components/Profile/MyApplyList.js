@@ -1,27 +1,21 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'gatsby';
 import { Select } from '../Core';
-import GlobalContext from '../../context/GlobalContext';
-import imgP1 from '../../assets/image/table-one-profile-image-1.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { applylist, applySelector, deleteApply } from '../../state/reducer/apply.reducer';
 import PageListComponent from '../Core/PageList';
-React.useLayoutEffect = React.useEffect;
-
+import { hireSelector, resetStatus } from '../../state/reducer/hire.reducer';
 const defaultJobs = [
-    { value: 'pd', label: 'Product Designer' },
     { value: 'all', label: '전체' },
+    { value: 'applydate', label: '지원날짜별' },
+    { value: 'enddate', label: '마감날짜별' },
 ];
-
 const MyApplyList = () => {
-    const gContext = useContext(GlobalContext);
     const dispatch = useDispatch();
-
     const pageRequest = useSelector(applySelector).pageRequest;
     const pageResult = useSelector(applySelector).pageResult;
-
+    const { status } = useSelector(hireSelector);
     const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
-
     useEffect(() => {
         console.log('ApplicantList pageRequest: ' + JSON.stringify(pageRequest));
         dispatch(
@@ -30,14 +24,15 @@ const MyApplyList = () => {
                 actorId: userInfo[1].actorId,
             })
         );
-    }, []);
-
+        dispatch(resetStatus());
+    }, [status]);
+    console.log(status);
     return (
-        <div className="container">
+        <div style={{ height: '1500px' }} className="container">
             <div className="mb-14">
                 <div className="row mb-11 align-items-center">
                     <div className="col-lg-6 mb-lg-0 mb-4">
-                        <h3 className="font-size-6 mb-0">지원한 리스트</h3>
+                        <h3 className="font-size-6 mb-0">지원 리스트</h3>
                     </div>
                     <div className="col-lg-6">
                         <div className="d-flex flex-wrap align-items-center justify-content-lg-end">
@@ -74,9 +69,6 @@ const MyApplyList = () => {
                                             <tr className="border border-color-2">
                                                 <th scope="row" className="pl-6 border-0 py-7 pr-0">
                                                     <div className="media min-width-px-235 align-items-center">
-                                                        <div className="circle-36 mr-6">
-                                                            <img src={imgP1} alt="" className="w-100" />
-                                                        </div>
                                                         <h4 className="font-size-4 mb-0 font-weight-semibold text-black-2">{apply.profile.actorName}</h4>
                                                     </div>
                                                 </th>
@@ -88,16 +80,15 @@ const MyApplyList = () => {
                                                 </td>
                                                 <td className="table-y-middle py-7 min-width-px-170 pr-0">
                                                     <div className="">
-                                                        <a
-                                                            href="/"
-                                                            className="font-size-3 font-weight-bold text-black-2 text-uppercase"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                gContext.toggleApplicationModal();
+                                                        <Link
+                                                            state={{
+                                                                id: apply.profile.profileId,
                                                             }}
+                                                            to="/profile-detail"
+                                                            className="font-size-3 font-weight-bold text-black-2 text-uppercase"
                                                         >
-                                                            프로필 보기
-                                                        </a>
+                                                            프로필보기
+                                                        </Link>
                                                     </div>
                                                 </td>
                                                 <td className="table-y-middle py-7 min-width-px-100">
@@ -125,5 +116,4 @@ const MyApplyList = () => {
         </div>
     );
 };
-
 export default MyApplyList;

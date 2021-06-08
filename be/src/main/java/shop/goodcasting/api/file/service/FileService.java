@@ -1,7 +1,7 @@
 package shop.goodcasting.api.file.service;
 
-import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
@@ -13,6 +13,11 @@ public interface FileService {
     void extractVideoThumbnail(File file) throws Exception;
 
     default FileDTO entity2Dto(FileVO fileVO) {
+
+        if (fileVO == null) {
+            return FileDTO.builder().build();
+        }
+
         return FileDTO.builder()
                 .fileId(fileVO.getFileId())
                 .fileName(fileVO.getFileName())

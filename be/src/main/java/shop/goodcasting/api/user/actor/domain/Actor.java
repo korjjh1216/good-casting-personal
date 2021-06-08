@@ -2,9 +2,10 @@ package shop.goodcasting.api.user.actor.domain;
 
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
-import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
+
+import shop.goodcasting.api.user.login.domain.UserVO;
 
 @ToString
 @Builder

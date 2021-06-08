@@ -158,7 +158,7 @@ const Layout = ({ children, pageContext }) => {
         );
     }
 
-    if (pageContext.layout === 'actor-mypage') {
+    if (pageContext.layout === 'actor-') {
         return (
             <ThemeProvider theme={gContext.themeDark ? getTheme(modes.dark) : getTheme(modes.light)}>
                 <div data-theme-mode-panel-active data-theme="light">

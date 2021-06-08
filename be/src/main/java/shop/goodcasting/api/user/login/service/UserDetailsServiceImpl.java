@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.user.login.domain.UserVO;
 import shop.goodcasting.api.user.login.repository.UserRepository;
+import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.transaction.Transactional;
 import java.util.Optional;

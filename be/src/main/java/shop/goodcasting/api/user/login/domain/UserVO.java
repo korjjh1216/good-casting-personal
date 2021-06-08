@@ -1,6 +1,9 @@
 package shop.goodcasting.api.user.login.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import shop.goodcasting.api.common.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -23,15 +26,8 @@ public class UserVO extends BaseEntity {
     @Column private boolean position;
     @Column private boolean account;
     @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    private List<Role> roles;
 
-    public void changePassword(String password) {
-        this.password = password;
-    }
-
-    public void changeRoles(List<Role> roles) {
-        this.roles = roles;
-    }
     public void addRoles(Role role) {
         roles.add(role);
     }

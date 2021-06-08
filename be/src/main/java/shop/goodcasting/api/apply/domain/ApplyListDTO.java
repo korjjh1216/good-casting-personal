@@ -6,6 +6,7 @@ import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 
 import java.sql.Timestamp;
+
 @ToString
 @Builder
 @NoArgsConstructor
@@ -28,3 +29,4 @@ public class ApplyListDTO {
     private ProfileDTO profile;
     private HireDTO hire;
 }
+

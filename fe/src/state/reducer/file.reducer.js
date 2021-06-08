@@ -1,12 +1,11 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fileService from '../service/file.service';
-
-const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const fileRegister = createAsyncThunk('FILE_REGISTER', async (formData) => {
     const response = await fileService.fileRegister(formData);
 
     response.data.forEach((file) => {
-        if (file.fileName.includes('.jp') || file.fileName.includes('.pn')) {
+        if (file.fileName.includes('.jp')) {
             file.photoType = true;
         }
     });
@@ -16,14 +15,14 @@ export const fileRegister = createAsyncThunk('FILE_REGISTER', async (formData) =
     return response.data;
 });
 
-const initialState = { fileList: [], reset: false };
+const initialState = {
+    fileList: [],
+    reset: false,
+};
 
 const fileSlice = createSlice({
     name: 'file',
-    initialState: {
-        fileList: [],
-        reset: false,
-    },
+    initialState: initialState,
     reducers: {
         resetFile: (state = initialState) => {
             return {
@@ -41,6 +40,7 @@ const fileSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fileRegister.fulfilled, (state, { payload }) => {
+            console.log('file: ' + JSON.stringify(payload));
             return {
                 ...state,
                 fileList: state.fileList.concat(payload),

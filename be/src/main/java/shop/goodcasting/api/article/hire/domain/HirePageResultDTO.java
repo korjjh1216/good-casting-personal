@@ -19,20 +19,15 @@ public class HirePageResultDTO<D, E> {
 
     //총 페이지 번호
     private int totalPage;
-
     //현재 페이지 번호
     private int page;
     //목록 사이즈
     private int size;
-
     //시작 페이지 번호, 끝 페이지 번호
     private int start, end;
-
     //이전, 다음
     private boolean prev, next;
-
     private long totalElement;
-
     private HirePageRequestDTO pageRequest;
 
     //페이지 번호  목록
@@ -57,17 +52,10 @@ public class HirePageResultDTO<D, E> {
         //temp end page
         int tempEnd = (int)(Math.ceil(page/10.0)) * 10;
 
-        log.info("##############temp end: ##################" + tempEnd);
-
         start = tempEnd - 9;
-
         prev = start > 1;
-
         end = totalPage > tempEnd ? tempEnd: totalPage;
-
         next = totalPage > tempEnd;
-
         pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
-
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import shop.goodcasting.api.file.domain.FileVO;
 
 import java.util.List;
+
 @Repository
 public interface FileRepository extends JpaRepository<FileVO, Long> {
     @Query("select f from FileVO f inner join f.profile p where p.profileId = :profileId")

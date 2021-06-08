@@ -87,9 +87,8 @@ public class SecurityProvider implements AuthenticationProvider {
 
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-
-
         log.info("bearerToken : " +bearerToken);
+
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
         } else {
@@ -98,7 +97,7 @@ public class SecurityProvider implements AuthenticationProvider {
     }
 
     public boolean validateToken(String token) throws Exception {
-        System.out.println("validateToken : 진입");
+        log.info("validateToken : 진입");
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             log.info(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token));

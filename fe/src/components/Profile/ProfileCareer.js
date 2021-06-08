@@ -54,17 +54,45 @@ const ProfileCareer = () => {
                 <div className="input-group career_item">
                     <input type="hidden" name="careerTypeArr" value="C" />
                     <div className="select-dropdown">
-                        <Select className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center" boarder={false} name="year" options={defaultYear} onChange={handleSelectChange} />
+                        <Select
+                            className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center"
+                            boarder={false}
+                            name="year"
+                            options={defaultYear}
+                            onChange={handleSelectChange}
+                        />
                     </div>
 
                     <div className="select-dropdown">
-                        <Select className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center" boarder={false} name="genre" options={defaultGenre} onChange={handleSelectChange} />
+                        <Select
+                            className="form-control pl-0 arrow-3 w-100 font-size-4 d-flex align-items-center"
+                            boarder={false}
+                            name="genre"
+                            options={defaultGenre}
+                            onChange={handleSelectChange}
+                        />
                     </div>
 
                     <div className="input-group-prepend wp32">
-                        <input type="text" maxLength="120" name="title" className="form-control" placeholder="작품명 입력" value={careers.title} onChange={handleChange} />
+                        <input
+                            type="text"
+                            maxLength="120"
+                            name="title"
+                            className="form-control"
+                            placeholder="작품명 입력"
+                            value={careers.title}
+                            onChange={handleChange}
+                        />
                     </div>
-                    <input type="text" maxLength="200" name="contents" className="form-control careerContent" placeholder="주/조연, 배역, 배역 설명 등" value={careers.contents} onChange={handleChange} />
+                    <input
+                        type="text"
+                        maxLength="200"
+                        name="contents"
+                        className="form-control careerContent"
+                        placeholder="주/조연, 배역, 배역 설명 등"
+                        value={careers.contents}
+                        onChange={handleChange}
+                    />
                     <button
                         className="btn_input_add"
                         type="button"

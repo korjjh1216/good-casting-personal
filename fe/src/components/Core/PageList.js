@@ -40,8 +40,15 @@ const PageListComponent = ({ flag, pageResult, pageRequest }) => {
         <>
             <div>
                 {prev ? (
-                    <div className="text-center pt-5 pt-lg-13">
-                        <button style={btnStyle} onClick={clickPrev} className="text-green font-weight-bold text-uppercase font-size-3">
+                    <div
+                        className="text-center pt-5 pt-lg-13"
+                        style={{ display: 'inline-block' }}
+                    >
+                        <button
+                            style={btnStyle}
+                            onClick={clickPrev}
+                            className="text-green font-weight-bold text-uppercase font-size-3"
+                        >
                             prev
                         </button>
                     </div>
@@ -50,7 +57,11 @@ const PageListComponent = ({ flag, pageResult, pageRequest }) => {
                 )}
                 {pageList.map((page, idx) => {
                     return (
-                        <div key={idx} className="text-center pt-5 pt-lg-13">
+                        <div
+                            key={idx}
+                            className="pt-5"
+                            style={{ display: 'inline-block' }}
+                        >
                             <button
                                 style={btnStyle}
                                 onClick={() => {
@@ -64,8 +75,12 @@ const PageListComponent = ({ flag, pageResult, pageRequest }) => {
                     );
                 })}
                 {next ? (
-                    <div className="text-center pt-5 pt-lg-13">
-                        <button style={btnStyle} onClick={clickNext} className="text-green font-weight-bold text-uppercase font-size-3">
+                    <div className="text-center">
+                        <button
+                            style={btnStyle}
+                            onClick={clickNext}
+                            className="text-green font-weight-bold text-uppercase font-size-3"
+                        >
                             next
                             <i className="fas fa-sort-down ml-3"></i>
                         </button>

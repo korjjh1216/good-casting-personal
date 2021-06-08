@@ -4,16 +4,16 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import shop.goodcasting.api.user.login.service.UserServiceImpl;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
-import shop.goodcasting.api.user.login.service.UserServiceImpl;
 
 import java.util.List;
 
 @Api(tags="users")
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins ="*", allowedHeaders = "*")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;

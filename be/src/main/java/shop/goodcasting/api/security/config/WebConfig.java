@@ -5,8 +5,8 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import shop.goodcasting.api.security.aop.SecurityFilter;
 import shop.goodcasting.api.security.domain.SecurityProvider;
+import shop.goodcasting.api.security.aop.SecurityFilter;
 
 @RequiredArgsConstructor
 public class WebConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {

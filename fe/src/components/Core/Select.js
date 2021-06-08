@@ -28,7 +28,11 @@ const getCustomStyles = (theme, accentColor, bg, border, indicator) => {
         control: (provided, state) => {
             return {
                 ...provided,
-                border: !border ? 'none' : state.menuIsOpen || state.isFocused ? `1px solid ${theme.colors[accentColor]} !important` : `1px solid ${theme.colors.border} !important`,
+                border: !border
+                    ? 'none'
+                    : state.menuIsOpen || state.isFocused
+                    ? `1px solid ${theme.colors[accentColor]} !important`
+                    : `1px solid ${theme.colors.border} !important`,
                 borderRadius: 10,
                 padding: '0.25rem 1rem',
                 width: '100%',
@@ -42,8 +46,25 @@ const getCustomStyles = (theme, accentColor, bg, border, indicator) => {
     };
 };
 
-const SelectStyled = ({ theme, bg = '#fff', border = true, accentColor = 'success', name = 'item', indicator = true, options = defaultOptions, ...rest }) => {
-    return <Select styles={getCustomStyles(theme, accentColor, bg, border, indicator)} defaultValue={options[0]} name={name} options={options} {...rest} />;
+const SelectStyled = ({
+    theme,
+    bg = '#fff',
+    border = true,
+    accentColor = 'success',
+    name = 'item',
+    indicator = true,
+    options = defaultOptions,
+    ...rest
+}) => {
+    return (
+        <Select
+            styles={getCustomStyles(theme, accentColor, bg, border, indicator)}
+            defaultValue={options[0]}
+            name={name}
+            options={options}
+            {...rest}
+        />
+    );
 };
 
 export default withTheme(SelectStyled);

@@ -3,15 +3,14 @@ package shop.goodcasting.api.user.producer.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
-
-import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
+import shop.goodcasting.api.user.producer.repository.ProducerRepository;
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.login.repository.UserRepository;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
-import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

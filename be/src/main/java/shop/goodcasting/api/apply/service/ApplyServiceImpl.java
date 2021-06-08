@@ -18,18 +18,27 @@ public class ApplyServiceImpl implements ApplyService{
     private final ApplyRepository applyRepo;
 
     @Override
+    @Transactional
     public ApplyDTO apply(ApplyDTO applyDTO) {
-        Apply apply = dto2EntityAll(applyDTO);
-        applyRepo.save(apply);
+
+        Long profileId = applyDTO.getProfile().getProfileId();
+        Long hireId = applyDTO.getHire().getHireId();
+
+        List<Long> applyList = applyRepo.duplicateCheck(profileId, hireId);
+
+        if(applyList.size() >= 1 ) {
+            throw new RuntimeException("duplicate apply");
+        } else {
+            applyRepo.save(dto2EntityAll(applyDTO));
+        }
         return null;
     }
 
     @Override
     @Transactional
     public List<ApplyDTO> findAllByHireId(Long hireId) {
-        return applyRepo.findAllByHireId(hireId).stream().map(message -> {
-            return entity2DtoAll(message);
-        }).collect(Collectors.toList());
+        return applyRepo.findAllByHireId(hireId).stream().map(message -> entity2DtoAll(message))
+                .collect(Collectors.toList());
     }
 
     @Override

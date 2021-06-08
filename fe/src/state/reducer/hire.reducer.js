@@ -4,52 +4,45 @@ import Swal from 'sweetalert2';
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const hireList = createAsyncThunk('HIRE_LIST', async (pageRequest) => {
-    console.log('createAsyncThunk enter: ' + JSON.stringify(pageRequest));
+    console.log('------------HIRE_LIST---------------');
+    console.log(pageRequest);
+    console.log('------------------------------------');
     if (pageRequest.page === 0) {
         return null;
     }
-    const response = await hireService.hireList(pageRequest);
-    return response.data;
-});
 
-export const myHireList = createAsyncThunk('MYHIRE_LIST', async (pageRequest) => {
-    console.log('reducer myHireList() pageRequest: ' + JSON.stringify(pageRequest));
     const response = await hireService.hireList(pageRequest);
     return response.data;
 });
 
 export const hireDetail = createAsyncThunk('HIRE_DETAIL', async (id) => {
-    console.log('createAsyncThunk enter: ' + JSON.stringify(id));
-
+    console.log('------------HIRE_DETAIL---------------');
+    console.log(id);
+    console.log('--------------------------------------');
     const response = await hireService.hireDetail(id);
-
-    console.log('hireDetail: ' + response.data);
 
     return response.data;
 });
 
 export const hireRegister = createAsyncThunk('HIRE_REGISTER', async (arg) => {
-    console.log('createAsyncThunk hireRegister enter: ' + JSON.stringify(arg));
     const response = await hireService.hireRegister(arg);
     return response.data;
 });
 
 export const hireDelete = createAsyncThunk('HIRE_DELETE', async (id) => {
-    console.log('HIRE_DELETE: ' + JSON.stringify(id));
     const response = await hireService.hireDelete(id);
-    console.log('hireDelete: ' + response.data);
     return response.data;
 });
 
 const initialState = {
     pageRequest: {
         page: 1,
-        size: 10,
+        size: 15,
         sort: 'hireId',
     },
     pageResult: {
         pageList: [],
-        dtoList: [{ regDate: '', deadline: '', modDate: '' }],
+        dtoList: [],
         page: 1,
         size: 10,
         totalPage: 0,
@@ -63,7 +56,9 @@ const initialState = {
     hire: {
         deadline: '',
         producer: {},
+        files: [],
     },
+    status: '',
 };
 
 const hireSlice = createSlice({
@@ -73,18 +68,19 @@ const hireSlice = createSlice({
         pageListChange: (state, { payload }) => {
             state.pageResult.page = payload;
         },
-        resetHireSearch: (state = initialState) => {
+        resetHireSelector: (state = initialState) => {
             return {
                 ...initialState,
                 reset: !state.reset,
             };
         },
+        resetStatus: (state) => {
+            state.status = '';
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(hireList.fulfilled, (state, { payload }) => {
-                console.log('payload: ' + JSON.stringify(payload));
-
                 if (!payload) {
                     state.page = 1;
                     return state;
@@ -96,32 +92,34 @@ const hireSlice = createSlice({
                     pageRequest: payload.pageRequest,
                 };
             })
-            .addCase(hireRegister.fulfilled, (state, { payload }) => {
-                console.log(payload);
-
+            .addCase(hireRegister.fulfilled, (state) => {
+                state.status = 'success';
                 Swal.fire({
                     icon: 'success',
                     title: '공고문이 등록되었습니다.',
                 });
             })
             .addCase(hireDetail.fulfilled, (state, { payload }) => {
-                console.log('hireDetail payload: ' + JSON.stringify(payload));
                 return {
                     ...state,
                     hire: payload,
                 };
             })
-            .addCase(myHireList.fulfilled, (state, { payload }) => {
-                console.log('payload :' + JSON.stringify(payload));
-                return {
-                    ...state,
-                    pageResult: payload,
-                };
+            .addCase(hireDelete.fulfilled, (state) => {
+                state.status = 'success';
+                Swal.fire({
+                    icon: 'success',
+                    title: '공고문이 삭제되었습니다.',
+                });
             });
     },
 });
 
 export const hireSelector = (state) => state.hireReducer;
 
-export const { pageListChange, resetHireSearch } = hireSlice.actions;
+export const {
+    pageListChange,
+    resetHireSelector,
+    resetStatus,
+} = hireSlice.actions;
 export default hireSlice.reducer;

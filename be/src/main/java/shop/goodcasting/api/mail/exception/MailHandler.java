@@ -15,7 +15,7 @@ public class MailHandler {
     private MimeMessage message;
     private MimeMessageHelper helper;
 
-    public MailHandler(JavaMailSender sender) throws MessagingException {
+    public MailHandler(JavaMailSender sender) throws MessagingException{
         message = sender.createMimeMessage();
         helper = new MimeMessageHelper(message, true, "UTF-8");
     }

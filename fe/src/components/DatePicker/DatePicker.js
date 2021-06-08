@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
-import DayPickerInput from 'react-day-picker/DayPickerInput'
-import 'react-day-picker/lib/style.css'
-import { useDispatch } from 'react-redux'
-import SearchBtnComponent from '../Core/SearchBtn'
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
+import SearchBtnComponent from '../Core/SearchBtn';
 
 const DatePickerStyled = styled.div`
     display: flex;
@@ -28,32 +27,18 @@ const DatePickerStyled = styled.div`
     .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover {
         background-color: ${({ theme }) => theme.colors.primary};
     }
-`
+`;
 
-const DatePickerComponent = ({ isRangeSearch }) => {
-    const today = new Date()
-    const [startDate, setStartDate] = useState(new Date())
-    const [endDate, setEndDate] = useState(new Date())
-
-    const dateToString = (date) => {
-        return (
-            date.getFullYear() +
-            '-' +
-            (date.getMonth() + 1).toString().padStart(2, '0') +
-            '-' +
-            date
-                .getDate()
-                .toString()
-                .padStart(2, '0')
-        )
-    }
-
-    const dispatch = useDispatch()
+const DatePickerComponent = ({ isRangeSearch, setDate }) => {
+    const today = new Date();
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     useEffect(() => {
-        dateToString(startDate)
-        dateToString(endDate)
-    }, [startDate, endDate])
+        if (setDate !== undefined) {
+            setDate(startDate);
+        }
+    }, [startDate]);
 
     return (
         <>
@@ -62,7 +47,7 @@ const DatePickerComponent = ({ isRangeSearch }) => {
                     dayPickerProps={{ disabledDays: { before: today } }}
                     value={startDate}
                     onDayChange={(day) => {
-                        setStartDate(day)
+                        setStartDate(day);
                     }}
                 />
             </DatePickerStyled>
@@ -76,15 +61,19 @@ const DatePickerComponent = ({ isRangeSearch }) => {
                             }}
                             value={endDate}
                             onDayChange={(day) => {
-                                setEndDate(day)
+                                setEndDate(day);
                             }}
                         />
                     </DatePickerStyled>
-                    <SearchBtnComponent data={{ startDate, endDate }} text={'기간 설정'} className="btn btn-primary line-height-reset h-50 w-50 text-uppercase" />
+                    <SearchBtnComponent
+                        data={{ startDate, endDate }}
+                        text={'촬영 날짜'}
+                        className="btn btn-primary line-height-reset h-50 w-50 text-uppercase"
+                    />
                 </>
             )}
         </>
-    )
-}
+    );
+};
 
-export default DatePickerComponent
+export default DatePickerComponent;

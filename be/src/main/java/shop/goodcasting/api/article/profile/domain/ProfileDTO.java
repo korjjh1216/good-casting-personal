@@ -16,7 +16,6 @@ import java.util.List;
 @Data
 @Component
 public class ProfileDTO {
-    // pk
     private Long profileId;
 
     private boolean privacy;

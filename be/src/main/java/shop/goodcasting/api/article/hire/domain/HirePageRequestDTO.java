@@ -21,8 +21,8 @@ public class HirePageRequestDTO {
     private String searchKey;
     private Pay pay;
     private Period period;
-    private Long producerId;
 
+    private Long producerId;
 
     private FileDTO file;
 

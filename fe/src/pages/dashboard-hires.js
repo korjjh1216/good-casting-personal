@@ -1,6 +1,6 @@
-import React from 'react'
-import PageWrapper from '../components/PageWrapper'
-import DashboardHireList from '../components/Dashboard/DashboardHireList'
+import React from 'react';
+import PageWrapper from '../components/PageWrapper';
+import DashboardHireList from '../components/Dashboard/DashboardHireList';
 
 const DashboardHires = () => {
     return (
@@ -18,6 +18,6 @@ const DashboardHires = () => {
                 </div>
             </PageWrapper>
         </>
-    )
-}
-export default DashboardHires
+    );
+};
+export default DashboardHires;

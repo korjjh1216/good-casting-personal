@@ -23,5 +23,4 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(name ="mod_date")
     private Timestamp modDate;
-
 }

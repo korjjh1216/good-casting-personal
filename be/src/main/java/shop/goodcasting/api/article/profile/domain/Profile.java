@@ -14,22 +14,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "profiles")
 public class Profile extends BaseEntity {
-    // pk
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
     private Long profileId;
 
-    // column
     @Column private boolean privacy;
     @Column(columnDefinition = "TEXT") private String contents;
     @Column private String resemble;
     @Column private Double confidence;
     @Column private boolean first;
 
-    // join column
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "actor_id")
     private Actor actor;
-
-
 }

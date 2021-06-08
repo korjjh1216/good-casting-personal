@@ -16,28 +16,67 @@ const Contact = () => {
                                         <input type="hidden" name="form-name" value="contact" />
                                         <div className="row">
                                             <div className="col-12 mb-7">
-                                                <label htmlFor="name" className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">
+                                                <label
+                                                    htmlFor="name"
+                                                    className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset"
+                                                >
                                                     Your Name
                                                 </label>
-                                                <input type="text" className="form-control" placeholder="Jhon Doe" id="name" name="name" required />
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Jhon Doe"
+                                                    id="name"
+                                                    name="name"
+                                                    required
+                                                />
                                             </div>
                                             <div className="col-lg-6 mb-7">
-                                                <label htmlFor="email" className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">
+                                                <label
+                                                    htmlFor="email"
+                                                    className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset"
+                                                >
                                                     E-mail
                                                 </label>
-                                                <input type="text" className="form-control" placeholder="example@gmail.com" id="email" name="email" required />
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="example@gmail.com"
+                                                    id="email"
+                                                    name="email"
+                                                    required
+                                                />
                                             </div>
                                             <div className="col-lg-6 mb-7">
-                                                <label htmlFor="subject" className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">
+                                                <label
+                                                    htmlFor="subject"
+                                                    className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset"
+                                                >
                                                     Subject
                                                 </label>
-                                                <input type="text" className="form-control" placeholder="Special contract" id="subject" name="subject" required />
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Special contract"
+                                                    id="subject"
+                                                    name="subject"
+                                                    required
+                                                />
                                             </div>
                                             <div className="col-lg-12 mb-7">
-                                                <label htmlFor="message" className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">
+                                                <label
+                                                    htmlFor="message"
+                                                    className="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset"
+                                                >
                                                     Message
                                                 </label>
-                                                <textarea id="message" placeholder="Type your message" className="form-control h-px-144" name="message" required></textarea>
+                                                <textarea
+                                                    id="message"
+                                                    placeholder="Type your message"
+                                                    className="form-control h-px-144"
+                                                    name="message"
+                                                    required
+                                                ></textarea>
                                             </div>
                                             <div className="col-lg-12 pt-4">
                                                 <button type="submit" className="btn btn-primary text-uppercase w-100 h-px-48">

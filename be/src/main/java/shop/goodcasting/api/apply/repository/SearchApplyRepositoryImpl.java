@@ -7,7 +7,6 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +22,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Log4j2
 public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport implements SearchApplyRepository {
 
     public SearchApplyRepositoryImpl() {
@@ -33,8 +31,6 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
     @Override
     @Transactional
     public Page<Object[]> applicantList(ApplyPageRequestDTO pageRequest, Pageable pageable) {
-
-        log.info("-------------------Search Profile Page Enter------------------------------------");
 
         QApply apply = QApply.apply;
         QProducer producer = QProducer.producer;
@@ -53,8 +49,6 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
 
         tuple.where(booleanBuilder);
 
-        log.info(tuple);
-
         Sort sort = pageable.getSort();
 
         sort.stream().forEach(order -> {
@@ -71,13 +65,7 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
 
         List<Tuple> result = tuple.fetch();
 
-        result.forEach(tuple1 -> {
-            log.info("searchPage() tuple: " + tuple1);
-        });
-
         long count = tuple.fetchCount();
-
-        log.info("COUNT: " + count);
 
         return new PageImpl<>(result.stream()
                 .map(t -> t.toArray()).collect(Collectors.toList()),
@@ -88,8 +76,6 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
     @Override
     @Transactional
     public Page<Object[]> applyList(ApplyPageRequestDTO pageRequest, Pageable pageable) {
-
-        log.info("-------------------Search Profile Page Enter------------------------------------");
 
         QApply apply = QApply.apply;
         QProducer producer = QProducer.producer;
@@ -108,8 +94,6 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
 
         tuple.where(booleanBuilder);
 
-        log.info(tuple);
-
         Sort sort = pageable.getSort();
 
         sort.stream().forEach(order -> {
@@ -126,13 +110,7 @@ public class SearchApplyRepositoryImpl extends QuerydslRepositorySupport impleme
 
         List<Tuple> result = tuple.fetch();
 
-        result.forEach(tuple1 -> {
-            log.info("searchPage() tuple: " + tuple1);
-        });
-
         long count = tuple.fetchCount();
-
-        log.info("COUNT: " + count);
 
         return new PageImpl<>(result.stream()
                 .map(t -> t.toArray()).collect(Collectors.toList()),

@@ -1,15 +1,17 @@
-import React, { useContext } from 'react'
-import { Link } from 'gatsby'
-import styled from 'styled-components'
-import { Modal } from 'react-bootstrap'
-import GlobalContext from '../../context/GlobalContext'
-import ProfileSidebar from '../ProfileSidebar'
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'gatsby';
+import styled from 'styled-components';
+import { Modal } from 'react-bootstrap';
+import GlobalContext from '../../context/GlobalContext';
+import ProfileSidebar from '../ProfileSidebar';
+import { useDispatch, useSelector } from 'react-redux';
+import { profileDetail, profileSelector } from '../../state/reducer/profile.reducer';
 
-import imgF1 from '../../assets/image/l2/png/featured-job-logo-1.png'
-import imgF2 from '../../assets/image/l1/png/feature-brand-1.png'
-import imgF3 from '../../assets/image/svg/harvard.svg'
-import imgF4 from '../../assets/image/svg/mit.svg'
-import imgL from '../../assets/image/svg/icon-loaction-pin-black.svg'
+import imgF1 from '../../assets/image/l2/png/featured-job-logo-1.png';
+import imgF2 from '../../assets/image/l1/png/feature-brand-1.png';
+import imgF3 from '../../assets/image/svg/harvard.svg';
+import imgF4 from '../../assets/image/svg/mit.svg';
+import imgL from '../../assets/image/svg/icon-loaction-pin-black.svg';
 
 const ModalStyled = styled(Modal)`
     /* &.modal {
@@ -22,20 +24,36 @@ const ModalStyled = styled(Modal)`
     .modal-content {
         background: transparent;
     }
-`
+`;
 
 const ModalSignIn = (props) => {
-    const gContext = useContext(GlobalContext)
+    const gContext = useContext(GlobalContext);
+    const dispatch = useDispatch();
+    const profile = useSelector(profileSelector).profile;
+
+    // const photos = profile.files.filter((file) => file.photoType === true);
+    // const video = profile.files.find((file) => file.photoType === false) || {
+    //     fileName: '',
+    //     uuid: '',
+    // };
+
+    useEffect(() => {
+        dispatch(profileDetail(props.id));
+    }, []);
 
     const handleClose = () => {
-        gContext.toggleApplicationModal()
-    }
+        gContext.toggleApplicationModal();
+    };
 
     return (
         <ModalStyled {...props} size="lg" centered show={gContext.applicationModalVisible} onHide={gContext.toggleApplicationModal}>
             <Modal.Body className="p-0">
                 <div className="container position-relative">
-                    <button type="button" className="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper" onClick={handleClose}>
+                    <button
+                        type="button"
+                        className="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper"
+                        onClick={handleClose}
+                    >
                         <i className="fas fa-times"></i>
                     </button>
                     <div className="login-modal-main bg-white rounded-8 overflow-hidden">
@@ -51,8 +69,15 @@ const ModalSignIn = (props) => {
                                     {/* <!-- Excerpt Start --> */}
                                     <div className="pr-xl-0 pr-xxl-14 p-5 px-xs-12 pt-7 pb-5">
                                         <h4 className="font-size-6 font-weight-semibold mb-7 mt-5 text-black-2">About</h4>
-                                        <p className="font-size-4 mb-8">A talented professional with an academic background in IT and proven commercial development experience as C++ developer since 1999. Has a sound knowledge of the software development life cycle. Was involved in more than 140 software development outsourcing projects.</p>
-                                        <p className="font-size-4 mb-8">Programming Languages: C/C++, .NET C++, Python, Bash, Shell, PERL, Regular expressions, Python, Active-script.</p>
+                                        <p className="font-size-4 mb-8">
+                                            A talented professional with an academic background in IT and proven commercial development
+                                            experience as C++ developer since 1999. Has a sound knowledge of the software development life
+                                            cycle. Was involved in more than 140 software development outsourcing projects.
+                                        </p>
+                                        <p className="font-size-4 mb-8">
+                                            Programming Languages: C/C++, .NET C++, Python, Bash, Shell, PERL, Regular expressions, Python,
+                                            Active-script.
+                                        </p>
                                     </div>
                                     {/* <!-- Excerpt End --> */}
                                     {/* <!-- Skills --> */}
@@ -60,37 +85,58 @@ const ModalSignIn = (props) => {
                                         <h4 className="font-size-6 font-weight-semibold mb-7 mt-5 text-black-2">Skills</h4>
                                         <ul className="list-unstyled d-flex align-items-center flex-wrap">
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     Agile
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     Wireframing
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     Prototyping
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     Information
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     Waterfall Model
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     New Layout
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/#" className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center">
+                                                <Link
+                                                    to="/#"
+                                                    className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
+                                                >
                                                     Browsing
                                                 </Link>
                                             </li>
@@ -298,7 +344,7 @@ const ModalSignIn = (props) => {
                 </div>
             </Modal.Body>
         </ModalStyled>
-    )
-}
+    );
+};
 
-export default ModalSignIn
+export default ModalSignIn;

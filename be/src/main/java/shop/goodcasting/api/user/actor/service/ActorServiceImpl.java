@@ -2,6 +2,7 @@ package shop.goodcasting.api.user.actor.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
@@ -10,6 +11,7 @@ import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
+
 import shop.goodcasting.api.user.login.repository.UserRepository;
 
 import javax.transaction.Transactional;

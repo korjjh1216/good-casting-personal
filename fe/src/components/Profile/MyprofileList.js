@@ -42,7 +42,12 @@ const MyProfileList = () => {
                                                             width: '150px',
                                                             height: '200px',
                                                         }}
-                                                        src={'http://localhost:8080/files/display?fileName=s_' + profile.fileUuid + '_' + profile.fileName}
+                                                        src={
+                                                            'http://localhost:8080/files/display?fileName=s_' +
+                                                            profile.fileUuid +
+                                                            '_' +
+                                                            profile.fileName
+                                                        }
                                                         alt=""
                                                     />
                                                 </Link>
@@ -51,7 +56,11 @@ const MyProfileList = () => {
                                                 <p className="font-size-7 text-black-2 font-weight-bold mb-4">{profile.actorName}</p>
                                             </h2>
                                             <div className="card-btn-group">
-                                                <Link state={{ id: profile.profileId }} to="/profile-detail" className="btn btn-green text-uppercase btn-medium rounded-3">
+                                                <Link
+                                                    state={{ id: profile.profileId }}
+                                                    to="/profile-detail"
+                                                    className="btn btn-green text-uppercase btn-medium rounded-3"
+                                                >
                                                     프로필보기
                                                 </Link>
                                             </div>

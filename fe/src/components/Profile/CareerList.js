@@ -22,9 +22,25 @@ const CareerList = () => {
                             </div>
 
                             <div className="input-group-prepend wp32">
-                                <input type="text" maxLength="120" name="title" className="form-control" placeholder="작품명 입력" value={career.title} readOnly />
+                                <input
+                                    type="text"
+                                    maxLength="120"
+                                    name="title"
+                                    className="form-control"
+                                    placeholder="작품명 입력"
+                                    value={career.title}
+                                    readOnly
+                                />
                             </div>
-                            <input type="text" maxLength="200" name="contents" className="form-control careerContent" placeholder="주/조연, 배역, 배역 설명 등" value={career.contents} readOnly />
+                            <input
+                                type="text"
+                                maxLength="200"
+                                name="contents"
+                                className="form-control careerContent"
+                                placeholder="주/조연, 배역, 배역 설명 등"
+                                value={career.contents}
+                                readOnly
+                            />
                             <button
                                 onClick={() => {
                                     dispatch(deleteCareer(career.uuid));

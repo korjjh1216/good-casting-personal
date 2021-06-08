@@ -5,7 +5,6 @@ import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
-
 public interface ProfileService {
     Long register(ProfileDTO profileDTO);
     ProfileDTO readProfile(Long profileId);
@@ -63,6 +62,17 @@ public interface ProfileService {
     }
 
     default ProfileListDTO entity2DtoFiles(Profile profile, Actor actor, FileVO file) {
+        if (file == null) {
+            return ProfileListDTO.builder()
+                    .profileId(profile.getProfileId())
+                    .privacy(profile.isPrivacy())
+                    .resemble(profile.getResemble())
+                    .confidence(profile.getConfidence())
+                    .modDate(profile.getModDate())
+                    .regDate(profile.getRegDate())
+                    .actorName(actor.getName())
+                    .build();
+        }
         return ProfileListDTO.builder()
                 .profileId(profile.getProfileId())
                 .privacy(profile.isPrivacy())

@@ -1,6 +1,7 @@
 package shop.goodcasting.api.article.hire.domain;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
@@ -21,11 +22,15 @@ public class HireDTO {
     private String title;
     private String project;
     private String contents;
-    private String cast;    //배역
-    private LocalDate filming; //촬영기간
-    private Integer guarantee; //출연료
-    private String personnel; //모집인원
-    private LocalDateTime deadline; //공고마감일
+    private String cast;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate filming;
+    private Integer guarantee;
+    private String personnel;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime deadline;
 
     private ProducerDTO producer;
     private List<FileDTO> files;

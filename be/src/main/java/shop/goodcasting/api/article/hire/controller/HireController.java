@@ -1,7 +1,6 @@
 package shop.goodcasting.api.article.hire.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +10,6 @@ import shop.goodcasting.api.article.hire.domain.HirePageRequestDTO;
 import shop.goodcasting.api.article.hire.domain.HirePageResultDTO;
 import shop.goodcasting.api.article.hire.service.HireServiceImpl;
 
-
-@Log4j2
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins ="*", allowedHeaders = "*")
@@ -22,7 +19,6 @@ public class HireController {
 
     @PostMapping("/register")
     public ResponseEntity<Long> register(@RequestBody HireDTO hireDTO) {
-        System.out.println("Hire DTO: " + hireDTO);
         hireService.register(hireDTO);
         return ResponseEntity.ok(1L);
     }
@@ -34,26 +30,18 @@ public class HireController {
 
     @PostMapping("/list")
     public ResponseEntity<HirePageResultDTO<HireListDTO, Object[]>> hireList(@RequestBody HirePageRequestDTO pageRequest) {
-        log.info("------------------" + pageRequest + "----------------------------------");
-
-        log.info("==================================" + hireService.getHireList(pageRequest));
-
         return new ResponseEntity<>(hireService.getHireList(pageRequest), HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Long> update(@RequestBody HireDTO hireDTO) {
         hireService.update(hireDTO);
-
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{hireId}")
     public ResponseEntity<Long> delete(@PathVariable Long hireId) {
-
         hireService.deleteHire(hireId);
-
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
-
 }

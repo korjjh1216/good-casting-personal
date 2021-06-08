@@ -33,10 +33,7 @@ const FileUpload = ({ image, setImages }) => {
                     // className="mb-0 font-size-4 text-smoke"
                 >
                     {image === null ? (
-                        <AddAPhoto
-                            className="thumnail-camera-icon"
-                            fontSize="large"
-                        />
+                        <AddAPhoto className="thumnail-camera-icon" fontSize="large" />
                     ) : (
                         fileList.map((file) => {
                             return (
@@ -48,13 +45,7 @@ const FileUpload = ({ image, setImages }) => {
                         })
                     )}
                 </label>
-                <input
-                    type="file"
-                    accept="image/*"
-                    id="fileUpload"
-                    className="sr-only"
-                    onChange={handleSelectedImg}
-                />
+                <input type="file" accept="image/*" id="fileUpload" className="sr-only" onChange={handleSelectedImg} />
             </div>
         </>
     );

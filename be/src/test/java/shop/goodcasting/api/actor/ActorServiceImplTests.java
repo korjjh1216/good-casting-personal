@@ -58,7 +58,6 @@ public class ActorServiceImplTests {
 
         Profile profile = Profile.builder()
                 .actor(actor)
-                .career("커리어")
                 .contents("콘텐츠")
                 .build();
         profileRepository.save(profile);

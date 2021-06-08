@@ -1,8 +1,8 @@
 package shop.goodcasting.api.apply.service;
 
 import shop.goodcasting.api.apply.domain.*;
-import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 
@@ -70,6 +70,4 @@ public interface ApplyService {
                         .build())
                 .build();
     }
-    }
-
-
+}

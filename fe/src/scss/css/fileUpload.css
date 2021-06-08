@@ -27,7 +27,8 @@
     bottom: 0;
     width: 60px;
     height: 60px;
-    background: rgba(0, 0, 0, 0.5) url(../../assets//image/ico_camera.svg) no-repeat 50% 50% / 30px 26px;
+    background: rgba(0, 0, 0, 0.5) url(../../assets//image/ico_camera.svg)
+        no-repeat 50% 50% / 30px 26px;
 }
 
 .select-dropdown {
@@ -155,4 +156,10 @@
 }
 .avatar-wrapper .upload-button:hover .fa-arrow-circle-up {
     opacity: 0.9;
+}
+
+/* 0608 추가 */
+.profile-detail-img {
+    display: inline;
+    margin: 5px;
 }

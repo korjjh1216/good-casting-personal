@@ -1,12 +1,11 @@
 package shop.goodcasting.api.user.producer.service;
 
+import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
-import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProducerService {
     List<Producer> findAll();

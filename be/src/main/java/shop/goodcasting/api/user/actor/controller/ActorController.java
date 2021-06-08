@@ -1,17 +1,15 @@
 package shop.goodcasting.api.user.actor.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import shop.goodcasting.api.user.actor.service.ActorServiceImpl;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
-import shop.goodcasting.api.user.actor.repository.ActorRepository;
-import shop.goodcasting.api.user.actor.service.ActorServiceImpl;
 
 import java.util.List;
 
-@CrossOrigin(origins ="*", allowedHeaders = "*")
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/actors")

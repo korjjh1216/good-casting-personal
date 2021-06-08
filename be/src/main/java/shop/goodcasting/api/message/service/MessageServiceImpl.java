@@ -1,11 +1,9 @@
 package shop.goodcasting.api.message.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.message.domain.Message;
 import shop.goodcasting.api.message.domain.MessageActionType;
+import shop.goodcasting.api.message.domain.Message;
 import shop.goodcasting.api.message.domain.MessageDTO;
 import shop.goodcasting.api.message.repository.MessageRepository;
 
@@ -15,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Log
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService{
@@ -68,5 +65,11 @@ public class MessageServiceImpl implements MessageService{
         });
 
         return messageDTOList;
+    }
+
+    @Transactional
+    public List<MessageDTO> update(MessageDTO messageDTO) {
+        messageRepo.save(dto2EntityAll(messageDTO));
+        return messageRepo.findAllByReceiverId(messageDTO.getReceiver().getUserId()).stream().map(entity -> entity2DtoAll(entity)).collect(Collectors.toList());
     }
 }

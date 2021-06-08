@@ -1,8 +1,8 @@
 package shop.goodcasting.api.article.hire.domain;
 
 import lombok.*;
-import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.producer.domain.Producer;
+import shop.goodcasting.api.common.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,13 +23,13 @@ public class Hire extends BaseEntity {
     @Column private String title;
     @Column private String project;
     @Column(columnDefinition = "TEXT") private String contents;
-    @Column private String cast;    //배역
-    @Column private LocalDate filming; //촬영기간
-    @Column private Integer guarantee; //출연료
-    @Column private String personnel; //모집인원
-    @Column private LocalDateTime deadline; //공고마감일
+    @Column private String cast;
+    @Column private LocalDate filming;
+    @Column private Integer guarantee;
+    @Column private String personnel;
+    @Column private LocalDateTime deadline;
 
-    // join column
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producer_id")
     private Producer producer;

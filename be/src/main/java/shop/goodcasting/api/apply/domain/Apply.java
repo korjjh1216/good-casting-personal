@@ -1,9 +1,9 @@
 package shop.goodcasting.api.apply.domain;
 
 import lombok.*;
-import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
+import shop.goodcasting.api.common.domain.BaseEntity;
 
 import javax.persistence.*;
 

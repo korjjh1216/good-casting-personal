@@ -3,11 +3,9 @@ package shop.goodcasting.api.message.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import shop.goodcasting.api.message.domain.Message;
 import shop.goodcasting.api.message.domain.MessageActionType;
-import shop.goodcasting.api.user.login.domain.UserVO;
 
 import java.util.List;
 

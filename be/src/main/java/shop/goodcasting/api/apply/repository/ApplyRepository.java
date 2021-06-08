@@ -28,5 +28,6 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, SearchApply
     @Query("delete from Apply a where a.profile.profileId = :profileId")
     void deleteByProfileId(Long profileId);
 
-
+    @Query("select a.applyId from Apply a where a.profile.profileId = :profileId and a.hire.hireId = :hireId" )
+    List<Long> duplicateCheck(Long profileId, Long hireId);
 }
