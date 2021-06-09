@@ -54,7 +54,6 @@ const ModalSignUp = (props) => {
         });
         gContext.toggleSignUpModal();
     };
-    //handleClose
     return (
         <>
             <ModalStyled {...props} size="lg" centered show={gContext.signUpModalVisible} onHide={handleClose}>

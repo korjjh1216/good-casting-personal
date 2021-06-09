@@ -14,6 +14,7 @@ export const getActorInfo = createAsyncThunk('ACTOR_INFO', async () => {
 });
 
 export const unRegister = createAsyncThunk('UNREGISTER', async (arg) => {
+    console.log(arg);
     const response = await actorService.unRegister(arg);
     return response.data;
 });
