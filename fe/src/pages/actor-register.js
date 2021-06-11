@@ -17,11 +17,9 @@ import '../scss/css/fileUpload.css';
 const ProfileRegister = () => {
     const dispatch = useDispatch();
 
-    const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
-
     const profileState = useSelector(profileSelector);
     const fileList = useSelector(fileSelector).fileList;
-    const actorState = JSON.parse(localStorage.getItem('USER'));
+    const actorState = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
     const { status } = useSelector(profileSelector);
 
     const [image, setImages] = useState(null);
