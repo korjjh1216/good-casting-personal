@@ -81,6 +81,5 @@ public interface HireService {
                 .regDate(hire.getRegDate())
                 .producerAgency(producer.getAgency())
                 .build();
-
     }
 }

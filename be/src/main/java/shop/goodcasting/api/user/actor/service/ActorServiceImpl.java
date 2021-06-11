@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Log
 @Service
 @RequiredArgsConstructor
 public class ActorServiceImpl implements ActorService {
@@ -35,11 +34,9 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public ActorDTO findById(Long actorId) {
-
         Optional<Actor> actor = actorRepo.findById(actorId);
 
         return actor.map(this::entity2DtoAll).orElse(null);
-
     }
 
     @Transactional
@@ -49,17 +46,12 @@ public class ActorServiceImpl implements ActorService {
 
         Long profileId = actorRepo.getProfileId(actor.getActorId());
 
-        log.info("profileId : " + profileId);
-
         if(profileId != null){
             Profile profile = profileRepo.findById(profileId).get();
             List<FileVO> fileList = fileRepo.findFileListByProfileId(profileId);
 
-            log.info("fileList : " + fileList);
-
             List<Long> fileId = new ArrayList<>();
             fileList.forEach( i -> fileId.add(i.getFileId()));
-            log.info("fileId : " + fileId);
 
             fileId.forEach( id -> {
                 FileVO test = fileRepo.findById(id).get();
@@ -79,9 +71,6 @@ public class ActorServiceImpl implements ActorService {
     @Override
     @Transactional
     public ActorDTO moreDetail(ActorDTO actorDTO) {
-//        String passwordUp =  passwordEncoder.encode(actorDTO.getUser().getPassword());
-//        userRepository.passwordUpdate(actorDTO.getUser().getUserId(), passwordUp);
-
         Actor actor = dto2EntityAll(actorDTO);
         actorRepo.save(actor);
 

@@ -4,23 +4,15 @@ import Swal from 'sweetalert2';
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const hireList = createAsyncThunk('HIRE_LIST', async (pageRequest) => {
-    console.log('------------HIRE_LIST---------------');
-    console.log(pageRequest);
-    console.log('------------------------------------');
     if (pageRequest.page === 0) {
         return null;
     }
-
     const response = await hireService.hireList(pageRequest);
     return response.data;
 });
 
 export const hireDetail = createAsyncThunk('HIRE_DETAIL', async (id) => {
-    console.log('------------HIRE_DETAIL---------------');
-    console.log(id);
-    console.log('--------------------------------------');
     const response = await hireService.hireDetail(id);
-
     return response.data;
 });
 
@@ -31,6 +23,14 @@ export const hireRegister = createAsyncThunk('HIRE_REGISTER', async (arg) => {
 
 export const hireDelete = createAsyncThunk('HIRE_DELETE', async (id) => {
     const response = await hireService.hireDelete(id);
+    return response.data;
+});
+
+export const hireUpdate = createAsyncThunk('HIRE_UPDATE', async (arg) => {
+    console.log(arg);
+    const response = await hireService.hireUpdate(arg);
+
+    console.log(response.data);
     return response.data;
 });
 
@@ -92,7 +92,8 @@ const hireSlice = createSlice({
                     pageRequest: payload.pageRequest,
                 };
             })
-            .addCase(hireRegister.fulfilled, (state) => {
+            .addCase(hireRegister.fulfilled, (state, { payload }) => {
+                state.hire = payload;
                 state.status = 'success';
                 Swal.fire({
                     icon: 'success',
@@ -110,6 +111,12 @@ const hireSlice = createSlice({
                 Swal.fire({
                     icon: 'success',
                     title: '공고문이 삭제되었습니다.',
+                });
+            })
+            .addCase(hireUpdate.fulfilled, (state, { payload }) => {
+                Swal.fire({
+                    icon: 'success',
+                    title: '공고문이 수정되었습니다.',
                 });
             });
     },

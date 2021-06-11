@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PageListComponent from '../components/Core/PageList';
 
 import PageWrapper from '../components/PageWrapper';
 
@@ -13,6 +14,7 @@ const DashboardMain = () => {
     const dispatch = useDispatch();
 
     const pageRequest = useSelector(profileSelector).pageRequest;
+    const pageResult = useSelector(profileSelector).pageResult;
 
     useEffect(() => {
         return () => {
@@ -35,6 +37,11 @@ const DashboardMain = () => {
                         <div className="row mb-7">
                             <MyProfileList />
                         </div>
+                        <PageListComponent
+                            pageRequest={pageRequest}
+                            pageResult={pageResult}
+                            flag="hireList"
+                        />
                     </div>
                 </div>
             </PageWrapper>

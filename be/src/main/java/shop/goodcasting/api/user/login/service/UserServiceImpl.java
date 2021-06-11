@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Log
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -72,17 +71,18 @@ public class UserServiceImpl implements UserService {
     public List<Object> signin(UserDTO userDTO) {
 
         List<Object> infoList = new ArrayList<>();
-        if (userRepo.checkAccount(userDTO.getUsername())) {
-            try {
+        if(userRepo.checkAccount(userDTO.getUsername())){
+            try{
                 UserVO userVO = dto2Entity(userDTO);
 
                 String token = (passwordEncoder.matches(userVO.getPassword(), userRepo.findByUsername(userVO.getUsername()).get().getPassword()))
-                        ? provider.createToken(userVO.getUsername(), userRepo.findByUsername(userVO.getUsername()).get().getRoles())
+                        ?provider.createToken(userVO.getUsername(), userRepo.findByUsername(userVO.getUsername()).get().getRoles())
                         : "Wrong password";
 
                 userDTO.setUserId(userRepo.findByUsername(userVO.getUsername()).get().getUserId());
                 userDTO.setAccount(userRepo.findByUsername(userVO.getUsername()).get().isAccount());
                 userDTO.setPosition(userRepo.findByUsername(userVO.getUsername()).get().isPosition());
+
                 userDTO.setToken(token);
                 infoList.add(userDTO);
 
@@ -96,21 +96,31 @@ public class UserServiceImpl implements UserService {
                     infoList.add(actorDTO);
                 } else {
                     ProducerDTO producerDTO = new ProducerDTO();
-
                     Long producerId =producerRepo.getProducerIdFromUserId(userDTO.getUserId());
-
                     producerDTO.setProducerId(producerId);
                     infoList.add(producerDTO);
                 }
 
-                log.info("infoList :" + infoList);
                 return infoList;
-            } catch (Exception e) {
+            }catch(Exception e){
                 throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
             }
-        }else{
+        } else {
             throw new SecurityRuntimeException("탈퇴한 회원입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    @Override
+    public Long update(UserDTO userDTO) {
+        UserVO user = userRepo.findById(userDTO.getUserId()).get();
+
+        if (passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getNewPassword()));
+            userRepo.save(dto2Entity(userDTO));
+            return 1L;
+        }
+
+        return 0L;
     }
 
     @Override

@@ -1,6 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mariadb://192.168.0.17/goodc
+    url: jdbc:mariadb://112.169.196.99/goodc
+#    localhost:3306   //112.169.196.99/goodc
+
     driver-class-name: org.mariadb.jdbc.Driver
     username: goodc
     password: Goodc1234
@@ -16,7 +18,9 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting
+      location: /usr/local/GoodCasting
+#      \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting
+#      /usr/local/GoodCasting
       max-request-size: 100MB
       max-file-size: 100MB
   mail:
@@ -45,7 +49,7 @@ security:
 shop:
   goodcast:
     upload:
-      path: \\DESKTOP-F9UL04V\Users\bitcamp\Pictures\Goodcasting
+      path: /usr/local/GoodCasting
 
 UserController:
   signup: Create user and returns ins JWT token

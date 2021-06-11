@@ -126,6 +126,7 @@ const ProfileSidebar = (props) => {
                                 <div className="mb-7">
                                     <td className="table-y-middle py-7 min-width-px-80">
                                         <Link
+                                            state={{ id: props.id }}
                                             to="/actor-modify"
                                             className="font-size-3 font-weight-bold text-green text-uppercase"
                                         >

@@ -61,6 +61,15 @@ const ActorSidebar = () => {
                                 <i className="fas fa-cog mr-7"></i>정보수정
                             </Link>
                         </li>
+                        <li className="">
+                            <Link
+                                to="/user-info"
+                                activeClassName="active"
+                                className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center"
+                            >
+                                <i className="fas fa-cog mr-7"></i>비밀번호 변경
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </Collapse>

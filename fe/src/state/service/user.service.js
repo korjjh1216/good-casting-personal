@@ -20,4 +20,13 @@ const signin = (arg) => {
     });
 };
 
-export default { signup, signin };
+const update = (user) => {
+    return axios({
+        url: `${SERVER}/users/update`,
+        method: 'post',
+        data: user,
+        headers: { Authorization: 'JWT fefege..' },
+    });
+};
+
+export default { signup, signin, update };

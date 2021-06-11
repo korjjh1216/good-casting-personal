@@ -3,10 +3,13 @@ import Swal from 'sweetalert2';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const updateProducerInfo = createAsyncThunk('PRODUCER_UPDATE', async (arg) => {
-    const response = await producerService.updateProducerInfo(arg);
-    return response.data;
-});
+export const updateProducerInfo = createAsyncThunk(
+    'PRODUCER_UPDATE',
+    async (arg) => {
+        const response = await producerService.updateProducerInfo(arg);
+        return response.data;
+    }
+);
 
 export const getProducerInfo = createAsyncThunk('PRODUCER_INFO', async () => {
     const response = await producerService.getProducerInfo();
@@ -14,7 +17,6 @@ export const getProducerInfo = createAsyncThunk('PRODUCER_INFO', async () => {
 });
 
 export const unRegister = createAsyncThunk('UNREGISTER', async (arg) => {
-    console.log(arg);
     const response = await producerService.unRegister(arg);
     return response.data;
 });

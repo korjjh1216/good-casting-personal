@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hireDetail, hireSelector } from '../state/reducer/hire.reducer';
 
 import iconD from '../assets/image/svg/icon-dolor.svg';
+import defaultProfile from '../assets/image/profile.png';
 
 const JobDetails = ({ location }) => {
     const userInfo =
@@ -60,7 +61,8 @@ const JobDetails = ({ location }) => {
                                                 <div className="media align-items-center">
                                                     <div className="square-72 d-block mr-8">
                                                         {photos.map((photo) => {
-                                                            return (
+                                                            return photo.fileName !==
+                                                                null ? (
                                                                 <img
                                                                     style={{
                                                                         width:
@@ -71,6 +73,20 @@ const JobDetails = ({ location }) => {
                                                                             '4px',
                                                                     }}
                                                                     src={`http://localhost:8080/files/display?fileName=s_${photo.uuid}_${photo.fileName}`}
+                                                                />
+                                                            ) : (
+                                                                <img
+                                                                    style={{
+                                                                        width:
+                                                                            '80px',
+                                                                        height:
+                                                                            '80px',
+                                                                        borderRadius:
+                                                                            '4px',
+                                                                    }}
+                                                                    src={
+                                                                        defaultProfile
+                                                                    }
                                                                 />
                                                             );
                                                         })}

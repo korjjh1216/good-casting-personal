@@ -12,6 +12,7 @@ public interface UserService {
     List<UserVO> findAll();
     UserDTO findById(Long id);
     Optional<UserVO> findByUsername(String username);
+    Long update(UserDTO userDTO);
 
     default UserVO dto2Entity(UserDTO userDTO) {
         return UserVO.builder()
