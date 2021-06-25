@@ -27,3 +27,17 @@
 
 ## ERD
 <img src="https://images.velog.io/images/s_keyyy/post/a46d07e1-70b0-4c5f-a89e-0f0f3433e429/ERD.jpg" width="600">
+
+## 주요기능
+
+- 프로필등록 <br/>
+
+![profile](https://images.velog.io/images/s_keyyy/post/0b7fae7b-0eeb-44bf-9778-0fce41df78f2/profile.gif)
+
+- 공고지원 <br/>
+
+![apply](https://images.velog.io/images/s_keyyy/post/5ddd67f0-03d3-466c-b31e-69fef45765e7/apply.gif)
+
+- 맞춤 캐릭터 검색 <br/>
+
+![serch](https://images.velog.io/images/s_keyyy/post/c0e1a350-0fc1-4d45-88b9-84152c186f2b/search.gif)
