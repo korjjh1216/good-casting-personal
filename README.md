@@ -40,4 +40,4 @@
 
 - 맞춤 캐릭터 검색 <br/>
 
-![serch](https://images.velog.io/images/s_keyyy/post/c0e1a350-0fc1-4d45-88b9-84152c186f2b/search.gif)
+![search](https://images.velog.io/images/s_keyyy/post/c0e1a350-0fc1-4d45-88b9-84152c186f2b/search.gif)
